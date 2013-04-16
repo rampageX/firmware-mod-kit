@@ -15,7 +15,7 @@ For Ubuntu:
 $ sudo apt-get install subversion build-essential zlib1g-dev liblzma-dev python-magic
 }}}
 
-OR for RedHat/CentOS:
+OR for RedHat:
 {{{
 yum groupinstall "Development Tools"
 yum install svn
