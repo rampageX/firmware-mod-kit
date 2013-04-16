@@ -1,0 +1,30 @@
+#summary Here is a good place to log changes (made or proposed) and discuss them.
+
+= Introduction =
+
+In the interest of "communications" I've created this wiki page just to jot down the reason for changes and what they entailed.
+
+
+= Details =
+
+   * *2031-04-13* - _R4xx-R429_ - JC
+      Migrated webdecomp to new algorithm.
+      Preserve squashfs block size in config log.
+      Renamed extract-ng/build-ng to extract-firmware.sh and build-firmware.sh.
+      Misc
+   * *2011-02-26* - _R180_ - MCT
+      1 At the start of the build process, a file is created in the target /etc file system so that the build can be identified.
+   * *2011-02-25* - _R175_ - MCT
+      1 Adjusted the way the version numbers are stored.
+      1 Also added ID headers.
+   * *2011-02-25* - _R171_ - MCT
+      1 Added ID number to the two scripts I'd worked on.
+      1 Created this webpage.
+   * *2011-02-25* - _R170_ - MCT
+      1 Enhanced previous patch to include a rebuild number that increments.
+      1 Moved log to below the authors space.
+   * *2011-02-25* - _R169_ - MCT
+      1 Needed quotes around a string compare.
+   * *2011-02-24* - _R169_ - MCT
+      1 Put the name of the build into an external file so that it's easier to customize.
+      1 Modified a var to correct the spelling. :)<br/>Changed FIRMARE_BASE_NAME to FIRMWARE_BASE_NAME
