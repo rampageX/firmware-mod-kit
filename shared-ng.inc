@@ -1,0 +1,11 @@
+VERSION=$(cat firmware_mod_kit_version.txt)
+IMAGE_PARTS="$DIR/image_parts"
+LOGS="$DIR/logs"
+CONFLOG="$LOGS/config.log"
+BINLOG="$LOGS/binwalk.log"
+ROOTFS="$DIR/rootfs"
+FSIMG="$IMAGE_PARTS/rootfs.img"
+HEADER_IMAGE="$IMAGE_PARTS/header.img"
+FOOTER_IMAGE="$IMAGE_PARTS/footer.img"
+FWOUT="$DIR/new-firmware.bin"
+BINWALK="./src/binwalk-1.0/src/bin/binwalk-script -v -m ./src/binwalk-1.0/src/binwalk/magic/binwalk"

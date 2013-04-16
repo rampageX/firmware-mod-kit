@@ -1,0 +1,15 @@
+this package from git.grml.org is packaged with topgit
+AND uses a temporary build branch (which is only tagged on release)
+
+# create the build branch
+git checkout build
+git reset --hard master
+for i in $(cat .tmpdeps|xargs); do g merge -n $i; done
+
+# building this package
+git checkout build (create as stated above)
+git-buildpackage --git-debian-branch=build
+
+# want to make your own modifications to the debian packaging
+just work on build branch and cherry-pick the changes back to master.
+after that recreate your build branch

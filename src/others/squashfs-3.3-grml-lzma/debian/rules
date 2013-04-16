@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+# -*- mode: makefile; coding: utf-8 -*-
+
+# Common include files
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/makefile.mk
+
+# Path to squashfs-tools
+DEB_STOOLS  = $(CURDIR)/squashfs3.3/squashfs-tools
+
+# Manpages stuff
+DOC_DIR	       = debian/doc
+PO_DIR	       = $(DOC_DIR)/po
+MAN_TMP_DIR    = $(DOC_DIR)/manpages
+
+MANPAGES       = $(addprefix $(DOC_DIR)/,en/mksquashfs.1 fr/mksquashfs.fr.1 en/unsquashfs.1)
+XSLT_CMD       = xsltproc -''-nonet  -''-param man.charmap.use.subset "0"
+DB2MAN         = /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/manpages/docbook.xsl
+
+# Flags to GCC
+#CFLAGS        += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE
+
+# The build directory is squashfs-tools
+DEB_MAKE_INVOKE := make
+
+DEB_MAKE_BUILD_TARGET := all
+DEB_MAKE_CHECK_TARGET :=
+DEB_MAKE_CLEAN_TARGET :=
+
+# Squashfs-tools manpages targets
+install/squashfs-lzma-tools:: po $(MANPAGES)
+
+po:
+	mkdir -p $(dir $(MANPAGES))
+	cd $(PO_DIR) && po4a -v po4a.cfg
+
+%.1: %.dbk
+	cd $(<D) && $(XSLT_CMD) $(DB2MAN) $(<F)
+	mv $(@D)/*.1 $(DOC_DIR)/$(@F)
+
+## Squashfs-modules packages
+STAMP_CONFIG = $(CURDIR)/debian/stamp-configure
+
+# Version of the Linux Kernel
+SRC_DIR_MOD = ksquashfs
+DIR_MOD  = linux-2.6
+SNAME    = squashfs-lzma
+PSOURCE  = $(SNAME)-source
+MNAME    = $(SNAME)-modules
+
+pre-build::
+	# Create the 'linux-2.6' directory using last patch of squashfs, it is
+	# needed for out-of-tree compilation
+	if ! test -f $(STAMP_CONFIG); then \
+	  mkdir -p $(DIR_MOD); \
+	  cp $(SRC_DIR_MOD)/fs/squashfs/* $(DIR_MOD); \
+	  cp $(SRC_DIR_MOD)/include/linux/* $(DIR_MOD); \
+	  touch $(STAMP_CONFIG); \
+	fi 
+
+# For creating correctly the 'squashfs-source' package which will be
+# used for building module package with custom kernel
+install/squashfs-lzma-source::
+	# Create the needed directories
+	mkdir -p debian/modules/$(SNAME)/debian \
+		 debian/$(PSOURCE)/usr/src
+
+	# Copy the source and header files
+	cp $(DIR_MOD)/*.h $(DIR_MOD)/*.c $(DIR_MOD)/Makefile \
+		debian/modules/$(SNAME)
+
+	# Copy the debian specific files
+	cp debian/changelog debian/compat debian/copyright debian/*.modules.in \
+		debian/modules/$(SNAME)/debian
+
+	# This rules file is specific to m-a
+	install -m755 debian/rules.modules \
+		debian/modules/$(SNAME)/debian/rules
+
+	# Finally create the tarball which contains the modules directory
+	cd debian && tar jcf $(PSOURCE)/usr/src/$(SNAME).tar.bz2 modules
+
+# Common targets
+clean::
+	rm -rf $(DOC_DIR)/fr $(DOC_DIR)/*.8 $(DOC_DIR)/*.1 $(DOC_DIR)/en/*.8 $(DIR_MOD) debian/modules
+	rm -f $(DEB_STOOLS)/*.o $(DEB_STOOLS)/mksquashfs $(DEB_STOOLS)/unsquashfs $(STAMP_CONFIG)

@@ -1,0 +1,10 @@
+squashfs for Debian
+-------------------
+
+The  Squash  filesystem driver  isn't  [currently]  integrated in  the
+official Linux  kernel, so to  be able to  use such a  filesystem, you
+need  to use  the 'squashfs-modules-*'  package if  you are  using the
+official Debian kernel, or the 'squashfs-source' package otherwise (by
+using 'module-assistant': '# m-a install squashfs').
+
+ -- Arnaud Fontaine <arnau@debian.org>, Sun,  2 Apr 2006 11:47:00 +0200

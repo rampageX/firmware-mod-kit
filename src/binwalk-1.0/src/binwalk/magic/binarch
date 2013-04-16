@@ -1,0 +1,30 @@
+# MIPS prologue
+# addiu $sp, -XX
+# 27 BD FF XX
+1	string	\377\275\47	MIPSEL function prologue
+0       string  \47\275\377	MIPS function prologue
+
+# MIPS epilogue
+# jr $ra
+0	belong	0x03e00008	MIPS function epilogue
+0	lelong	0x03e00008	MIPSEL function epilogue
+
+# PowerPC epilogue
+# blr
+0	belong 0x4E800020	PowerPC big endian function epilogue
+0	lelong 0x4E800020	PowerPC little endian function epilogue
+
+# ARM prologue
+# STMFD SP!, {XX}
+0	beshort	0xE92D		ARMEB function prologue
+2	leshort	0xE92D		ARM function prologue
+
+# ARM epilogue
+# LDMFD SP!, {XX}
+0	beshort	0xE8BD		ARMEB function epilogue
+2	leshort	0xE8BD		ARM function epilogue
+
+# x86 epilogue
+# push ebp
+# move ebp, esp
+0	string	\x55\x89\xE5	Intel x86 function epilogue

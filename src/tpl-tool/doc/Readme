@@ -1,0 +1,55 @@
+Description:
+
+    tpl-tool is a tool for extracting and rebuilding official TP-Link
+    firmware images for their router products.
+
+    It has been successfully tested with twenty four different images
+    from seven different products. This is only a very small selection of
+    the hundred and something available from the TP-Link website. However
+    it should work with any official or third-party firmware image which
+    uses the same format with the exception of OpenWrt images.
+
+    OpenWrt images do NOT have a 'standard' TP-Link image layout despite
+    having a valid header and do NOT extract correctly.
+
+
+Usage:
+
+    tpl-tool <option> <file> [-o <file>]
+
+    -s <file>   Show image header information in a human readable form.
+
+    -x <file>   Extracts the individual parts of an image to the following
+                files.
+
+                    <file>-header
+                    <file>-bootldr  (when present)
+                    <file>-kernel
+                    <file>-rootfs
+
+                Where <file> is either the input filename or that
+                specified with -o
+
+    -b <file>   Rebuilds an image from the individual parts extracted
+                with -x
+
+                    <file>-header
+                    <file>-bootldr  (when present)
+                    <file>-kernel
+                    <file>-rootfs
+
+                Where <file> is the input filename and the output file
+                either <file>-new or that specified with -o
+
+    -o <file>   Specify an alternative output filename.
+
+    -h          Show version and usage info.
+
+
+License:
+
+    Copyright (c) 2012 Jonathan McGowan
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2 or
+    later as published by the Free Software Foundation.

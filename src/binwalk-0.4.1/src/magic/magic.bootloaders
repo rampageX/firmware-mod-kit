@@ -1,0 +1,7 @@
+
+#---------------------------Bootloaders--------------------------------
+
+# CFE bootloader
+0	string	CFE1CFE1	CFE boot loader, little endian
+0	string	1EFC1EFC	CFE boot loader, big endian
+

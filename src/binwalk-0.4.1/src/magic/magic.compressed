@@ -1,0 +1,152 @@
+
+#------------------Compression Formats-----------------------------
+
+# bzip2
+0       string          BZh
+>4	string		1AY&SY		bzip2 compressed data
+!:mime  application/x-bzip2
+>>3      byte            >47            \b, block size = %c00k
+
+# lzip  
+0       string          LZIP            lzip compressed data
+!:mime application/x-lzip
+>4      byte            x               \b, version: %d
+
+# LZO
+0	string		\211LZO\000\015\012\032\012	LZO compressed data
+
+# 7-zip archiver, from Thomas Klausner (wiz@danbala.tuwien.ac.at)
+# http://www.7-zip.org or DOC/7zFormat.txt 
+#
+0       string          7z\274\257\047\034      7-zip archive data,
+>6      byte            x                       version %d
+>7      byte            x                       \b.%d
+
+# standard unix compress
+0       beshort		0x1f9d          compress'd data
+>2      byte&0x80       >0              block compressed
+>2      byte&0x1f       x               %d bits
+
+# gzip (GNU zip, not to be confused with Info-ZIP or PKWARE zip archiver)
+#   Edited by Chris Chittleborough <cchittleborough@yahoo.com.au>, March 2002
+#       * Original filename is only at offset 10 if "extra field" absent
+#       * Produce shorter output - notably, only report compression methods
+#         other than 8 ("deflate", the only method defined in RFC 1952).
+0       string          \037\213        gzip compressed data
+!:mime  application/x-gzip
+>2      byte            <8              \b, reserved (invalid) method
+>2      byte            >8              \b, unknown (invalid) method
+>3      byte            &0x01           \b, ASCII
+>3      byte            &0x02           \b, has CRC
+>3      byte            &0x04           \b, extra field
+>3      byte&0xC        =0x08
+>>10    string          x               \b, was "%s"
+>3      byte            &0x10           \b, has comment
+>9      byte            =0x00           \b, from FAT filesystem (MS-DOS, OS/2, NT)
+>9      byte            =0x01           \b, from Amiga
+>9      byte            =0x02           \b, from VMS
+>9      byte            =0x03           \b, from Unix
+>9      byte            =0x04           \b, from VM/CMS
+>9      byte            =0x05           \b, from Atari
+>9      byte            =0x06           \b, from HPFS filesystem (OS/2, NT)
+>9      byte            =0x07           \b, from MacOS
+>9      byte            =0x08           \b, from Z-System
+>9      byte            =0x09           \b, from CP/M
+>9      byte            =0x0A           \b, from TOPS/20
+>9      byte            =0x0B           \b, from NTFS filesystem (NT)
+>9      byte            =0x0C           \b, from QDOS
+>9      byte            =0x0D           \b, from Acorn RISCOS
+>9	byte		>0x0D		\b, invalid source
+>3      byte            &0x10           \b, comment
+>3      byte            &0x20           \b, encrypted
+# Dates before 1992 are invalid, unless of course you're DD-WRT in which
+# case you don't know how to set a date in your gzip files. Brilliant.
+>4	lelong		=0		\b, DD-WRT date:
+>4	lelong		<0		\b, invalid date:
+>4	lelong		>0		
+>>4	lelong		<694224000	\b, invalid date:
+>>4	lelong		=694224000	\b, invalid date:
+>>4	lelong		>694224000	\b, last modified:
+>4      ledate          x               %s
+>8      byte            2               \b, max compression
+>8      byte            4               \b, max speed
+
+# Zlib signatures
+0	beshort		0x789C		zlib compressed data
+0	beshort		0x78DA		zlib compressed data
+0	beshort		0x7801		zlib compressed data
+
+# Supplementary magic data for the file(1) command to support
+# rzip(1).  The format is described in magic(5).
+#
+# Copyright (C) 2003 by Andrew Tridgell.  You may do whatever you want with
+# this file.
+#
+0       string          RZIP            rzip compressed data
+>4      byte            x               - version %d
+>5      byte            x               \b.%d
+>6      belong          x               (%d bytes)
+
+# ZIP compression (Greg Roelofs, c/o zip-bugs@wkuvx1.wku.edu)
+0       string          PK\003\004      Zip archive data, 
+>4      byte            0x00            v0.0
+!:mime  application/zip 
+>4      byte            0x09            at least v0.9 to extract
+!:mime  application/zip 
+>4      byte            0x0a            at least v1.0 to extract
+!:mime  application/zip 
+>4      byte            0x0b            at least v1.1 to extract
+!:mime  application/zip
+>0x161  string          WINZIP          WinZIP self-extracting
+!:mime  application/zip
+>4      byte            0x14
+>>30    ubelong         !0x6d696d65     at least v2.0 to extract
+!:mime  application/zip
+
+# Alternate ZIP string (amc@arwen.cs.berkeley.edu)
+0       string          PK00PK\003\004  Zip archive data [NSRL|ZIP]
+
+# Type: LZMA            
+# URL:  http://www.7-zip.org/sdk.html   
+#
+# Added additional parsing to help verify LZMA matches and weed out false positives.
+# Added improved signature checking.
+# Added checks for possibly (probably) invalid matches.
+# From: Craig Heffner
+
+#First LZMA signature
+0       string                  \x5d\x00\x00            LZMA compressed data,
+>0	leshort			>0xE0			invalid
+>0	byte			x			properties: 0x%.2X,
+>1	lelong			<1			invalid
+>1	lelong			x			dictionary size: %d bytes,
+>5	lequad			0			invalid
+>5	lequad			<0			invalid
+>5	lequad			>0x40000000		invalid
+>5	lequad			x			uncompressed size: %lld bytes
+
+#An alternative common LZMA signature
+1	belong			0x00008000		LZMA compressed data,
+>0	byte			0			invalid
+>0	leshort			>0xE0			invalid
+>0	byte			x			properties: 0x%.2X,
+>1      lelong                  <1                      invalid
+>1      lelong                  x                       dictionary size: %d bytes,
+>5	lequad			0			invalid
+>5      lequad                  <0                      invalid
+>5	lequad			>0x40000000		invalid
+>5      lequad                  x                       uncompressed size: %lld bytes
+
+#Signature for less common LZMA flag/dictionary values. Results in lots of false positives, but usually marked as invalid.
+1	beshort			0x0000			LZMA compressed data,
+>0	byte			0			invalid
+>0	byte			>0xE0			invalid
+>0	byte			x			properties: 0x%.2X,
+>1	lelong			<1			invalid
+>1	lelong			x			dictionary size: %d bytes,
+>5	lequad			0			invalid
+>5	lequad			<0			invalid
+>5	lequad			>0x40000000		invalid
+>5	lequad			x			uncompressed size: %lld bytes
+
+

@@ -1,0 +1,8 @@
+0	belong x	Hex:                 0x%.8X
+#0	string x	String:              %s
+0	lelong x	Little Endian Long:  %d
+0	belong x	Big Endian Long:     %d
+0	leshort x	Little Endian Short: %d
+0	beshort x	Big Endian Short:    %d
+0	ledate x	Little Endian Date:  %s
+0	bedate x	Big Endian Date:     %s

@@ -1,0 +1,88 @@
+lzma-uncramfs v0.7rg - Feb 2011 by Valerio Di Giampietro (http://va.ler.io)
+------------------------------------------------------------------------------
+lzma-uncramfs is a modification of the uncramfs program to be able to
+unpack cramfs images included in some openrg based home routers.
+It includes lzma decompression and a different PAGE_CACHE_SIZE.
+
+To successfully compile lzma-uncramfs an old version of lzma modified
+by Jungo/OpenRG team is included.
+
+Uncramfs v0.7
+-------------
+
+Uncramfs is a simple program currently written in C (but I'm working on a more
+functional C++ version). Its only purpose in life is to unpack and list the
+files in a cramfs image.
+
+NB. this uncramfs includes unconditional support for the non-standard XIP
+(execute in place) feature, whereby executable files are stored uncompressed,
+so they will run directly from ROM (or flash). To activate this you have to
+chmod o+t <file> This feature is currently used by the Agenda Computing VR3 
+Linux PDA.
+
+It takes 2 command line arguments; the directory to unpack into, and the name
+of the cramfs image.
+
+If the the unpacking directory name is (or begins with) "-" then unpacking is
+turned off and you only get the listing.
+
+It will print some "Reassuring" info about the cramfs image, and the listing
+has been extensively reworked to look quite like the listing from ls.
+
+If the effective uid of the execuatble isn't root then it won't even attempt
+to create device nodes, or to set the correct owner and group on the extracted
+files.
+
+It currently doesn't handle unix sockets (but there aren't any in the stock VR3
+images).
+
+For example:
+	uncramfs unpack root-0.20.0.cramfs
+Will unpack the root-0.20.0.cramfs image into the unpack directory;
+
+        uncramfs - root-0.20.0.cramfs
+Will just list the contents of the image.
+
+Uncramfs is copyright Andrew Stitcher and licensed under the terms
+of the GNU GPL version 2.
+
+Andrew Stitcher
+6 June 2001
+
+Please report bugs, send patches, feature suggestions etc. to
+    astitcher@bigfoot.com
+
+---------------
+
+Version history:
+
+v0.2: First packaged version released to net. Had a killer bug in uncompresssing
+      files that lost all the files blocks after the first!
+
+v0.3: Fix release from cam to remedy the killer bug
+
+v0.3.1: Release from cam which includes some of his scripts
+
+v0.4: [Not released to net]
+      Ported original C++ code to C;
+      Ported cam's bug fix (actually I had independently fixed the bug in my own 
+       codebase);
+      Extensively reworked the listing to be as much like ls as possible;
+      Set umask to 0 in uncramfs so the images modes are correctly respected;
+      Don't try to do privileged things unless we are running as root;
+     
+v0.5: [Released to net 6 June 2001]
+      Added README
+      Added some summary stats
+      Can turn off the unpacking so we just get the listing (and summary)
+      All summary info is in [] brackets for easy stripping
+      
+v0.6: [Released on wiki site, 8 June 2001]
+      Context added to notes
+      Fixed bug whereby suid information was reset on chown, leaving suid 
+      files without suid permission. Credit to Luis Maria Cruz Vazquez for 
+      assistance in nailing this bug. -Cam
+
+v0.7: [Released on wiki site, 24 Oct 2001]
+      Patched by Lev Serebryakov to allow non superuser to unpack safely. 
+      Also includes mapping of UID and GID. -Cam

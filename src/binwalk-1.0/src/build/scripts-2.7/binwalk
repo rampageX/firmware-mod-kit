@@ -1,0 +1,294 @@
+#!/usr/bin/python
+
+import sys
+import os.path
+import binwalk
+from threading import Thread
+from binwalk.common import str2int
+from getopt import GetoptError, getopt as GetOpt
+
+def display_status(bwalk):
+	while True:
+		# Display the current scan progress when the enter key is pressed.
+		raw_input()
+		print "Progress: %.2f%% (%d / %d)\n" % (((float(bwalk.total_scanned) / float(bwalk.scan_length)) * 100), bwalk.total_scanned, bwalk.scan_length)
+
+def usage(fd):
+	fd.write("\n")
+	fd.write("Binwalk v%s\n" % binwalk.Config.VERSION)
+	fd.write("Craig Heffner, http://www.devttys0.com\n")
+	fd.write("\n")
+	fd.write("Usage: %s [OPTIONS] [FILE1] [FILE2] [FILE3] ...\n" % os.path.basename(sys.argv[0]))
+	fd.write("\n")
+	fd.write("\t-o, --offset=<int>            Start scan at this file offset\n")
+	fd.write("\t-l, --length=<int>            Number of bytes to scan\n")
+	fd.write("\t-b, --align=<int>             Set byte alignment [default: 1]\n")
+	fd.write("\t-m, --magic=<file>            Specify an alternate magic file to use\n")
+	fd.write("\t-i, --include=<filter>        Include matches that are normally excluded and that have <filter> in their description\n")
+	fd.write("\t-x, --exclude=<filter>        Exclude matches that have <filter> in their description\n")
+	fd.write("\t-y, --search=<filter>         Only search for matches that have <filter> in their description\n")
+	fd.write("\t-g, --grep=<text>             Grep results for the specified text\n")
+	fd.write("\t-R, --raw-bytes=<string>      Search for a sequence of raw bytes instead of using the default magic signatures\n")
+	fd.write("\t-f, --file=<file>             Log results to file\n")
+	fd.write("\t-D, --dd=<type:ext[:cmd]>     Extract entries whose descriptions match <type>, give them file extension <ext>, and execute <cmd>\n")
+	fd.write("\t-e, --extract=[file]          Automatically extract known file types. Load rules from file, if specified.\n")
+	fd.write("\t-r, --rm                      Cleanup extracted files and zero-size files\n")
+	fd.write("\t-d, --delay                   Delay file extraction for files with known footers\n")
+	fd.write("\t-a, --all                     Include all short signatures\n")
+	fd.write("\t-I, --show-invalid            Show results marked as invalid\n")
+	fd.write("\t-A, --opcodes                 Scan for executable code\n")
+	fd.write("\t-C, --cast                    Cast file contents as various data types\n")
+	fd.write("\t-k, --keep-going              Show all matching results at a given offset, not just the first one\n")
+	fd.write("\t-q, --quiet                   Supress output to stdout\n")
+	fd.write("\t-v, --verbose                 Be verbose (specify twice for very verbose)\n")
+	fd.write("\t-u, --update                  Update magic signature files\n")
+	fd.write("\t-h, --help                    Show help output\n")
+	fd.write("\n")
+
+	if fd == sys.stderr:
+		sys.exit(1)
+	else:
+		sys.exit(0)
+
+def main():
+	MIN_ARGC = 2
+	align = 1
+	offset = 0
+	length = 0
+	quiet = False
+	pre_filter = True
+	verbose = 0
+	log_file = None
+	show_invalid = False
+	short_sig = True
+	custom_signature = None
+	delay_extraction = False
+	extract_rules_file = None
+	extract_from_config = False
+	cleanup_after_extract = False
+	magic_flags = binwalk.magic.MAGIC_NONE
+	options = []
+	magic_files = []
+	target_files = []
+	greps = []
+	includes = []
+	excludes = []
+	searches = []
+	extracts = []
+
+	config = binwalk.Config()
+
+	short_options = "aACdhkeqruvPIf:o:l:b:i:x:y:D:m:R:g:"
+	long_options = [
+			"rm",
+			"all",
+			"help", 
+			"quiet", 
+			"verbose",
+			"opcodes",
+			"cast",
+			"update",
+			"keep-going",
+			"show-invalid",
+			"profile",
+			"delay",
+			"file=", 
+			"offset=", 
+			"length=", 
+			"align=",
+			"include=",
+			"exclude=",
+			"extract=",
+			"search=",
+			"dd=",
+			"grep=",
+			"magic=",
+			"raw-bytes=",
+	]
+
+	# Require at least one argument (the target file)
+	if len(sys.argv) < MIN_ARGC:
+		usage(sys.stderr)
+
+	try:
+		opts, args = GetOpt(sys.argv[1:], short_options, long_options)
+	except GetoptError, e:
+		sys.stderr.write("%s\n" % str(e))
+		usage(sys.stderr)
+
+	for opt, arg in opts:
+		if opt in ("-h", "--help"):
+			usage(sys.stdout)
+		elif opt in ("-d", "--delay"):
+			delay_extraction = True
+		elif opt in ("-f", "--file"):
+			log_file = arg
+		elif opt in ("-q", "--quiet"):
+			quiet = True
+		elif opt in ("-v", "--verbose"):
+			verbose += 1
+		elif opt in ("-o", "--offset"):
+			offset = str2int(arg)
+		elif opt in ("-l", "--length"):
+			length = str2int(arg)
+		elif opt in ("-b", "--align"):
+			align = str2int(arg)
+		elif opt in ("-i", "--include"):
+			includes.append(arg)
+		elif opt in ("-y", "--search"):
+			searches.append(arg)
+		elif opt in ("-x", "--exclude"):
+			excludes.append(arg)
+		elif opt in ("-D", "--dd"):
+			extracts.append(arg)
+		elif opt in ("-g", "--grep"):
+			greps.append(arg)
+		elif opt in ("-e", "--extract"):
+			if arg:
+				extract_rules_file = arg
+			else:
+				extract_from_config = True
+		elif opt in ("-r", "--rm"):
+			cleanup_after_extract = True
+		elif opt in ("-m", "--magic"):
+			magic_files.append(arg)
+		elif opt in ("-a", "--all"):
+			short_sig = False
+		elif opt in ("-k", "--keep-going"):
+			magic_flags |= binwalk.magic.MAGIC_CONTINUE
+		elif opt in ("-I", "--show-invalid"):
+			show_invalid = True
+
+		elif opt in ("-A", "--opcodes"):
+			# Check every single offset
+			align = 1
+			# Don't filter out short signatures as some opcode sigs are only 2 bytes
+			short_sig = False
+			# Load user file first so its signatures take precedence
+			magic_files.append(config.paths['user'][config.BINARCH_MAGIC_FILE])
+			magic_files.append(config.paths['system'][config.BINARCH_MAGIC_FILE])
+		elif opt in ("-C", "--cast"):
+			# Check every single offset
+			align = 1
+			# Don't stop at the first match (everything matches everything in this scan)
+			magic_flags |= binwalk.magic.MAGIC_CONTINUE
+			# Disable all pre filtering; we want to check everything for this scan
+			pre_filter = False
+			# Don't filter shot signatures, or else some casts won't be displayed
+			short_sig = False
+			# Load user file first so its signatures take precedence
+			magic_files.append(config.paths['user'][config.BINCAST_MAGIC_FILE])
+			magic_files.append(config.paths['system'][config.BINCAST_MAGIC_FILE])
+		elif opt in ("-R", "--raw-bytes"):
+			# Disable short signature filtering, as the supplied string may be short
+			short_sig = False
+			custom_signature = arg
+		elif opt in ("-u", "--update"):
+			try:
+				sys.stdout.write("Updating signatures...")
+				sys.stdout.flush()
+
+				binwalk.Update().update()
+
+				sys.stdout.write("done.\n")
+				sys.exit(0)
+			except Exception, e:
+				if 'Permission denied' in str(e):
+					sys.stderr.write("failed (permission denied). Check your user permissions, or run the update as root.\n")
+				else:
+					sys.stderr.write('\n' + str(e) + '\n')
+				sys.exit(1)
+		# The --profile option is handled prior to calling main()
+		elif opt not in ('-P', '--profile'):
+			usage(sys.stderr)
+
+		# Append the option and argument to the list of processed options
+		# This is used later to determine which argv entries are file names
+		options.append(opt)
+		options.append(arg)
+		options.append("%s%s" % (opt, arg))
+		options.append("%s=%s" % (opt, arg))
+
+	# Treat any command line options not processed by getopt as target file paths
+	for opt in sys.argv[1:]:
+		#TODO: Do we really want to not process valid files that start with a '-'?
+		#      This is probably OK, and ensures that no options are treated as target files.
+		if opt not in options and not opt.startswith('-'):
+			target_files.append(opt)
+
+	# If more than one target file was specified, enable verbose mode; else, there is
+	# nothing in the output to indicate which scan corresponds to which file.
+	if len(target_files) > 1:
+		verbose = True
+
+	# Instantiate the Binwalk class
+	bwalk = binwalk.Binwalk(flags=magic_flags, verbose=verbose, log=log_file, quiet=quiet)
+
+	# If a custom signature was specified, create a temporary magic file containing the custom signature
+	# and ensure that it is the only magic file that will be loaded when Binwalk.scan() is called.
+	if custom_signature is not None:
+		magic_files = bwalk.parser.file_from_string(custom_signature)
+
+	# Set any specified filters
+	bwalk.filter.include(includes, exclusive=False)
+	bwalk.filter.exclude(excludes)
+	bwalk.filter.include(searches)
+	bwalk.filter.grep(filters=greps)
+
+	# Add any specified extract rules
+	bwalk.extractor.add_rule(extracts)
+
+	# If -e was specified, load the default extract rules
+	if extract_from_config:
+		bwalk.extractor.load_defaults()
+
+	# If --extract was specified, load the specified extraction rules file
+	if extract_rules_file is not None:
+		bwalk.extractor.load_from_file(extract_rules_file)
+
+	# Set the extractor cleanup value (True to clean up files, False to leave them on disk)
+	bwalk.extractor.cleanup_extracted_files(cleanup_after_extract)
+
+	# Enable delayed extraction, which will prevent supported file types from having trailing data when extracted
+	bwalk.extractor.enable_delayed_extract(delay_extraction)
+
+	# Load the magic file(s)
+	bwalk.load_signatures(magic_files=magic_files, pre_filter_signatures=pre_filter, filter_short_signatures=short_sig)
+	
+	# Scan each target file
+	for target_file in target_files:
+		bwalk.display.header(target_file)
+
+		# Start the display_status function as a daemon thread
+		t = Thread(target=display_status, args=(bwalk,))
+		t.setDaemon(True)
+		t.start()
+
+		# Catch keyboard interrupts so that we can properly clean up after the scan
+		try:
+			bwalk.scan(target_file, 
+				offset=offset, 
+				length=length, 
+				align=align,
+				show_invalid_results=show_invalid, 
+				callback=bwalk.display.results)
+		except KeyboardInterrupt:
+			pass
+
+		bwalk.display.footer()
+
+	# Be sure to drink your ovaltine.
+	# And also to clean up any temporary magic files.
+	bwalk.cleanup()
+
+try:
+	# Special options for profiling the code. For debug use only.
+	if '--profile' in sys.argv or '-P' in sys.argv:
+		import cProfile
+		cProfile.run('main()')
+	else:
+		main()
+except KeyboardInterrupt:
+	pass
+
+

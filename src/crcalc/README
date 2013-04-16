@@ -1,0 +1,20 @@
+DESCRIPTION
+	
+	CRCalc re-calculates and updates the CRC fields of uImage, TRX, and DLOB firmware headers.
+
+	CRCalc can update multiple headers inside a firmware image if you provide it with a list
+	of offsets for each header inside the firmware image. The list file can be a binwalk log
+	or just a list of decimal offsets (one offset per line).
+
+	If no binwalk log or list file is provided, CRCalc assumes that there is only one header
+	at the very beginning of the target firmware image.
+
+USAGE
+	
+	Basic usage:
+	
+		$ crcalc firmware.img
+
+	Usage with a binwalk log / offset list file:
+
+		$ crcalc firmware.img binwalk.log

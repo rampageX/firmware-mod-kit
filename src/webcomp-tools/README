@@ -1,0 +1,54 @@
+DESCRIPTION
+	
+	Webcomp tools are a set of utilities for modifying the Web UI files embedded in DD-WRT firmware.
+
+HOW IT WORKS:
+
+	The Web files for all DD-WRT firmware are embedded in binary files, rather than storing the Web 
+	files individually on the file system.
+
+	There are two files involved with this system:
+
+		1) The httpd binary (/usr/sbin/httpd)
+		2) The www file (/etc/www)
+	
+	The actual Web file contents are concatenated together into the /etc/www file, while the names, 
+	sizes and offsets of each file are stored in an array of data structures inside the httpd binary.
+
+	The structure for each file entry in the httpd binary is:
+
+		struct file_entry
+		{
+			char *file_name;	/* Pointer to the file name */
+			uint32_t file_offset;	/* Offset of the file data in the /etc/www file */
+			uint32_t file_size;	/* Total size of the file data */
+						/* jc: the indexes may be added by a constant that varies between builds */
+		};
+	
+	An array of these structures can be found in the httpd binary. The beginning of the array is located
+	at the address indicated by the websRomPageIndex object:
+
+		$ readelf --arch-specific usr/sbin/httpd
+		...
+		004372e8 -31416(gp) <unknown> 004352c8 OBJECT   19 websRomPageIndex
+		...
+
+	In the above example, websRomPageIndex is loaded at address 0x004352c8 at run time. Knowing this, the 
+	physical location of this object in the httpd binary can be calculated, and the file names, offsets, and 
+	sizes of the Web UI files can be extracted.
+
+USAGE:
+
+	Usage is fairly straight forward. You must supply webdecomp with the paths to the www and httpd files.
+
+	To extract files:
+
+		$ ./webdecomp --httpd=rootfs/usr/sbin/httpd --www=rootfs/etc/www --extract
+
+	To restore modified files:
+
+		$ ./webdecomp --httpd=rootfs/usr/sbin/httpd --www=rootfs/etc/www --restore
+
+	The default input/output directory is 'www'. You may specify an alternate directory with the --dir argument.
+
+		

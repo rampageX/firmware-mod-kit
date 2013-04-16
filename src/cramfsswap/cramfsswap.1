@@ -1,0 +1,18 @@
+.TH cramfsswap 1 "4 Jan 2005" Linux "User Manuals"
+.SH NAME
+cramfsswap \- swap endianess of a cram filesystem (cramfs)
+.SH SYNOPSIS
+.B cramfsswap <infile> <outfile>
+.SH DESCRIPTION
+cramfs is a highly compressed and size optimized linux filesystem which is
+mainly used for embedded applications. the problem with cramfs is that it
+is endianess sensitive, meaning you can't mount a cramfs for a big endian
+target on a little endian machine and vice versa. this is often especially 
+a problem in the development phase.
+
+cramfsswap solves that problem by allowing you to swap to endianess of a
+cramfs filesystem.
+.SH AUTHOR
+Michael Holzt <kju@debian.org>
+.SH VERSION
+20050104

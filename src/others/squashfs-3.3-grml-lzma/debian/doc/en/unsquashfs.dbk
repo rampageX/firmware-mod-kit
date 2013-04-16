@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd" [
+
+<!--
+
+Process this file with an XSLT processor: `xsltproc \
+-''-nonet /usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl manpage.dbk'.  A manual page
+<package>.<section> will be generated.  You may view the
+manual page with: nroff -man <package>.<section> | less'.  A
+typical entry in a Makefile or Makefile.am is:
+
+DB2MAN=/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/\
+manpages/docbook.xsl
+XP=xsltproc -''-nonet
+
+manpage.1: manpage.dbk
+        $(XP) $(DB2MAN) $<
+
+The xsltproc binary is found in the xsltproc package.  The
+XSL files are in docbook-xsl.  Please remember that if you
+create the nroff version in one of the debian/rules file
+targets (such as build), you will need to include xsltproc
+and docbook-xsl in your Build-Depends control field.
+
+-->
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Arnaud</firstname>">
+  <!ENTITY dhsurname   "<surname>Fontaine</surname>">
+
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>november 02, 2006</date>">
+
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>arnau@debian.org</email>">
+  <!ENTITY dhusername  "Arnaud Fontaine">
+  <!ENTITY dhucpackage "<refentrytitle>UNSQUASHFS</refentrytitle>">
+  <!ENTITY dhpackage   "unsquashfs">
+
+  <!ENTITY debian      "<productname>Debian</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+  <!ENTITY gpl         "&gnu; <acronym>GPL</acronym>">
+]>
+
+<!-- ====================================================================== -->
+<refentry lang="fr">
+  <refentryinfo>
+    <address>
+      &dhemail;
+    </address>
+    <copyright>
+      <year>2006</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </refentryinfo>
+
+  <!-- ============================================================ -->
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+
+  <!-- ============================================================ -->
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>Decompress and extract a Squash file system</refpurpose>
+  </refnamediv>
+
+  <!-- ============================================================ -->
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <arg><option>-v[ersion]</option></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <arg><option>-l[s] <replaceable>list filesystem only</replaceable></option></arg>
+      <arg><option>-ll[s] <replaceable>list filesystem only with file attributes</replaceable></option></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+      <arg choice="plain"><replaceable>filesystem</replaceable></arg>
+      <arg choice="plain"><replaceable>to_extract</replaceable></arg>
+      <arg><option>options</option></arg>
+      <arg><option>-i[nfo]</option></arg>
+      <arg><option>-li[nfo]</option></arg>
+      <arg><option>-d[est] <replaceable>target</replaceable></option></arg>
+      <arg><option>-e[f] <replaceable>extract file</replaceable></option></arg>
+      <arg><option>-r[egex] </option></arg>
+      <arg><option>-f[force] </option></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <!-- ============================================================ -->
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>A squashfs is a compressed read-only file system.  Use the
+      <command>&dhpackage;</command> program to decompress and extract
+      a Squash file system without mounting
+      it. <command>&dhpackage;</command> is able to extract the entire
+      file system or a specific file or directory.</para>
+  </refsect1>
+
+  <!-- ============================================================ -->
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <variablelist>
+      <varlistentry>
+        <term>
+          <option>-v[ersion]</option>
+        </term>
+        <listitem>
+          <para>print version, licence and copyright message.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-i[nfo]</option></term>
+        <listitem><para>print files as they are unsquashed.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-li[info]</option></term>
+        <listitem><para>print files as they are unsquashed with file
+        attributes (like ls -l output).</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-l[s]</option></term>
+        <listitem><para>list filesystem only, doesn't decompress anything.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-ll[s]</option></term>
+        <listitem><para>list filesystem only with file attributes,
+        doesn't decompress anything.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-d[est]
+            <replaceable>pathname</replaceable></option></term>
+            <listitem><para>decompress to
+            <replaceable>pathname</replaceable>. This default to
+            <replaceable>squashfs-root</replaceable>.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-f[orce]</option></term>
+        <listitem><para>if file already exists then overwrite.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-s[tat]</option></term>
+        <listitem><para>display filesystem superblock information.</para></listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-e[f]
+            <replaceable>extract file</replaceable></option></term>
+            <listitem><para>list of directories or files to
+            extract. One per line.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-r[egex]</option></term>
+        <listitem><para>treat extract names as POSIX regular
+        expressions rather than use the default shell wildcard
+        expansion (globbing).</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+
+  <!-- ============================================================ -->
+  <refsect1>
+    <title>AUTHORS</title>
+
+    <para>Squashfs was written by <personname>
+        <firstname>Phillip</firstname>
+        <surname>Lougher</surname>
+      </personname>
+      <email>plougher@users.sourceforge.net</email>, in Chepstow,
+      Wales, UK. If you like the program, or have any problems, then
+      please email me, as it's nice to get feedback !</para>
+
+    <para>This manual page was written by &dhusername; &dhemail; for
+      the &debian; system (but may be used by others).  Permission is
+      granted to copy, distribute and/or modify this document under
+      the terms of the &gnu; General Public License, Version 2 any
+      later version published by the Free Software Foundation.
+    </para>
+
+    <para>
+      On Debian systems, the complete text of the &gnu;
+      General Public License can be found in
+      <filename>/usr/share/common-licenses/GPL</filename>.
+    </para>
+  </refsect1>
+</refentry>

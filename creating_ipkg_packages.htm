@@ -1,0 +1,152 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Creating IPKs</title>
+</head>
+
+<body>
+
+<p><b><font size="5">IPK Creation Kit</font><br>
+</b>(c)2006 Jeremy Collake &lt;<a href="mailto:jeremy.collake@gmail.com">jeremy.collake@gmail.com</a>&gt;<br>
+<br>
+<font color="#FF0000">!!! <b>ALPHA STAGE OF DEVELOPMENT. MAY NOT WORK AND HAVE 
+MANY PROBLEMS</b> !!!</font></p>
+<p>This document attempts to outline the process of creation of IPKG format 
+packages with the IPK Creation Kit, giving specific emphasis on usage for 
+embedded linux platforms such as <a href="http://www.openwrt.org">OpenWrt</a> 
+and <a href="http://www.dd-wrt.com">DD-WRT</a>. It is a quick draft intended to 
+encourage people to develop IPKs specific to certain firmwares for use with the
+<a href="http://www.bitsum.com/firmware_mod_kit.htm">Firmware Modification Kit</a>, 
+a kit that allows easy modification of firmware images without recompiling the 
+sources.</p>
+<p><b><font size="4">The structure of an IPK</font></b></p>
+<p>IPK files are <b><i>archives</i></b> containing the following:</p>
+<ul>
+	<li><u><b>data.tar.gz</b></u> :&nbsp; contains data.tar:<ul>
+		<li><u><b>data.tar</b></u> : These are the files that will be installed 
+		to, or removed from, the file system. They are in their correct 
+		locations in the directory tree starting at the root of the firmware 
+		file system. For example:<ul>
+			<li><font face="Courier"><b>./</b>usr/sbin/package<br>
+			./tmp/package_config<br>
+			./etc/package_config <i>-&gt; symbolic link</i> -&gt; ../tmp/config_folder<br>
+			./tmp/package_config/package.conf<br>
+			NOTE: </font><i>the &quot;.&quot; directory must be included in the path names</i></li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li><b><u>control.tar.gz</u> </b>: contains control.tar:<ul>
+		<li><u><b>control.tar</b></u> : These are files which give information 
+		about the package. For examples, it's name, version, and dependencies.<ul>
+			<li>./control : describes the package</li>
+			<li>./conffiles : indicates which files in the package are used for 
+			config files once installed</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+	<li><b><u>debian_binary</u> </b>: the reason this exists is unknown. It's 
+	perhaps some platform or format indicator. It is a text file that consists 
+	of &quot;2.0&quot;. </li>
+</ul>
+<p>&nbsp;</p>
+<p><b><font size="4">Using the IPK template</font></b></p>
+<p>The IPK template directory contained in the Firmware Modification Kit makes 
+it particularly easy to create IPK files without having to manually create them 
+each time.</p>
+<p><b><font size="4">Creating your own IPK</font></b></p>
+<blockquote>
+	<p><b><font size="4">Step 1</font></b></p>
+	<p>Copy or extract the IPK template directory to a new directory named after 
+	the package you are creating an IPK for. If you are copying, use &quot;cp -r&quot; to 
+	copy the entire directory and all its contents.</p>
+	<p><b><font size="4">Step 2</font></b></p>
+	<p>In the new directory edit the &quot;<i>control</i>&quot; and &quot;<i>conffiles</i>&quot; 
+	text files appropriately. The fields in &quot;control&quot; are probably 
+	self-explanatory:</p>
+	<p><i><b>control:</b></i></p>
+	<table border="0" width="100%" bgcolor="#FFFFCC" id="table5">
+		<tr>
+			<td><br>
+			<font face="Courier">Package: somepackage<br>
+			Priority: optional<br>
+			Depends: libpcap libncurses<br>
+			Section: net<br>
+			Description: A minimal and secure package of great sorts.<br>
+			Maintainer: Junior Jim-Bob &lt;juniorjim.bob.com&gt;<br>
+			Source: N/A<br>
+			Version: 2.61-1<br>
+			Architecture: mipsel<br>
+&nbsp;</font></td>
+		</tr>
+	</table>
+	<p>If you want to get fancy, the<i> Source</i> field can indicate a URL to 
+	download the data.tar.gz portion of the package. If instead the package 
+	files are included inside the PKG, leave &quot;N/A&quot; in this field.</p>
+	<p>&quot;conffiles&quot; contains a listing of files in the package that are used for 
+	configuration storage. This is helpful to preserve the configuration of the 
+	package if it is updated, or if the configuration otherwise needs 
+	preserving. It might look something like this after editing:</p>
+	<p><i><b>conffiles:</b></i></p>
+	<table border="0" width="100%" bgcolor="#FFFFCC" id="table6">
+		<tr>
+			<td><br>
+			<font face="Courier">/etc/package_config/package.conf<br>
+			/etc/package_config/moreconfig.conf<br>
+&nbsp;</font></td>
+		</tr>
+	</table>
+	<p><b><font size="4">Step 3</font></b></p>
+	<p>Copy the package files into the folder in the same relative directories 
+	to which they will be installed to the file system. Symbolic links are 
+	allowed. For example:</p>
+	<table border="0" width="100%" bgcolor="#FFFFCC" id="table7">
+		<tr>
+			<td><br>
+			<font face="Courier">./usr/sbin/mypackage<br>
+			./tmp/etc/package_config/<br>
+			./etc/package_config/ ---(symbolic link)---&gt; 
+			../tmp/etc/package_config/<br>
+			./tmp/etc/package_config/moreconfig.conf<br>
+&nbsp;</font></td>
+		</tr>
+	</table>
+	<p>The above makes the /etc/package_config/ directory a symbolic link to 
+	/tmp/package_config/. This would be useful for firmwares that have a 
+	read-only /etc file system. On these systems, the configuration files could 
+	reside on a ram disk and be emitted at boot-time based on input from some 
+	other store of configuration variables, like NVRAM.</p>
+	<p><b><font size="4">Step 4:</font></b></p>
+	<p>Build the IPK. You're done, now simply build the IPK file with the script 
+	provided. It's parameters are:</p>
+	<p>MAKE_IPK.SH OUTPUT_PACKAGE_IPK IPK_BASE_DIRECTORY</p>
+	<p><i><b>OUTPUT_PACKAGE_IPK</b> </i>: The IPK file to output. If it already 
+	exists it will be over-written.<br>
+	<i><b>IPK_BASE_DIRECTORY</b> </i>: The directory you created in step 1 and 
+	have been working with up until now.</p>
+	<p>Example:</p>
+	<table border="0" width="100%" bgcolor="#FFFFCC" id="table8">
+		<tr>
+			<td><br>
+			<font face="Courier">make_ipk.sh package.ipk ../package_ipk_dir<br>
+&nbsp;</font></td>
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+</blockquote>
+<p>To support this project:</p>
+<p>
+<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"></p>
+<p>&nbsp;</p>
+<p><font size="2">This document (c)2006 Jeremy Collake. <br>
+All Rights reserved. This document may be freely republished in its unaltered 
+and whole form only. Alterations or partial publishing requires approval of 
+Jeremy Collake &lt;<a href="mailto:jeremy@bitsum.com">jeremy@bitsum.com</a>&gt;.</font></p>
+
+</body>
+
+</html>

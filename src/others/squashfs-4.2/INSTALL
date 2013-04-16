@@ -1,0 +1,28 @@
+			INSTALLING SQUASHFS
+
+The squashfs4.2.tar.gz file contains the squashfs-tools directory containing
+mksquashfs and unsquashfs.
+
+1. Kernel support
+-----------------
+
+This release is for 2.6.29 and newer kernels.  Kernel patching is not necessary.
+
+Extended attribute support requires 2.6.35 or newer.  File systems with
+extended attributes can be mounted on 2.6.29 and newer kernels (the
+extended attributes will be ignored with a warning).
+
+LZO compression support requires 2.6.36 or newer kernels.
+
+XZ compression support requires 2.6.38 or newer kernels.
+
+2. Building squashfs tools
+--------------------------
+
+The squashfs-tools directory contains the mksquashfs and unsquashfs programs.
+These can be made by typing make (or make install to install in /usr/local/bin).
+
+By default the tools are built with GZIP compression and extended attribute
+support.  Read the Makefile in squashfs-tools/ for instructions on building
+LZO and XZ compression support, and for instructions on disabling GZIP
+and extended attribute support if desired.

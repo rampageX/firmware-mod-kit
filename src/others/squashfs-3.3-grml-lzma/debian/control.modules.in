@@ -1,0 +1,23 @@
+Source: squashfs-lzma
+Section: misc
+Priority: optional
+Maintainer: Michael Gebetsroither <gebi@grml.org>
+Build-Depends: debhelper (>= 5), linux-headers-_KVERS_, zlib1g-dev
+Standards-Version: 3.7.3
+Homepage: http://squashfs.sourceforge.net/
+
+Package: squashfs-lzma-modules-_KVERS_
+Architecture: any
+Provides: squashfs-modules
+Depends: linux-modules-_KVERS_ | linux-image-_KVERS_
+Description: Squash filesystem support for Debian Linux kernels
+ Squashfs is a highly compressed read-only filesystem for Linux. It uses zlib
+ compression to compress both files, inodes and directories. Inodes in the
+ system are very small and all blocks are packed to minimise data overhead.
+ Block sizes greater than 4K are supported up to a maximum of 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival use
+ (e.g. in cases where a .tar.gz file may be used), and in constrained block
+ device/memory systems (e.g. embedded systems) where low overhead is needed.
+ .
+ This package contains the compiled kernel module for _KVERS_

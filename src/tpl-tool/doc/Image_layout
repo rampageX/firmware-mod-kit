@@ -1,0 +1,92 @@
+Standard TP-Link firmware images for their router products consist of a
+header, kernel and a root filesystem in the format shown below.
+
+    ------------------
+    |     |     |    |
+    |  h  |  k  |  r |
+    |  e  |  e  |  o |
+    |  a  |  r  |  o |
+    |  d  |  n  |  t |
+    |  r  |  e  |  f |
+    |     |  l  |  s |
+    |     |     |    |
+    ------------------
+
+The header is 0x200 bytes in length. The kernel is padded to 0x100000
+and rootfs to either 0x3C0000 or 0x7C0000 depending on the device.
+
+Firmware images which include a bootloader have an 'image within image'
+structure consisting of a 'standard' kernel/rootfs image within a
+larger image as shown below.
+
+-----------------------------------------
+|     |     |                           |
+|     |     |    -------------------    |
+|     |     |    |     |     |     |    |
+|  h  |  b  |    |  h  |  k  |  r  |    |
+|  e  |  o  |    |  e  |  e  |  o  |    |
+|  a  |  o  |    |  a  |  r  |  o  |    |
+|  d  |  t  |    |  d  |  n  |  t  |    |
+|  r  |  l  |    |  e  |  e  |  f  |    |
+|     |  d  |    |  r  |  l  |  s  |    |
+|     |  r  |    |     |     |     |    |
+|     |     |    -------------------    |
+|     |     |                           |
+-----------------------------------------
+
+
+The header layout for both types of image is the same with the exception
+of the bootloader length and the MD5Key used to salt the image checksum.
+
+The layout shown below is for a 'standard' image which does not include
+a bootloader.
+
+
+Header version          00000000  01000000
+Image vendor            00000004  TP-LINK Technologies
+Image version           0000001C  ver. 1.0
+Product Id              00000040  25430001
+Product Version         00000044  00000001
+                        00000048  00 00 00 00
+Image checksum          0000004C  df 9b c7 3f 89 d6 13 da 7f c3 c9 40 ea bc c2 0d   (salted MD5)
+                        0000005C  00 00 00 00
+Kernel checksum         00000060  a3 88 3e 97 46 17 a3 45 54 b6 75 6e 53 6b fa 03   (salted MD5 ?)
+                        00000070  00 00 00 00
+Kernel load address     00000074  80002000
+Kernel entrypoint       00000078  801a0910
+Image length            0000007C  007c0000
+Kernel offset           00000080  00000200
+Kernel length           00000084  000be024
+Rootfs offset           00000088  00100000
+Rootfs length           0000008C  006c0000
+Bootloader offset       00000090  00000000
+Bootloader length       00000094  00000000
+Firmware version        00000098  0003          (3.13.6)
+                        0000009A  000d
+                        0000009C  0006
+                        0000009E  00 00 00 00
+                        *
+                        000001FC  00 00 00 00
+
+
+Notes:
+
+    I was unable to determine precisely how the kernel checksum is
+    calculated nor the MD5Key used as this is not referred to anywhere
+    in the TP-Link router program (/usr/bin/httpd).
+
+    However I am certain that this is the kernel checksum as I have two
+    pairs of images with the same checksum in this position, from two
+    different devices. Extracting and decompressing the kernel from these
+    images gave me four files with the same MD5 hash. It seems obvious to
+    me that the difference between the pairs is due to the different
+    product ids in the header.
+
+
+License:
+
+    Copyright (c) 2012 Jonathan McGowan
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License version 2 or
+    later as published by the Free Software Foundation.

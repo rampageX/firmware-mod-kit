@@ -1,0 +1,19 @@
+Source: cramfsswap
+Section: utils
+Priority: extra
+Maintainer: Michael Holzt <debian-cramfsswap@michael.holzt.de>
+Build-Depends: debhelper (>= 4.1.16), zlib1g-dev
+Standards-Version: 3.7.2
+
+Package: cramfsswap
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: swap endianess of a cram filesystem (cramfs)
+ cramfs is a highly compressed and size optimized linux filesystem which is
+ mainly used for embedded applications. the problem with cramfs is that it
+ is endianess sensitive, meaning you can't mount a cramfs for a big endian
+ target on a little endian machine and vice versa. this is often especially 
+ a problem in the development phase.
+ .
+ cramfsswap solves that problem by allowing you to swap to endianess of a
+ cramfs filesystem.

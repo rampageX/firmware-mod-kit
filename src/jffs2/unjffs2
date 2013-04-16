@@ -1,0 +1,76 @@
+#!/bin/bash
+# Script to mount a JFFS2 image and copy the file system's files to a destination directory.
+#
+# Craig Heffner
+# 27 August 2011
+
+IMG="$1"
+DST="$2"
+BLOCK="/dev/mtdblock1"
+
+if [ "$IMG" == "" ] || [ "$IMG" == "-h" ]
+then
+	echo "Usage: $0 <jffs2 image> [mount directory]"
+	exit 1
+fi
+
+# Need to extract file systems as ROOT
+#if [ "$UID" != "0" ]
+#then
+#        SUDO="sudo"
+#else
+#        SUDO=""
+#fi
+
+if [ "$DST" == "" ]
+then
+	DST="jffs2-root"
+fi
+
+if [ -e "$DST" ]
+then
+	echo "ERROR: $DST already exists! Quitting..."
+	exit 1
+fi
+
+if [ "$(file $IMG | grep little)" == "" ]
+then
+	echo "Converting image to little endian..."
+	jffs2dump -b -e $IMG.le $IMG
+	IMG=$IMG.le
+fi
+
+#Make sure required modules are loaded
+$SUDO modprobe mtdblock
+$SUDO modprobe mtdchar
+$SUDO modprobe mtd
+$SUDO rmmod mtdram
+$SUDO modprobe mtdram total_size=$((64*1024))
+
+#Create destination and temporary mount directories
+$SUDO mkdir -p $DST && $SUDO mkdir -p $DST
+
+if [ $? == 0 ]
+then
+	if [ ! -e $BLOCK ]
+	then
+		$SUDO mknod $BLOCK b 31 0
+	fi
+
+	#Copy JFSS2 image to MTD block
+	$SUDO dd if="$IMG" of=$BLOCK && $SUDO mount -t jffs2 $BLOCK $DST
+
+	if [ $? == 0 ]
+	then
+		echo "JFFS2 image mounted to $DST"
+		exit 0
+	else
+		echo "ERROR: Failed to mount $IMG to $BLOCK"
+		$SUDO rm -rf "$DST"
+	fi
+else
+	echo "ERROR: Directory creation failed"
+	$SUDO rm -rf "$DST"
+fi
+
+exit 1

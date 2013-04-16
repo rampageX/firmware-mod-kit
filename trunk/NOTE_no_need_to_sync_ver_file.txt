@@ -1,0 +1,1 @@
+No need to keep this ver txt file in sync - old users will be notified of AN upgrade and then get the updated check_for_upgrade.sh from that point forward

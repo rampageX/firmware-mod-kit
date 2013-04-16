@@ -1,0 +1,243 @@
+DESCRIPTION
+
+	Binwalk is a tool for searching a given binary image for embedded file types. Specifically,
+	it was designed for identifying files embedded inside of firmware images. Binwalk file signatures
+	are compatible with the magic signatures used by the Unix file utility.
+
+	Binwalk includes customized/improved signatures for files that are commonly found in firmware images
+	such as compressed/archived files, firmware headers, Linux kernels, bootloaders, filesystems, etc. 
+
+	Binwalk can scan for executable code by searching for opcodes associated with the function prologues/epiloges 
+	of various architectures.
+
+	Binwalk can display the value of each file offset in various data types (long, short, date, etc). This is 
+	useful for identifying unknown firmware header fields such as date and length values.
+
+	Binwalk can extract embedded files from firmware images and invoke external applications for further analysis,
+	decompression or extraction.
+
+INSTALLATION
+
+	To install binwalk, run the following command from the src directory:
+
+		# python setup.py install
+
+DEPENDENCIES
+
+	Binwalk is currently supported on the Linux and Mac OSX platforms.
+
+	Binwalk depends on the libmagic library (version 5.05 or newer) and its corresponding magic Python module. Debian 
+	users can install these dependencies via apt-get:
+
+		$ sudo apt-get install libmagic1 python-magic
+
+	Note that some distributions/platforms may not have libmagic readily available, or may use an older version of 
+	libmagic that is incompatible with binwalk. In this case, you may download the source code for the file utility at:
+
+		ftp://ftp.astron.com/pub/file/
+
+	Follow the file utility's documentation to build and install both libmagic and the Python magic module.
+
+
+BASIC USAGE
+
+	The only required options to binwalk are the file(s) that you want to search:
+
+		$ binwalk firmware1.bin firmware2.bin firmware3.bin
+
+	Binwalk signatures and system-wide configuration files can be updated to the latest from the SVN
+	trunk with the --update option (this likely will need to be run as root):
+
+		# binwalk --update
+
+	To see more verbose information about the file being scanned, specify the --verbose option. This option
+	is automatically enabled if more than one target file is specified on the command line:
+
+		$ binwalk --verbose firmware.bin
+
+	Output can be logged to a file with the --file option:
+
+		$ binwalk --file=binwalk.log firmware.bin
+
+	Output to stdout can be suppressed with the --quiet option:
+
+		$ binwalk --file=binwalk.log --quiet firmware.bin
+
+	By default, scans start at the first byte of the specified file (offset 0) and end at the end of the
+	specified file. These settings can be controlled with the --offset and --length options, respectively.
+	For example, the following command will scan 128 bytes starting at offset 64:
+
+		$ binwalk --offset=64 --length=128 firmware.bin
+
+	By default, binwalk will scan every byte for possible signatures. To scan every 2 bytes, 4 bytes, 8 bytes,
+	etc, use the --align option:
+
+		$ binwalk --align=4 firmware.bin
+
+	By default binwalk will use the signatures from the magic.binwalk file, but you may specify an alternate
+	signature file with the --magic option:
+
+		$ binwalk --magic=/usr/share/misc/magic firmware.bin
+
+	To search for a sequence of bytes without creating a signature file, use the --raw-bytes option:
+
+		$ binwalk --raw-bytes="\x00\x01\x02\x03" firmware.bin
+
+
+TYPES OF SCANS
+
+	By default binwalk will scan for file signatures inside the specified target file(s), however, other
+	types of scans are also supported.
+
+	To scan for known x86/MIPS/ARM/PPC opcodes, use the --opcodes option:
+
+		$ binwalk --opcodes firmware.bin
+
+	To cast each offset in the file as various data types (big/little endian shorts/longs, date fields, etc),
+	use the --cast option (best used with the --length / --offset options):
+
+		$ binwalk --cast --length=64 firmware.bin
+
+
+CONTROLLING SCAN BEHAVIOR
+
+	Some signatures - notably those whose magic signatures are less than 3 bytes - are excluded by default
+	from binwalk scans. These can be individually included with the --include option, or globally with --all
+	(multiple --include options may be specified):
+
+		$ binwalk --include=minix firmware.bin
+		$ binwalk --all firmware.bin
+
+	By default results marked as invalid are not displayed. They can be displayed by specifying the --show-invalid
+	option:
+
+		$ binwalk --show-invalid firmware.bin
+
+	By default binwalk will stop scanning for signatures at any given offset once a valid signature has been
+	found at that offset. To display all signatures that match at all offsets, use the --keep-going option:
+
+		$ binwalk --keep-going firmware.bin
+
+
+FILTERING SCAN RESULTS
+
+	It may at times be desirable to exclude certian signatures from the scan results. This can be done with the
+	--exclude option (multiple --exclude options may be specified):
+
+		$ binwalk --exclude='lzma compressed data' firmware.bin
+
+	It may at times be desirable to only search for a certian signature or group of signatures. This can be 
+	done with the --search option (multiple --search options may be specified):
+	
+		$ binwalk --search=filesystem firmware.bin
+
+	The --grep option is useful for filtering output that contains multiple results per line, such as occurs 
+	with the --cast option:
+
+		$ binwalk --cast --grep=2012 firmware.bin
+
+EXTRACTING FILES
+
+	Binwalk can extract matches found inside the target file(s), and optionally execute an external command
+	each time a file is extracted using the --dd option. At a minimum, a string to search for in the output
+	description and a file extension must be specified. A command to execute may also be specified. These 
+	three fields are colon delimited.
+
+	To extract all matches that contain the text 'gzip compressed data' and save them with a file extension
+	of 'gz':
+
+		$ binwalk --dd='gzip compressed data:gz' firmware.bin
+	
+	To extract all matches that contain the text 'gzip compressed data', save them with a file extension of
+	'gz' and execute the 'gunzip' command against the extracted file (note the use of the %e place holder for
+	the path to the extracted file):
+
+		$ binwalk --dd='gzip compressed data:gz:gunzip %e' firmware.bin
+	
+	There are some file types that are commonly extracted, and specifying a --dd option for each one is tiresome.
+	The -e option will load extract rules from the system/user extract.conf file (see the CONFIGURATION FILES section
+	below):
+
+		$ binwalk -e firmware.bin
+	
+	To specify a different extraction rule file, use --extract:
+
+		$ binwalk --extract=./my_extract.conf firmware.bin
+	
+	Extracting files with --dd or --extract can leave a lot of uneccessary files laying around. These can be 
+	automatically cleaned up with the --rm option. If specified, any extracted file that had a command run against
+	it will be deleted after the command has finished execution. Additionally, if files created by the executed
+	command are 0 bytes in size, they will also be removed:
+
+		$ binwalk --rm firmware.bin
+
+	Some file types do not specify their file size in their header, but rather rely on a footer or delimiter to
+	signify the end of the file. When extracted these files will by default be copied from the start of the header
+	to the end of the target file. If there are many of these files, this can take up unecessary disk space. For
+	those files which are supported, specifying the --delay option will delay the extraction of these files until
+	the end of the file can be found:
+
+		$ binwalk --delay firmware.bin
+
+	
+DISPLAYING SCAN PROGRESS
+
+	Some scans can take some time to complete and may not display many results during this time. You can press the 
+	enter key at any time to force binwalk to display its current scan progress:
+
+		$ binwalk -v firmware.bin
+
+		DECIMAL   	HEX       	DESCRIPTION
+		------------------------------------------------------------------------------------------
+		<Enter>
+		Progress:  1595 / 12074736  (0.01%)
+		<Enter>
+		Progress:  8015 / 12074736  (0.07%)
+		<Enter>
+		Progress:  12424 / 12074736  (0.10%)
+
+
+SIGNATURE FILES
+
+	There are three signature files used by binwalk:
+
+		o magic/binwalk - The default signature file.
+		o magic/binarch - The signature file used with --opcodes.
+		o magic/bincast - The signature file used with --cast.
+
+	Users may create their own signatures that will be added to the respective system-wide files when performing a scan.
+	This is as easy as editing the following files in the user home directory:
+
+		o .binwalk/magic/binwalk
+		o .binwalk/magic/binarch
+		o .binwalk/magic/bincast
+
+	Although the system-wide signature files can also be altered, the system-wide signature files will be overwritten when
+	upgrading binwalk, or using the --update option. The user files will not be touched however, and will survive these updates.
+
+
+CONFIGURATION FILES
+
+	There is one configuration file used by binwalk only when the --extract option is specified:
+
+		o config/extract.conf
+
+	This file contains a list of extract rules, identical to the arguments that would be passed to the --dd option.
+
+	Users can override and add to this list of extract rules by adding their own rules to the following file in the user home
+	directory:
+
+		o .binwalk/config/extract.conf
+
+	Note that when overriding a system-wide extract rule, the 'type' field in the user extract rule must exactly match the 'type'
+	field in the system-wide extract rule.
+
+	Although the system-wide extract.conf file can also be altered, this file will be overwritten when upgrading binwalk or using
+	the --update option. The user extract.conf file will not be touched however, and will survive these updates.
+
+MORE INFORMATION
+
+	For more detailed and up to date information, visit the binwalk wiki page at:
+
+		http://code.google.com/p/binwalk/wiki/TableOfContents
+

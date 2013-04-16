@@ -1,0 +1,11 @@
+squashfs-lzma (3.3-1) unstable; urgency=low
+
+  [ Michael Gebetsroither ]
+  * Initial release [Closes: issue465]
+
+  [ Michael Prokop ]
+  * Fix build of squashfs-lzma-source.
+  * Bump Standard Version to 3.8.0 (no further changes).
+  * Add myself to uploaders.
+
+ -- Michael Prokop <mika@grml.org>  Tue, 16 Sep 2008 12:53:30 +0200

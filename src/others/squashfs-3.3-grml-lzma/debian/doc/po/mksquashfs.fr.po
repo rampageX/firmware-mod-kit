@@ -1,0 +1,987 @@
+# mksquashfs's manpages translation to French
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# Frédéric Boiteux <fboiteux@calistel.com>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: squashfs\n"
+"POT-Creation-Date: 2008-04-05 09:29-0300\n"
+"PO-Revision-Date: 2007-08-08 17:23+0100\n"
+"Last-Translator: Arnaud Fontaine <arnau@debian.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# type: Content of the dhfirstname entity
+#: ../en/mksquashfs.dbk:30
+msgid "<firstname>Frédéric</firstname>"
+msgstr "<firstname>Frédéric</firstname>"
+
+# type: Content of the dhsurname entity
+#: ../en/mksquashfs.dbk:31
+msgid "<surname>Boiteux</surname>"
+msgstr "<surname>Boiteux</surname>"
+
+# type: Content of the dhdate entity
+#: ../en/mksquashfs.dbk:34
+msgid "<date>december 20, 2004</date>"
+msgstr "<date>december 20, 2004</date>"
+
+# type: Content of the dhsection entity
+#: ../en/mksquashfs.dbk:38
+msgid "<manvolnum>1</manvolnum>"
+msgstr "<manvolnum>1</manvolnum>"
+
+# type: Content of the dhemail entity
+#: ../en/mksquashfs.dbk:39
+msgid "<email>fboiteux@calistel.com</email>"
+msgstr "<email>fboiteux@calistel.com</email>"
+
+# type: Content of the dhusername entity
+#: ../en/mksquashfs.dbk:40
+msgid "Frédéric Boiteux"
+msgstr "Frédéric Boiteux"
+
+# type: Content of the dhucpackage entity
+#: ../en/mksquashfs.dbk:41
+msgid "<refentrytitle>MKSQUASHFS</refentrytitle>"
+msgstr "<refentrytitle>MKSQUASHFS</refentrytitle>"
+
+# type: Content of the dhpackage entity
+#: ../en/mksquashfs.dbk:42
+msgid "mksquashfs"
+msgstr "mksquashfs"
+
+# type: Content of the debian entity
+#: ../en/mksquashfs.dbk:44
+msgid "<productname>Debian</productname>"
+msgstr "<productname>Debian</productname>"
+
+# type: Content of the gnu entity
+#: ../en/mksquashfs.dbk:45
+msgid "<acronym>GNU</acronym>"
+msgstr "<acronym>GNU</acronym>"
+
+# type: Content of the gpl entity
+#: ../en/mksquashfs.dbk:46
+msgid "&gnu; <acronym>GPL</acronym>"
+msgstr "&gnu; <acronym>GPL</acronym>"
+
+# type: Attribute 'lang' of: <refentry>
+#: ../en/mksquashfs.dbk:50
+msgid "fr"
+msgstr "fr"
+
+# type: Content of: <refentry><refentryinfo><address>
+#: ../en/mksquashfs.dbk:52
+#, no-wrap
+msgid ""
+"\n"
+"      &dhemail;\n"
+"    "
+msgstr ""
+
+# type: Content of: <refentry><refentryinfo><copyright><holder>
+#: ../en/mksquashfs.dbk:61
+msgid "&dhusername;"
+msgstr "&dhusername;"
+
+# type: Content of: <refentry><refnamediv><refname>
+#: ../en/mksquashfs.dbk:75
+msgid "&dhpackage;"
+msgstr "&dhpackage;"
+
+# type: Content of: <refentry><refnamediv><refpurpose>
+#: ../en/mksquashfs.dbk:77
+msgid "Create or modify a Squash file system"
+msgstr ""
+"Crée ou modifie un système de fichiers compressé <literal>Squash</literal>"
+
+# type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
+#: ../en/mksquashfs.dbk:83
+msgid "<command>&dhpackage;</command> <arg><option>-version</option></arg>"
+msgstr "<command>&dhpackage;</command> <arg><option>-version</option></arg>"
+
+# type: Content of: <refentry><refsynopsisdiv><cmdsynopsis>
+#: ../en/mksquashfs.dbk:88
+msgid ""
+"<command>&dhpackage;</command> <arg choice=\"plain\" rep=\"repeat"
+"\"><replaceable>source</replaceable></arg> <arg choice=\"plain"
+"\"><replaceable>dest</replaceable></arg> <arg><option>options</option></arg> "
+"<arg><option>-e <replaceable>list of exclude dirs/files</replaceable></"
+"option></arg> <arg><option>-ef <replaceable>exclude_file</replaceable></"
+"option></arg>"
+msgstr ""
+"<command>&dhpackage;</command> <arg choice=\"plain\" rep=\"repeat"
+"\"><replaceable>source</replaceable></arg> <arg choice=\"plain"
+"\"><replaceable>dest</replaceable></arg> <arg><option>options</option></arg> "
+"<arg><option>-e <replaceable>list of exclude dirs/files</replaceable></"
+"option></arg> <arg><option>-ef <replaceable>exclude_file</replaceable></"
+"option></arg>"
+
+# type: Content of: <refentry><refsect1><title>
+#: ../en/mksquashfs.dbk:101
+msgid "DESCRIPTION"
+msgstr "DESCRIPTION"
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:103
+msgid ""
+"A squashfs is a compressed read-only file system. Use the "
+"<command>&dhpackage;</command> program to create a new squashed file system, "
+"and to append new data to an existing squashed file system."
+msgstr ""
+"Squashfs est un système de fichiers compressé, accessible en lecture "
+"seulement. Utilisez la commande <command>&dhpackage;</command> pour créer un "
+"nouveau système de fichiers de ce type ou pour ajouter des données à un "
+"système existant."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:108
+msgid ""
+"If a single source directory is specified (i.e. <userinput>mksquashfs "
+"<replaceable>source</replaceable> <replaceable>output_fs</replaceable></"
+"userinput>), the squashfs filesystem will consist of that directory, with "
+"the top-level root directory corresponding to the source directory."
+msgstr ""
+"Si on ne donne qu'un seul répertoire source (i.e. <userinput>mksquashfs "
+"<replaceable>source</replaceable> <replaceable>sf_résultant</replaceable></"
+"userinput>), on obtiendra un système de fichiers constitué du contenu de ce "
+"répertoire source."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:115
+msgid ""
+"If multiple source directories or files are specified, <command>&dhpackage;</"
+"command> will merge the specified sources into a single filesystem, with the "
+"root directory containing each of the source files/directories.  The name of "
+"each directory entry will be the basename of the source path.  If more than "
+"one source entry maps to the same name, the conflicts are named "
+"<replaceable>xxx</replaceable>_1, <replaceable>xxx</replaceable>_2, etc. "
+"where <replaceable>xxx</replaceable> is the original name."
+msgstr ""
+"Si on fournit plusieurs fichier(s) ou répertoire(s)  sources, "
+"<command>&dhpackage;</command> créera un seul système de fichiers qui "
+"contiendra tous les répertoires et fichiers source. Le nom de chaque "
+"répertoire obtenu sera le nom <emphasis>sans chemin d'accès</emphasis> de "
+"chaque répertoire source ; En cas de noms identiques, les doublons seront "
+"renommés en <replaceable>xxx</replaceable>_1, <replaceable>xxx</"
+"replaceable>_2, etc."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:125
+msgid ""
+"The <replaceable>dest</replaceable> argument can either be a conventional "
+"file or a block device. If the file doesn't exist it will be created, if it "
+"does exist and a squashfs filesystem exists on it, <command>&dhpackage;</"
+"command> will append.  The <option>-noappend </option>option will write a "
+"new filesystem irrespective of whether an existing filesystem is present."
+msgstr ""
+"L'argument <replaceable>dest</replaceable> peut être soit un fichier "
+"classique, soit un périphérique de type bloc (comme un disque ou une "
+"partition). Si le fichier n'existe pas, il sera créé ; s'il existe déjà et "
+"contient un système de fichiers Squashfs, <command>&dhpackage;</command> "
+"rajoutera les sources données à son contenu actuel, sauf si l'option "
+"<option>-noappend</option> est précisée."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:133
+msgid ""
+"There are a large number of options that can be used to control the "
+"compression in <command>&dhpackage;</command>.  By and large the defaults "
+"are the most optimum settings and should only be changed in exceptional "
+"circumstances !"
+msgstr ""
+"Il existe un grand nombre d'options qui permettent de contrôler la "
+"compression de <command>&dhpackage;</command>. Les valeurs par défaut sont "
+"de loin les optimales et ne devraient être modifiées qu'exceptionnellement !"
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:138
+msgid ""
+"The <option>-noI</option>, <option>-noD</option> and <option>-noF</option> "
+"options (also <option>-noInodeCompression</option>, <option>-"
+"noDataCompression</option> and <option>-noFragmentCompression</option>) can "
+"be used to force <command>&dhpackage;</command> to not compress inodes/"
+"directories, data and fragments respectively.  Giving all options generates "
+"an uncompressed filesystem."
+msgstr ""
+"Les options <option>-noI</option>, <option>-noD</option> et <option>-noF</"
+"option> (équivalentes à <option>-noInodeCompression</option>, <option>-"
+"noDataCompression</option> et <option>-noFragmentCompression</option>) "
+"peuvent être utilisées pour obliger <command>&dhpackage;</command> à ne pas "
+"comprimer respectivement les i-noeuds et répertoires, les blocs de données "
+"et les blocs de données fragmentés. Si l'on utilise ces trois options, on "
+"obtient un système de fichiers non comprimé."
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:148
+msgid ""
+"By default files in the generated filesystem inherit the UID and GID "
+"ownership of the original file.  However, <command>&dhpackage;</command> "
+"provides a number of options which can be used to override the ownership:"
+msgstr ""
+"Par défaut, les fichiers contenus dans le système de fichiers résultat ont "
+"le même propriétaire et groupe que les fichiers sources. Toutefois, "
+"<command>&dhpackage;</command> propose certaines options pour modifier ce "
+"comportement :"
+
+# type: Content of: <refentry><refsect1><para><itemizedlist><listitem><simpara>
+#: ../en/mksquashfs.dbk:157
+msgid ""
+"The options <option>-all-root</option> and <option>-root-owned</option> "
+"(both do exactly the same thing) force all file uids/gids in the generated "
+"Squashfs filesystem to be <literal>root</literal>.  This allows root owned "
+"filesystems to be built without root access on the host machine."
+msgstr ""
+"Les options <option>-all-root</option> et <option>-root-owned</option> "
+"(synonymes) forcent tous les fichiers du système de fichiers Squashfs généré "
+"à appartenir à <literal>root</literal> (utilisateur et groupe). Elle permet "
+"de construire un système de fichiers appartenant à <literal>root</literal> "
+"sans avoir un accès à ce compte sur la machine où on le construit."
+
+# type: Content of: <refentry><refsect1><para><itemizedlist><listitem><simpara>
+#: ../en/mksquashfs.dbk:164
+msgid ""
+"The <option>-force-uid <replaceable>uid</replaceable></option> option forces "
+"all files in the generated Squashfs filesystem to be owned by the specified "
+"<replaceable>uid</replaceable>.  The uid can be specified either by name (i."
+"e. <literal>root</literal>) or by number."
+msgstr ""
+"L'option <option>-force-uid <replaceable>uid</replaceable></option> force "
+"tous les fichiers du système de fichiers Squashfs généré à appartenir à "
+"l'utilisateur d'identifiant <replaceable>uid</replaceable> donné. Cet "
+"identifiant peut être soit un nom (par exemple <literal>root</literal>), "
+"soit un nombre."
+
+# type: Content of: <refentry><refsect1><para><itemizedlist><listitem><simpara>
+#: ../en/mksquashfs.dbk:172
+msgid ""
+"The <option>-force-gid <replaceable>gid</replaceable></option> option forces "
+"all files in the generated Squashfs filesystem to be group owned by the "
+"specified <replaceable>gid</replaceable>.  The gid can be specified either "
+"by name (i.e. <literal>root</literal>) or by number."
+msgstr ""
+"L'option <option>-force-gid <replaceable>gid</replaceable></option> force "
+"tous les fichiers du système de fichiers Squashfs généré à appartenir au "
+"groupe d'identifiant <replaceable>gid</replaceable> donné. Cet identifiant "
+"peut être soit un nom (par exemple <literal>root</literal>), soit un nombre."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:181
+msgid ""
+"The <option>-e</option> and <option>-ef</option> options allow files/"
+"directories to be specified which are excluded from the output filesystem.  "
+"The <option>-e</option> option takes the exclude files/directories from the "
+"command line, the <option>-ef</option> option takes the exlude files/"
+"directories from the specified exclude file, one file/directory per line. If "
+"an exclude file/directory is absolute (i.e. prefixed with <filename>/</"
+"filename>, <filename>../</filename>, or <filename>./</filename>) the entry "
+"is treated as absolute, however, if an exclude file/directory is relative, "
+"it is treated as being relative to each of the sources in turn, i.e.  "
+"<userinput>mksquashfs /tmp/source1 source2 output_fs -e ex1 /tmp/source1/ex2 "
+"out/ex3</userinput> Will generate exclude files <filename>/tmp/source1/ex2</"
+"filename>, <filename>/tmp/source1/ex1</filename>, <filename>source2/ex1</"
+"filename>, <filename>/tmp/source1/out/ex3</filename> and <filename>source2/"
+"out/ex3</filename>."
+msgstr ""
+"Les options <option>-e</option> et <option>-ef</option> permettent de "
+"déclarer des fichiers ou répertoires à exclure du système de fichiers "
+"résultat. L'option <option>-e</option> lit les fichiers/répertoires à "
+"exclure sur la ligne de commande, tandis que l'option <option>-ef</option> "
+"les trouve dans le fichier d'exclusions spécifié contenant un fichier ou "
+"répertoire par ligne. Si le chemin d'un fichier ou répertoire à exclure est "
+"absolu (c'est-à-dire débutant par <filename>/</filename>, <filename>../</"
+"filename> ou <filename>./</filename>), il est considéré indépendamment des "
+"sources ; en revanche, s'il est relatif, il s'appliquera pour chaque "
+"répertoire source ; par exemple, <userinput>mksquashfs /tmp/source1 source2 "
+"sf_résultant -e ex1 /tmp/source1/ex2 out/ex3</userinput> exclura les "
+"fichiers <filename>/tmp/source1/ex2</filename>, <filename>/tmp/source1/ex1</"
+"filename>, <filename>source2/ex1</filename>, <filename>/tmp/source1/out/ex3</"
+"filename> et <filename>source2/out/ex3</filename>."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:201
+msgid ""
+"The <option>-e</option> and <option>-ef</option> exclude options are "
+"usefully used in archiving the entire filesystem, where it is wished to "
+"avoid archiving <filename>/proc</filename>, and the filesystem being "
+"generated, i.e.  <userinput>mksquashfs / /tmp/root.sqsh -e proc /tmp/root."
+"sqsh</userinput>"
+msgstr ""
+"Ces options <option>-e</option> et <option>-ef</option> sont pratiques pour, "
+"par exemple, archiver un système de fichier complet en évitant le répertoire "
+"<filename>/proc</filename> et le système de fichiers résultat : "
+"<userinput>mksquashfs / /tmp/root.sqsh -e proc /tmp/root.sqsh</userinput>"
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:208
+msgid ""
+"Multiple <option>-ef</option> options can be specified on the command line, "
+"and the <option>-ef</option> option can be used in conjuction with the "
+"<option>-e</option> option."
+msgstr ""
+"On peut utiliser plusieurs fois l'option <option>-ef</option> dans une même "
+"commande, et on peut également l'utiliser en même temps que l'option "
+"<option>-e</option>."
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:213
+msgid ""
+"The <option>-info</option> option displays the files/directories as they are "
+"compressed and added to the filesystem.  The original uncompressed size of "
+"each file is printed, along with <literal>DUPLICATE</literal> if the file is "
+"a duplicate of a file in the filesystem."
+msgstr ""
+"L'option <option>-info</option> affiche les fichiers et répertoires ajoutés "
+"au système de fichiers, avec leur taille originelle et éventuellement le mot "
+"<literal>DUPLICATE</literal> si un fichier avec un contenu identique y est "
+"déjà présent."
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:219
+msgid ""
+"The <option>-no-exports</option> option doesn't make the filesystem "
+"exportable via NFS."
+msgstr ""
+"L'option <option>-no-exports</option> permet d'éviter le partage du système "
+"de fichiers par NFS"
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:222
+msgid ""
+"The <option>-no-progress</option> option doesn't display the progress bar."
+msgstr ""
+"L'option <option>-no-progress</option> n'affiche pas la barre de progression"
+
+# type: Content of: <refentry><refsect1><simpara>
+#: ../en/mksquashfs.dbk:225
+msgid ""
+"The <option>-le</option> and <option>-be</option> options can be used to "
+"force <command>&dhpackage;</command> to generate a little endian or big "
+"endian filesystem.  Normally <command>&dhpackage;</command> will generate a "
+"filesystem in the host byte order.  Squashfs, for portability, will mount "
+"different ordered filesystems (i.e. it can mount big endian filesystems "
+"running on a little endian machine), but these options can be used for "
+"greater optimisation."
+msgstr ""
+"Les options <option>-le</option> et <option>-be</option> peuvent servir à "
+"forcer <command>&dhpackage;</command> à générer un système de fichiers "
+"<foreignphrase>little endian</foreignphrase> ou <foreignphrase>big endian</"
+"foreignphrase>. Par défaut, <command>&dhpackage;</command> génère un système "
+"de fichiers avec le boutisme de la machine hôte. Le pilote Squashfs "
+"permettant, par souci de portabilité, de monter les deux types de systèmes "
+"de fichiers (c'est-à-dire qu'il peut monter un système <foreignphrase>big "
+"endian</foreignphrase> sur une machine <foreignphrase>little endian</"
+"foreignphrase>), ces options peuvent servir à améliorer l'efficacité d'un "
+"système de fichiers généré pour une architecture différente."
+
+# type: Content of: <refentry><refsect1><title>
+#: ../en/mksquashfs.dbk:237
+msgid "OPTIONS"
+msgstr "OPTIONS"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:242
+msgid "<option>-version</option>"
+msgstr "<option>-version</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:245
+msgid "print version, licence and copyright message."
+msgstr "affiche la version, la licence et un message de copyright."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:250
+msgid "<option>-recover <replaceable>name</replaceable></option>"
+msgstr "<option>-recover <replaceable>nom</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:253
+msgid ""
+"Allows the original filesystem to be recovered if Mksquashfs aborts "
+"unexpectedly (i.e.  power failure)  using recovery file <replaceable>name</"
+"replaceable>.  Recovery files are now created when appending to existing "
+"Squashfs filesystems."
+msgstr ""
+"Permet au système de fichier original d'être restauré si Mksquashfs se "
+"termine de façon inattendu (par exemple alimentation défaillante) en "
+"utilisant le fichier de restauration <replaceable>nom</replaceable>. Les "
+"fichiers de restauration sont désormais créés lors de l'ajout à un système "
+"de fichier Squashfs existant."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:262
+msgid "<option>-no-recovery</option>"
+msgstr "<option>-no-recovery</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:263
+msgid "don't generate a recovery file"
+msgstr "ne pas générer un fichier de restauration"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:268
+msgid "<option>-info</option>"
+msgstr "<option>-info</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:269
+msgid "print files written to filesystem"
+msgstr "affiche les fichiers ajoutés au système de fichiers."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:274
+msgid "<option>-no-exports</option>"
+msgstr "<option>-no-exports</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:275
+msgid "don't make the filesystem exportable via NFS"
+msgstr "permet d'éviter le partage du système de fichier par NFS"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:281
+msgid "<option>-no-progress</option>"
+msgstr "<option>-no-progress</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:282
+msgid "don't display the progress bar"
+msgstr "n'affiche pas la barre de progression"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:287
+msgid "<option>-no-sparse</option>"
+msgstr "<option>-no-sparse</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:288
+msgid "don't detect sparse files"
+msgstr "ne pas détecter les fichiers vides"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:293
+msgid "<option>-b <replaceable>block_size</replaceable></option>"
+msgstr "<option>-b <replaceable>taille_bloc</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:295
+msgid ""
+"set data block to <replaceable>block_size</replaceable>. Default is 131072 "
+"bytes"
+msgstr ""
+"fixe la taille des blocs de données à <replaceable>block_size</replaceable>. "
+"Par défaut, elle vaut 65536 octets."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:302
+msgid "<option>-processors <replaceable>number</replaceable></option>"
+msgstr "<option>-processors <replaceable>nombre</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:304
+msgid ""
+"Use <replaceable>number</replaceable> processors.  By default will use "
+"number of processors available"
+msgstr ""
+"Utilise <replaceable>nombre</replaceable> processeurs. Utilise par défaut le "
+"nombre de processeurs disponibles"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:311
+msgid "<option>-read-queue <replaceable>size</replaceable></option>"
+msgstr "<option>-read-queue <replaceable>taille</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:313
+msgid ""
+"Set input queue to <replaceable>size</replaceable> Mbytes. Default 64 Mbytes."
+msgstr ""
+"Initialise la file d'entrée à <replaceable>taille</replaceable> Mo. La "
+"valeur par défaut est 64Mo."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:320
+msgid "<option>-write-queue <replaceable>size</replaceable></option>"
+msgstr "<option>-write-queue <replaceable>taille</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:322
+msgid ""
+"Set output queue to <replaceable>size</replaceable> Mbytes. Default 512 "
+"Mbytes."
+msgstr ""
+"Initialise la file de sortie à <replaceable>taille</replaceable> Mo. La "
+"valeur par défaut est 512Mo."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:329
+msgid "<option>-noI</option> or <option>-noInodeCompression</option>"
+msgstr "<option>-noI</option> ou <option>-noInodeCompression</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:331
+msgid "do not compress inode table"
+msgstr "ne comprime pas la table des i-noeuds."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:336
+msgid "<option>-noD</option>or <option>-noDataCompression</option>"
+msgstr "<option>-noD</option> ou <option>-noDataCompression</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:338
+msgid "do not compress data blocks"
+msgstr "ne comprime pas les blocs de données."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:343
+msgid "<option>-noF</option> or <option>-noFragmentCompression</option>"
+msgstr "<option>-noF</option> ou <option>-noFragmentCompression</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:345
+msgid "do not compress fragment blocks"
+msgstr "ne comprime pas les blocs fragmentés."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:350
+msgid "<option>-no-fragments</option>"
+msgstr "<option>-no-fragments</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:351
+msgid ""
+"do not use fragments: tells <command>&dhpackage;</command> to not generate "
+"fragment blocks, and rather generate a filesystem similar to a Squashfs 1.x "
+"filesystem. It will of course still be a Squashfs 2.0 filesystem but without "
+"fragments, and so it won't be mountable on a Squashfs 1.x system."
+msgstr ""
+"n'utilise pas de blocs fragmentés : indique à <command>&dhpackage;</command> "
+"de ne pas créer de blocs fragmentés, mais plutôt un système de fichiers du "
+"même genre que ceux des versions 1.x de Squashfs. Ce sera quand même un "
+"système de fichiers Squashfs 2.0 (mais sans fragments), donc il ne pourra "
+"être monté par un système Squashfs en version 1.x."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:361
+msgid "<option>-always-use-fragments</option>"
+msgstr "<option>-always-use-fragments</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:362
+msgid ""
+"use fragment blocks for files larger than block size: tells "
+"<command>&dhpackage;</command> to always generate fragments for files "
+"irrespective of the file length.  By default only small files less than the "
+"block size are packed into fragment blocks.  The ends of files which do not "
+"fit fully into a block, are <emphasis>NOT</emphasis> by default packed into "
+"fragments.  To illustrate this, a 100K file has an initial 64K block and a "
+"36K remainder.  This 36K remainder is not packed into a fragment by "
+"default.  This is because to do so leads to a 10 - 20% drop in sequential I/"
+"O performance, as a disk head seek is needed to seek to the initial file "
+"data and another disk seek is need to seek to the fragment block. Specify "
+"this option if you want file remainders to be packed into fragment blocks. "
+"Doing so may increase the compression obtained <emphasis>BUT</emphasis> at "
+"the expense of I/O speed."
+msgstr ""
+"utilise des blocs fragmentés pour les fichiers plus gros que la taille d'un "
+"bloc : indique à <command>&dhpackage;</command> d'utiliser des blocs "
+"fragmentés quelle que soit la longueur des fichiers. Par défaut, seuls les "
+"petits fichiers (dont la taille est inférieure à celle d'un bloc) sont "
+"assemblés dans des blocs fragmentés. La fin des fichiers qui remplisse plus "
+"d'un bloc ne sont <emphasis>pas</emphasis>, par défaut, assemblés dans des "
+"fragments.  Par exemple, un fichier de 100 ko est découpé en un bloc de "
+"64 ko et un reste de 36 ko, qui par défaut n'est pas placé dans un bloc "
+"fragmenté. Ce choix est fait pour éviter une perte de performance de 10 à "
+"20% en accès séquentiel à ce genre de fichiers, car il faudrait sinon "
+"déplacer la tête de lecture d'un disque pour accéder au(x) bloc(s) entier(s) "
+"et un autre pour le fragment (qui ne sera sans doute pas consécutif). "
+"Utilisez cette option pour forcer ces fins de fichiers à être rassemblées "
+"dans les blocs fragmentés ; cela améliore le taux de compression obtenu "
+"<emphasis>mais</emphasis> au dépens de la vitesse d'accès."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:384
+msgid "<option>-no-duplicates</option>"
+msgstr "<option>-no-duplicates</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:385
+msgid ""
+"do not perform duplicate checking: tells <command>&dhpackage;</command> to "
+"not check the files being added to the filesystem for duplicates.  This can "
+"result in quicker filesystem generation and appending although obviously "
+"compression will suffer badly if there is a lot of duplicate files."
+msgstr ""
+"ne vérifie pas s'il y a des doublons : indique à <command>&dhpackage;</"
+"command> de ne pas vérifier dans les fichiers ajoutés s'il y en a avec des "
+"contenus identiques. Ceci permet une génération/modification du système de "
+"fichiers résultant plus rapide, mais bien sûr le taux de compression sera "
+"nettement moins bon s'il y a beaucoup de fichiers aux contenus identiques."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:395
+msgid "<option>-noappend</option>"
+msgstr "<option>-noappend</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:396
+msgid "do not append to existing filesystem"
+msgstr "ne pas ajouter en fin d'un système de fichiers existant."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:402
+msgid "<option>-keep-as-directory</option>"
+msgstr "<option>-keep-as-directory</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:403
+msgid ""
+"if one source directory is specified, create a root directory containing "
+"that directory, rather than the contents of the directory"
+msgstr ""
+"si un répertoire source est donné, crée un système de fichiers contenant ce "
+"répertoire plutôt que simplement son contenu."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:410
+msgid "<option>-root-becomes <replaceable>name</replaceable></option>"
+msgstr "<option>-root-becomes <replaceable>nom</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:412
+msgid ""
+"when appending source files/directories, make the original root become a "
+"subdirectory in the new root called <replaceable>name</replaceable>, rather "
+"than adding the new source items to the original root"
+msgstr ""
+"lorsqu'on ajoute des fichiers ou répertoires à un système existant, le "
+"contenu de l'ancien système sera placé dans un répertoire de "
+"<replaceable>nom</replaceable> donné, plutôt que de mélanger les anciens "
+"fichiers et les nouveaux."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:420
+msgid "<option>-all-root</option> or <option>-root-owned</option>"
+msgstr "<option>-all-root</option> ou <option>-root-owned</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:422
+msgid "make all files owned by root"
+msgstr ""
+"tous les fichiers ajoutés au système appartiendront à <literal>root</"
+"literal>."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:427
+msgid "<option>-force-uid <replaceable>uid</replaceable></option>"
+msgstr "<option>-force-uid <replaceable>uid</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:429
+msgid "set all file uids to <replaceable>uid</replaceable>"
+msgstr ""
+"tous les fichiers ajoutés au système appartiendront à l'utilisateur "
+"d'identifiant <replaceable>uid</replaceable> (un nom ou un nombre)."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:435
+msgid "<option>-force-gid <replaceable>gid</replaceable></option>"
+msgstr "<option>-force-gid <replaceable>gid</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:437
+msgid "set all file gids to <replaceable>gid</replaceable>"
+msgstr ""
+"tous les fichiers ajoutés au système appartiendront au groupe d'identifiant "
+"<replaceable>gid</replaceable> (un nom ou un nombre)."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:443
+msgid "<option>-le</option>"
+msgstr "<option>-le</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:444
+msgid "create a little endian filesystem"
+msgstr ""
+"crée un système de fichiers au format petit boutiens (<foreignphrase>little "
+"endian</foreignphrase> en anglais)."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:449
+msgid "<option>-be</option>"
+msgstr "<option>-be</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:450
+msgid "create a big endian filesystem"
+msgstr ""
+"crée un système de fichiers au format gros boutiens (<foreignphrase>big "
+"endian</foreignphrase> en anglais)."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:455
+msgid "<option>-nopad</option>"
+msgstr "<option>-nopad</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:456
+msgid ""
+"do not pad filesystem to a multiple of 4Ko.  This is performed by default to "
+"enable the output filesystem file to be mounted by loopback, which requires "
+"files to be a 4K multiple.  If the filesystem is being written to a block "
+"device, or is to be stored in a bootimage, the extra pad bytes are not "
+"needed."
+msgstr ""
+"Ne pas arrondir le système de fichiers au multiple de 4 ko [supérieur] : cet "
+"arrondi, effectué par défaut, permet au système de fichiers d'être monté par "
+"l'interface <literal>loopback</literal> qui ne fonctionne qu'avec des "
+"fichiers multiples de 4 ko. Si le système de fichiers est destiné à être "
+"écrit sur un périphérique de type bloc (un disque ou une partition par "
+"exemple) ou être placé dans une image de démarrage, cet arrondi est inutile."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:466
+msgid "<option>-check_data</option>"
+msgstr "<option>-check_data</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:467
+msgid "add checkdata for greater filesystem checks"
+msgstr ""
+"positionne un drapeau dans le système de fichiers créé pour plus de "
+"vérifications de ce système lorsqu'il est monté."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:473
+msgid "<option>-sort <replaceable>sort_file</replaceable></option>"
+msgstr "<option>-sort <replaceable>ordre</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:475
+msgid ""
+"sort files according to priorities in <replaceable>sort_file</replaceable>.  "
+"One file or dir with priority per line.  Priority -32768 to 32767, default "
+"priority 0"
+msgstr ""
+"trie les fichiers suivant les priorités décrites dans le fichier "
+"<replaceable>ordre</replaceable>, qui doit contenir un nom de fichier ou "
+"répertoire par ligne avec sa priorité associée (nombre entre -32768 et "
+"32767, 0 par défaut)."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:483
+msgid ""
+"<option>-e <replaceable>list of exclude dirs/files</replaceable></option>"
+msgstr ""
+"<option>-e <replaceable>liste des répertoires/fichiers exclus</replaceable></"
+"option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:485
+msgid "inline list of files / directories to exclude"
+msgstr "liste (en ligne) des fichiers et répertoires à exclure."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:491
+msgid "<option>-ef <replaceable>exclude_file</replaceable></option>"
+msgstr "<option>-ef <replaceable>fichier_exclus</replaceable></option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><simpara>
+#: ../en/mksquashfs.dbk:493
+msgid "file containing a list of files / directories to exclude, one per line"
+msgstr ""
+"le fichier <replaceable>fichier_exclus</replaceable> contient la liste des "
+"fichiers ou répertoires à exclure, un par ligne."
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:499
+msgid "<option>-wildcards</option>"
+msgstr "<option>-wildcards</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:500
+msgid ""
+"Allow extended shell wildcards (globbing) to be used in exclude dirs/files"
+msgstr ""
+"Permet l'utilisation des caractères spéciaux de l'interpréteur de commande "
+"afin d'exclure des répertoires ou fichiers"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><term>
+#: ../en/mksquashfs.dbk:505
+msgid "<option>-regex</option>"
+msgstr "<option>-regex</option>"
+
+# type: Content of: <refentry><refsect1><variablelist><varlistentry><listitem><para>
+#: ../en/mksquashfs.dbk:506
+msgid "Allow POSIX regular expressions to be used in exclude dirs/files"
+msgstr ""
+"Permet l'utilisation des expressions rationnelle POSIX pour l'exclusion de "
+"fichiers ou répertoires"
+
+# type: Content of: <refentry><refsect1><title>
+#: ../en/mksquashfs.dbk:514
+msgid "EXAMPLES"
+msgstr "EXEMPLES"
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:516
+msgid "For following examples, take two example directories:"
+msgstr "Pour les exemples suivants, on utilise deux répertoires :"
+
+# type: Content of: <refentry><refsect1><para><itemizedlist><listitem><simpara>
+#: ../en/mksquashfs.dbk:519
+msgid ""
+"Source directory <filename>/home/phillip/test</filename> contains "
+"<filename>file1</filename>, <filename>file2</filename> and <filename>dir1</"
+"filename>."
+msgstr ""
+"le répertoire source <filename>/home/phillip/test</filename> contient "
+"<filename>fichier1</filename>, <filename>fichier2</filename> et "
+"<filename>rep1</filename>."
+
+# type: Content of: <refentry><refsect1><para><itemizedlist><listitem><simpara>
+#: ../en/mksquashfs.dbk:525
+msgid ""
+"Source directory <filename>goodies</filename> contains <filename>goodies1</"
+"filename>, <filename>goodies2</filename> and <filename>goodies3</filename>."
+msgstr ""
+"le répertoire source <filename>outils</filename> contient <filename>outils1</"
+"filename>, <filename>outils2</filename> et <filename>outils3</filename>."
+
+# type: Content of: <refentry><refsect1><refsect2><example><screen>
+#: ../en/mksquashfs.dbk:537
+#, no-wrap
+msgid "<userinput>mksquashfs /home/phillip/test output_fs</userinput>"
+msgstr "<userinput>mksquashfs /home/phillip/test sf_resultat</userinput>"
+
+# type: Content of: <refentry><refsect1><refsect2><example><simpara>
+#: ../en/mksquashfs.dbk:538
+msgid ""
+"This will generate a squashfs filesystem with root entries <filename>file1</"
+"filename>, <filename>file2</filename> and <filename>dir1</filename>."
+msgstr ""
+"va créer un système de fichiers Squashfs contenant dans sa racine les items "
+"<filename>fichier1</filename>, <filename>fichier2</filename> et "
+"<filename>rep1</filename>."
+
+# type: Content of: <refentry><refsect1><refsect2><example><screen>
+#: ../en/mksquashfs.dbk:547
+#, no-wrap
+msgid "<userinput>mksquashfs /home/phillip/test goodies output_fs</userinput>"
+msgstr "<userinput>mksquashfs /home/phillip/test outils sf_resultat</userinput>"
+
+# type: Content of: <refentry><refsect1><refsect2><example><simpara>
+#: ../en/mksquashfs.dbk:548
+msgid ""
+"This will create a squashfs filesystem with the root containing entries "
+"<filename>test</filename> and <filename>goodies</filename> corresponding to "
+"the source directories <filename>/home/phillip/test</filename> and "
+"<filename>goodies</filename>."
+msgstr ""
+"va créer un système de fichiers Squashfs contenant dans sa racine les "
+"répertoires <filename>test</filename> et <filename>outils</filename>, "
+"correspondant aux répertoires source <filename>/home/phillip/test</filename> "
+"et <filename>outils</filename>."
+
+# type: Content of: <refentry><refsect1><refsect2><example><screen>
+#: ../en/mksquashfs.dbk:559
+#, no-wrap
+msgid "<userinput>mksquashfs /home/phillip/test goodies test output_fs</userinput>"
+msgstr "<userinput>mksquashfs /home/phillip/test outils test sf_resultat</userinput>"
+
+# type: Content of: <refentry><refsect1><refsect2><example><simpara>
+#: ../en/mksquashfs.dbk:561
+msgid ""
+"This is the same as the previous example, except a third source directory "
+"<filename>test</filename> has been specified. This conflicts with the first "
+"directory named <filename>test</filename> and will be renamed "
+"<filename>test_1</filename>."
+msgstr ""
+"commande identique à l'exemple précédent, sauf qu'un troisième répertoire "
+"source <filename>test</filename> a été donné, d'où un conflit avec le "
+"premier répertoire <filename>test</filename>. Ce troisième répertoire sera "
+"donc renommé <filename>test_1</filename>."
+
+# type: Content of: <refentry><refsect1><refsect2><example><simpara>
+#: ../en/mksquashfs.dbk:566
+msgid ""
+"Multiple sources allow filesystems to be generated without needing to copy "
+"all source files into a common directory.  This simplifies creating "
+"filesystems."
+msgstr ""
+"Donner plusieurs répertoires source permet de générer des systèmes de "
+"fichiers sans préalablement copier tous les fichiers nécessaires dans un "
+"répertoire commun, ce qui simplifie le processus."
+
+# type: Content of: <refentry><refsect1><refsect2><example><screen>
+#: ../en/mksquashfs.dbk:575
+#, no-wrap
+msgid "<userinput>mksquashfs /home/phillip/test output_fs -keep-as-directory</userinput>"
+msgstr "<userinput>mksquashfs /home/phillip/test sf_resultat -keep-as-directory</userinput>"
+
+# type: Content of: <refentry><refsect1><refsect2><example><simpara>
+#: ../en/mksquashfs.dbk:577
+msgid ""
+"This is the same as the first example, except for <option>-keep-as-"
+"directory</option>. This will generate a root directory containing directory "
+"<filename>test</filename>, rather than the <filename>test</filename> "
+"directory contents <filename>file1</filename>, <filename>file2</filename> "
+"and <filename>dir1</filename>."
+msgstr ""
+"commande identique au premier exemple, sauf que l'option <option>-keep-as-"
+"directory</option> va donner un système de fichiers dont la racine "
+"contiendra un répertoire <filename>test</filename>, au lieu de n'avoir que "
+"son contenu <filename>fichier1</filename>, <filename>fichier2</filename> et "
+"<filename>rep1</filename>."
+
+# type: Content of: <refentry><refsect1><title>
+#: ../en/mksquashfs.dbk:590
+msgid "AUTHORS"
+msgstr "AUTEURS"
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:592
+msgid ""
+"Squashfs was written by <personname> <firstname>Phillip</firstname> "
+"<surname>Lougher</surname> </personname> <email>plougher@users.sourceforge."
+"net</email>, in Chepstow, Wales, UK. If you like the program, or have any "
+"problems, then please email me, as it's nice to get feedback !"
+msgstr ""
+"Squashfs a été écrit par <personname> <firstname>Phillip</firstname> "
+"<surname>Lougher</surname> </personname> <email>plougher@users.sourceforge."
+"net</email>, à Chepstow, Pays de Galles, Royaume-Uni. Si vous appréciez ce "
+"programme ou rencontrez des problèmes en l'utilisant, contactez-le, il est "
+"intéressé par des retours d'expérience."
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:600
+msgid ""
+"This manual page was written by &dhusername; &dhemail; for the &debian; "
+"system (but may be used by others) using the <citetitle>SquashFS HOWTO</"
+"citetitle> from <author> <firstname>Artemiy I.</firstname> <surname>Pavlov</"
+"surname> </author> and squashfs's <filename>README</filename> file.  "
+"Permission is granted to copy, distribute and/or modify this document under "
+"the terms of the &gnu; General Public License, Version 2 any later version "
+"published by the Free Software Foundation."
+msgstr ""
+"Cette page de manuel a été écrit par &dhusername; &dhemail; pour le système "
+"&debian; (mais peut être utilisé par d'autres) à partir du document "
+"<citetitle>SquashFS HOWTO</citetitle> de <author> <firstname>Artemiy I.</"
+"firstname> <surname>Pavlov</surname> </author> et du fichier "
+"<filename>README</filename> des sources de SquashFS. Il est permis de "
+"copier, distribuer et/ou modifier ce document en vertu de la licence GPL "
+"version 2 ou postérieure, telle que publiée par la Free Software Foundation."
+
+# type: Content of: <refentry><refsect1><para>
+#: ../en/mksquashfs.dbk:613
+msgid ""
+"On Debian systems, the complete text of the &gnu; General Public License can "
+"be found in <filename>/usr/share/common-licenses/GPL</filename>."
+msgstr ""
+"Sur les systèmes Debian, le texte complet de la licence &gpl; (Licence "
+"Public Générale &gnu;) se trouve dans le fichier <filename>/usr/share/common-"
+"licenses/GPL</filename>."

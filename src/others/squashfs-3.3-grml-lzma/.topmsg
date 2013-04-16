@@ -1,0 +1,6 @@
+From: Michael Gebetsroither <gebi@sbox.tugraz.at>
+Subject: [PATCH] t/squashfs-lzma
+
+squashfs lzma patch
+
+Signed-off-by: Michael Gebetsroither <gebi@sbox.tugraz.at>

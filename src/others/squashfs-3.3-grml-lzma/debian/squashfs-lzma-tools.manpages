@@ -1,0 +1,3 @@
+debian/doc/mksquashfs.1
+debian/doc/mksquashfs.fr.1
+debian/doc/unsquashfs.1

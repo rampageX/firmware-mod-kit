@@ -1,0 +1,30 @@
+Cette application nb4-unsquash est juste l'adaption de la suite inflate-lzma présente dans le répertoire kernel/linux/fs/inflate-lzma de la distribution Broadcom à la procédure unsquashfs.c de la suite squashfs3.3
+http://sourceforge.net/project/showfiles.php?group_id=63835
+
+Un simple Make devrait construire l'utilitaire nb4-unsquash
+
+Pour l'utiliser
+./nb4-unsquash
+SYNTAX: ./unsqlzma [options] filesystem [directories or files to extract]
+  -v[ersion]  print version, licence and copyright information
+  -i[nfo]    print files as they are unsquashed
+  -li[nfo]  print files as they are unsquashed with file
+        attributes (like ls -l output)
+  -l[s]     list filesystem, but don't unsquash
+  -ll[s]     list filesystem with file attributes (like
+        ls -l output), but don't unsquash
+  -d[est] <pathname> unsquash to <pathname>, default "squashfs-root"
+  -f[orce]  if file already exists then overwrite
+  -s[tat]    display filesystem superblock information
+  -e[f] <extract file>  list of directories or files to extract.
+        One per line
+  -r[egex]  treat extract names as POSIX regular expressions
+        rather than use the default shell wildcard
+        expansion (globbing)
+
+
+pour lister les fichiers du fichier xx.sqsh
+./nb4-unsquash -ll xx.sqsh
+
+pour extraire les fichiers du fichier xx.sqsh dans le répertoire yy
+./nb4-unsquash -d yy xx.sqsh

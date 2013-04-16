@@ -1,0 +1,105 @@
+# ----------------------------Archive Formats--------------------------------------
+
+# POSIX tar archives
+0	string		ustar\000		POSIX tar archive{offset-adjust:-257}
+0	string          ustar\040\040\000	POSIX tar archive (GNU){offset-adjust:-257}
+
+# JAR archiver (.j), this is the successor to ARJ, not Java's JAR (which is essentially ZIP)
+0       string  \x1aJar\x1b JAR (ARJ Software, Inc.) archive data{offset-adjust:-14}
+0       string  JARCS JAR (ARJ Software, Inc.) archive data
+
+
+# ARJ archiver (jason@jarthur.Claremont.EDU)
+0       leshort         0xea60          ARJ archive data
+>5      byte            x               \b, v%d,
+>8      byte            &0x04           multi-volume,
+>8      byte            &0x10           slash-switched,
+>8      byte            &0x20           backup,
+>34     string          x               original name: "%s",
+>7      byte            0               os: MS-DOS 
+>7      byte            1               os: PRIMOS
+>7      byte            2               os: Unix
+>7      byte            3               os: Amiga
+>7      byte            4               os: Macintosh
+>7      byte            5               os: OS/2
+>7      byte            6               os: Apple ][ GS
+>7      byte            7               os: Atari ST
+>7      byte            8               os: NeXT
+>7      byte            9               os: VAX/VMS
+>3      byte            >0              %d]
+
+# RAR archiver (Greg Roelofs, newt@uchicago.edu)
+0	string		Rar!		RAR archive data
+
+# HPACK archiver (Peter Gutmann, pgut1@cs.aukuni.ac.nz)
+0	string		HPAK		HPACK archive data
+
+# JAM Archive volume format, by Dmitry.Kohmanyuk@UA.net
+0	string		\351,\001JAM	JAM archive
+
+# LHARC/LHA archiver (Greg Roelofs, newt@uchicago.edu)
+0	string		-lzs-		LHa 2.x? archive data [lzs] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh\40-		LHa 2.x? archive data [lh ] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lhd-		LHa 2.x? archive data [lhd] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh2-		LHa 2.x? archive data [lh2] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh3-		LHa 2.x? archive data [lh3] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh4-		LHa (2.x) archive data [lh4] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh5-		LHa (2.x) archive data [lh5] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh6-		LHa (2.x) archive data [lh6] [NSRL|LHA2]{offset-adjust:-2}
+0	string		-lh7-		LHa (2.x) archive data [lh7] [NSRL|LHA2]{offset-adjust:-2}
+
+
+# cpio archives
+#
+# The SVR4 "cpio(4)" hints that there are additional formats, but they
+# are defined as "short"s; I think all the new formats are
+# character-header formats and thus are strings, not numbers.
+#0       string          070707          ASCII cpio archive (pre-SVR4 or odc)
+
+0       string          070701          ASCII cpio archive (SVR4 with no CRC),
+>110	byte		0		invalid
+>110	string		x		file name: "%s"
+>54	string		x		{jump-to-offset:0x%.8s+112}
+
+0       string          070702          ASCII cpio archive (SVR4 with CRC)
+>110	byte		0		invalid
+>110	string		x		file name: "%s"
+>54	string		x		{jump-to-offset:0x%.8s+112}
+
+
+# HP Printer Job Language
+# The header found on Win95 HP plot files is the "Silliest Thing possible" 
+# (TM)
+# Every driver puts the language at some random position, with random case
+# (LANGUAGE and Language)
+# For example the LaserJet 5L driver puts the "PJL ENTER LANGUAGE" in line 10
+# From: Uwe Bonnes <bon@elektron.ikp.physik.th-darmstadt.de>
+# 
+0       string          \033%-12345X@PJL        HP Printer Job Language data
+>&0     string          >\0                     "%s"
+>>&0    string          >\0                     "%s"
+>>>&0   string          >\0                     "%s"
+>>>>&0  string          >\0                     "%s"
+
+#------------------------------------------------------------------------------
+#
+# RPM: file(1) magic for Red Hat Packages   Erik Troan (ewt@redhat.com)
+#
+0	belong		0xedabeedb	RPM
+>4	byte		x		v%d
+>6	beshort		0		bin
+>6	beshort		1		src
+>8	beshort		1		i386
+>8	beshort		2		Alpha
+>8	beshort		3		Sparc
+>8	beshort		4		MIPS
+>8	beshort		5		PowerPC
+>8	beshort		6		68000
+>8	beshort		7	SGI
+>8	beshort		8		RS6000
+>8	beshort		9		IA64
+>8	beshort		10		Sparc64
+>8	beshort		11		MIPSel
+>8	beshort		12		ARM
+>10	string		x		"%s"
+

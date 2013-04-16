@@ -1,0 +1,13 @@
+This package was debianized by Michael Holzt <kju@debian.org> on
+Tue,  4 Jan 2005 12:26:00 +0100.
+
+This is a native debian package, debian maintainer and upstream author are
+the same person. The source can be downloaded from 
+http://kju.de/projekte/cramfsswap/ (sorry, German only)
+
+License:
+
+cramfsswap is released under the GNU GPL license as free, open source
+software. Hopefully it will seem useful to someone. NO WARRANTY. GPL2
+only! On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in '/usr/share/common-licenses/GPL'.

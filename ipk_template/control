@@ -1,0 +1,9 @@
+Package: package_name
+Priority: optional
+Section: net
+Depends: libncurses
+Description: Some package description.
+Maintainer: Some guy <someguy@somewhere.net>
+Source: N/A
+Version: 1.01-1
+Architecture: mipsel

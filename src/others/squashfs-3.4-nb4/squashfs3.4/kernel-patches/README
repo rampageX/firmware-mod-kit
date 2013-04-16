@@ -1,0 +1,11 @@
+Readme for Linux-2.6.27 users.
+
+The VFS interface in the rc candidates has not stabilised sufficiently to
+produce one patch that is guaranteed to work once Linux-2.6.27 is released.
+Linux-2.6.27-rc4 has some minor VFS changes, but there are further up and
+coming changes in the linux-next tree (linux-2.6.27-rc4-next) that probably
+will make it into the final Linux 2.6.27 release.
+
+If you're using Linux-2.6.27-rc4 use the linux-2.6.27-rc4 patch.  If you're
+using a later rc candidate or the final release, first try the
+linux-2.6.27-rc4-next patch.

@@ -1,0 +1,6 @@
+# watch control file for uscan
+version=3
+
+opts="uversionmangle=s/-r/r/" \
+ftp://heanet.dl.sourceforge.net/s/sq/squashfs/squashfs(.*)\.tar\.gz \
+	debian  git-import-orig

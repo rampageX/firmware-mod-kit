@@ -1,0 +1,919 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<title>Firmware Modification Kit</title>
+<meta name="description" content="Extract, Modify, Rebuild Firmware Images of various types" />
+<meta name="keywords" content="dd-wrt, ddwrt, openwrt, freewrt, squashfs, squashfs-lzma, hyperwrt, sveasoft, tomato, xwrt, x-wrt, firmware, binwalk, unsquashfs, wrt54g, wl530g, tew632brp, dir615, untrx, trx" />
+</head>
+
+<body>
+
+<p><b><font size="6">Firmware Modification Kit<br />
+</font></b><i><b>Giving YOU the power to customize your firmware<br />
+</b><font size="2">documentation version 0.78 beta<br />
+all scripts, untrx, wrt_vx_imgtool, crcalc, binwalk and docs (c) 2006-2011<br />
+Craig Heffner &lt;heffnercj@gmail.com&gt;, Jeremy Collake &lt;jeremy.collake@gmail.com&gt;, and other contributors (see project page) <br />
+other portions (c) their respective holders</font></i></p>
+<p><b><span class="highlight"><b>THERE ARE NEW DOCS:</b></span> This documentation may be superseded or extended by documentation at the <a href="http://code.google.com/p/firmware-mod-kit/wiki/Documentation">Google Code project site</a>. An essentially new, and much improved, rendition is now available. Firmware-Mod-Kit-Ng ;)</b></p>
+<p><b><font size="4">Contents</font></b></p>
+<p>I. <a href="#Description">Description</a><br />
+II. <a href="#Why_is_this_useful">Why is this useful?</a><br />
+III. <a href="#Where_to_get_the_kit">Where to get the kit</a><br />
+IV. <a href="#Requirements">Requirements</a><br />
+V. <a href="#Compatibility">Compatibility</a><br />
+VI. <a href="#Instructions">Instructions</a><br />
+&nbsp;&nbsp;&nbsp; A. <a href="#Extracting_the_firmware_(extract_firmware.sh)">
+extracting firmware</a><br />
+&nbsp;&nbsp;&nbsp; B.
+<a href="#Modifying_the_firmware_(manual_and/or_ipkg_install.sh)">modifying 
+firmware</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.<a href="#Installing_packages"> 
+installing packages</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. <a href="#Removing_packages">
+removing packages</a><br />
+&nbsp;&nbsp;&nbsp; C. <a href="#Re-building_the_firmware_(build_firmware.sh)">
+re-building firmware</a><br />
+VII. <a href="#Caveats">Caveats</a><br />
+&nbsp;&nbsp;&nbsp; A. <a href="#Binary_compatibility_issues">binary 
+compatibility issues</a><br />
+&nbsp;&nbsp;&nbsp; B. <a href="#Maximum_firmware_size">maximum firmware size</a><br />
+&nbsp;&nbsp;&nbsp; C. <a href="#Solutions_to_case_sensitivity">solutions to file 
+system incompatibilities</a><br />
+VIII. <a href="#Acknowledgments">Acknowledgements and more</a><br />
+IX. <a href="#Links">Links</a><br />
+X. <a href="#Revision_history">Revision history</a><br />
+<p>&nbsp;</p>
+<p><font size="5"><b>I. <a name="Description">Description</a></b><br />
+</font><br />
+This kit gives the user the ability to make changes to a firmware image without 
+recompiling the firmware sources. It works by extracting the firmware into 
+its component parts, then extracting the file system image (assuming its in one 
+the supported formats). The user can then make modifications 
+to the extracted file system, and rebuild the firmware image.</p>
+<p>Although this kit completely automates the process, it is also useful for 
+those who need a handy collection of utilities to manipulate firmware images. The following utilities are included in this kit, along with scripts to 
+automate their use:</p>
+<table border="1" width="100%" id="table8">
+	<tr>
+		<td><b>ASUSTRX</b></td>
+		<td width="1457">An extended version of ASUSTRX that can build both 
+		'normal' TRX files and, optionally, those with an ASUS <b><i>addver </i>
+		</b>style header appended. It can also, uniquely, force segment offsets 
+		in the TRX (with -b switch) for compatibility with Marvell ASUS devices 
+		like the WL-530g. 
+		This tool replaces both 'normal' trx tool and addver. Current versions 
+		included are: 0.90 beta.</td>
+	</tr>
+	<tr>
+		<td height="23"><b>ADDPATTERN</b></td>
+		<td height="23" width="1457">Utility to pre-pend Linksys style HDR0 
+		header to a TRX.</td>
+	</tr>
+	<tr>
+		<td><b>ADDVER</b></td>
+		<td width="1457">ASUS utility to append a header to a TRX image that 
+		contains version information. ASUSTRX includes this capability. Current 
+		version: unversioned.</td>
+	</tr>
+	<tr>
+		<td><b>BINWALK</b></td>
+		<td width="1457">Firmware analysis tool, used for searching firmware images
+		for known file types. Used by the extract-ng.sh script to identify valid
+		file systems inside firmware images. Current version included is 0.3.9. 
+		Tool home page: http://binwalk.googlecode.com.</td>
+	</tr>
+	<tr>
+		<td><b>CRAMFSCK</b></td>
+		<td width="1457">CRAMFS file system image checker and extractor. Current 
+		versions included are:&nbsp; 2.4x.</td>
+	</tr>
+	<tr>
+		<td><b>CRCALC</b></td>
+		<td width="1457">Re-calculates and patches header checksums for TRX and 
+		uImage firmware headers.</td>
+	</tr>
+	<tr>
+		<td height="23"><b>MKSQUASHFS</b></td>
+		<td height="23" width="1457">Builds a squashfs file system image. 
+		Current versions included are: 2.1-r2, 3.0.</td>
+	</tr>
+	<tr>
+		<td height="25"><b>MKCRAMFS</b></td>
+		<td width="1457" height="25">Builds a cramfs file system image. Coming 
+		in next version. Current versions included are: 2.4x.</td>
+	</tr>
+	<tr>
+		<td><b>MOTOROLA_BIN</b></td>
+		<td width="1457">A utility that prepends 8 byte headers to TRX images 
+		for Motorola devices WR850G, WA840G, WE800G. Current version: 
+		unversioned.</td>
+	</tr>
+	<tr>
+		<td><b>UNCRAMFS</b></td>
+		<td width="1457">Alternate tool to extracts a cramfs file system image. 
+		Use cramfsck instead whenever possible as it seems to be more reliable. Current versions 
+		included are: 0.7 (for cramfs v2.x).</td>
+	</tr>
+	<tr>
+		<td><b>UNCRAMFS-LZMA</b></td>
+		<td width="1457">Extracts an lzma cramfs file system image, specifically
+		those included in OpenRG based firmware. Current version included is 0.7rg.</td>
+	</tr>
+	<tr>
+		<td><b>UNSQUASHFS</b></td>
+		<td width="1457">Extracts a zlib squashfs file system image. Current 
+		versions included are 1.0 for 3.0 images and 1.0 for 2.x images (my own 
+		blend).</td>
+	</tr>
+	<tr>
+		<td><b>UNSQUASHFS-LZMA</b></td>
+		<td width="1457">Extracts an lzma squashfs file system image. Current 
+		versions included are 1.0 for 3.0 images and 1.0 for 2.x images (my own 
+		blend). <i>Note: Not all squashfs-lzma patches are compatible with one 
+		another. I'm working on adding support for all common squashfs-lzma 
+		variations.</i></td>
+	</tr>
+	<tr>
+		<td><b>UNTRX</b></td>
+		<td width="1457">Splits TRX style firmwares into their component 
+		parts. Also supports pre-pended addpattern HDR0 style headers. This was 
+		developed exclusively for this kit. Current versions included are: 0.45.</td>
+	</tr>
+	<tr>
+		<td height="23"><b>WRT_VX_IMGTOOL</b></td>
+		<td width="1457" height="23">Utility to generate VxWorks compatible 
+		firmware images for the WRT54G(S) v5 series.</td>
+	</tr>
+	</table>
+<p>&nbsp;</p>
+<p><b><font size="4">Tools/changes unique to this kit</font></b></p>
+<p>This kit doesn't just collect existing tools, it also offers new ones and 
+modifications to existing ones. Custom code currently is:</p>
+<p><b>ASUSTRX</b> - Modified to allow '-b' switch to force segment offsets 
+(needed for some devices, like the WL-530g).<br />
+<b>CRCALC</b> - A new tool to re-calculate and patch the checksum fields for common
+firmware headers. Currently TRX and uImage headers are supported.<br />
+<b>UNTRX</b> - A new tool to extract the contents of a TRX image into its component 
+parts.<br />
+<b>UNSQUASHFS</b> - Custom blend that supports extraction of 2.x squashfs 
+images. This tool wasn't officially made available until squashfs 3.0, so up 
+until now it wasn't available for 2.x images.<br />
+<b>WRT-VX-IMGTOOL</b> - A new tool to view, extract, build, and fix VxWorks 
+compatible firmware images for the WRT54G(S) v5 series.<br />
+<b>SPLITTER3</b> - Custom file splitter for certain types of linux firmware images.
+</p>
+<p><b><font size="5">II. <a name="Why_is_this_useful">Why is this useful?</a></font></b><br />
+<br />
+A list of some of the many reasons this might be desired are:</p>
+<ul>
+
+	<li>add initialization scripts</li>
+	<li>install new packages</li>
+	<li>extend/change HTTP managed console</li>
+	<li>remove un-needed packages</li>
+	<li>mix-and-match packages from various flavors of the firmware image.</li>
+</ul>
+<p>
+<br />
+&nbsp;</p>
+<p><b><font size="5">III. <a name="Where_to_get_the_kit">Where to get the ki</a>t</font></b></p>
+<p>The best way to download and use this kit is to check out the sources from 
+the repository. The automated scripts all automatically build the executables, 
+and the sources. It is easy as downloading something and using it that way. Also, if you are unable to use a simple SVN checkout, then
+it is likely that this kit is a danger to you because it is for advanced users. </p>
+
+<p>To anonymously check out the firmware-mod-kit:</p>
+<table border="0" width="100%" id="table9" bgcolor="#F6F4EC">
+	<tr>
+		<td><font face="Courier New">&nbsp;mkdir firmware_mod_kit<br />
+&nbsp;cd firmware_mod_kit<br />
+&nbsp;svn checkout http://firmware-mod-kit.googlecode.com/svn/trunk/ firmware-mod-kit-read-only</font></td>
+	</tr>
+</table>
+<p><br />
+<b><font size="4">Kit downloads and links:</font></b></p>
+<p>Project hosting and repository (new):
+<a href="http://code.google.com/p/firmware-mod-kit/">
+http://code.google.com/p/firmware-mod-kit/</a><br />
+Guest SVN Checkout: <i>svn checkout http://firmware-mod-kit.googlecode.com/svn/trunk/ firmware-mod-kit-read-only</i><br />
+User forums can be found <a href="http://www.bitsum.com/forum/index.php?board=12.0">
+here</a>.</p>
+<p><b><font size="4">Packages:</font></b></p>
+<p>All of the many OpenWrt packages should work with OpenWrt images and many 
+other firmware images.</p>
+<p>An old (2009) specific collection of DD-WRT packages for use with the kit:
+<a href="http://www.bitsum.com/files/ddwrt_packages.tar.gz">
+http://www.bitsum.com/files/ddwrt_packages.tar.gz</a> .<br />
+&nbsp;</p>
+<p>&nbsp;</p>
+<p><b><font size="5">IV. <a name="Requirements">Requirements</a></font></b></p>
+<p>I've worked to make sure the requirements are low enough for anyone to 
+use this kit. However, to reduce distribution costs and better represent the 
+multi-platform capabilities of this kit, the binary tools in the kit do 
+automatically build themselves the first time you run one of the scripts. Any 
+machine set up to build anything C or C++ on the machine will probably be ready. 
+The few requirements are all basic items that everyone has easy access to:</p>
+<ul>
+	<li>A compatible platform. The following are specifically supported (or 
+	specifically unsupported):<ul>
+	<li><b>LINUX&nbsp;&nbsp;&nbsp;&nbsp; </b>(recommended)</li>
+	<li><b>OS X&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b> <i>&nbsp;**warning: 
+	I don't test every build under OS X. It's up to you to email me if you have 
+	problems under it. Current builds may have issues.**</i></li>
+	<li>CYGWIN&nbsp; <i>**alpha stage testing (!! built firmwares may not boot 
+	!!)**</i></li>
+</ul>
+	</li>
+	<li>GNU C (gcc)</li>
+	<li>GNU C++ (g++)</li>
+	<li>GNU make</li>
+	<li>Standard C runtime library development</li>
+	<li>Standard C++ runtime library development</li>
+	<li>Zlib library development (for Ubuntu it is zlib1g-dev)</li>
+	<li>TAR and GZIP (optional, used by ipkg_install.sh)</li>
+</ul>
+<p>OS/X is not supported at this time. The kit is probably not far from compatibility, but easier to just install a linux VM.</p>
+<p></p>
+<p><b><font size="5">V. <a name="Compatibility">Compatibility</a></font></b></p>
+<p>Any TRX style firmware image format should that uses squashfs-lzma as a root 
+file system work fine. Firmwares that use regular zlib squashfs or unsupported 
+file systems will work if the steps that extract the file system and rebuild the 
+file system are tweaked. </p>
+<p>The kit can build firmware images for the following devices, amongst <u>many 
+others</u>:</p>
+<ul>
+	<li>WRT54G v1 - v6</li>
+	<li>WRT54GS v1 - v6</li>
+	<li>WRTSL54G v?</li>
+	<li>ASUS WL-330g</li>
+	<li>ASUS WL-500g/p</li>
+	<li>ASUS WL-520g</li>
+	<li>ASUS WL-530g</li>
+	<li>Belkin 7230-4 (some versions)</li>
+	<li>Belkin 7231-4 (?)</li>
+	<li>Buffalo WHR-G54S</li>
+	<li>Buffalo WHR-HP-G54</li>
+	<li>Siemens SE505</li>
+	<li>Trendnet TEW-632BRP</li>
+	<li>D-Link DIR-615 (maybe)</li>
+	<li>... lots of others<font size="2">*</font> ...</li>
+</ul>
+<p>The kit is known (or thought) to be compatible with the following firmwares:</p>
+<table border="0" width="100%" id="table3">
+	<tr>
+		<td width="187">DD-WRT v23</td>
+		<td>tested&nbsp;- versions v23 SP1 and later are compatible (soon older 
+		versions too). <b>WARNING:</b> <i>Builds of 
+		DD-WRT later than 08/04/2006 (v23 SP2) have some protections against 
+		changing the web UI.</i></td>
+	</tr>
+	<tr>
+		<td width="187">DD-WRT v24</td>
+		<td>tested</td>
+	</tr>
+	<tr>
+		<td width="187">OpenWrt White Russian</td>
+		<td>tested</td>
+	</tr>
+	<tr>
+		<td width="187">OpenWrt Kamikaze</td>
+		<td><i>untested (should work) </i>- not really necessary, based on 
+		OpenWrt has its Image Builder.</td>
+	</tr>
+	<tr>
+		<td width="187">FreeWrt</td>
+		<td><i>untested - should work ok</i></td>
+	</tr>
+	<tr>
+		<td width="187">HyperWrt</td>
+		<td><i>untested </i></td>
+	</tr>
+	<tr>
+		<td width="187">Ewrt</td>
+		<td><i>untested</i></td>
+	</tr>
+	<tr>
+		<td width="187">Sveasoft Alchemy</td>
+		<td><i>untested </i></td>
+	</tr>
+	<tr>
+		<td width="187">Sveasoft Talisman</td>
+		<td><i>untested </i></td>
+	</tr>
+	<tr>
+		<td width="187">Linksys / other vendor</td>
+		<td>not supported by scripts yet - haven't added cramfs handling</td>
+	</tr>
+	<tr>
+		<td width="187">ASUS WL-330G</td>
+		<td><i>untested - should work ok</i></td>
+	</tr>
+	<tr>
+		<td width="187">ASUS WL-520G</td>
+		<td><i>untested - should work ok</i></td>
+	</tr>
+	<tr>
+		<td width="187">ASUS WL-530G</td>
+		<td>supported</td>
+	</tr>
+	<tr>
+		<td width="187">ASUS WL-550G</td>
+		<td><i>untested&nbsp; - should work ok</i></td>
+	</tr>
+	<tr>
+		<td width="187">Trendnet TEW-632BRP</td>
+		<td>tested</td>
+	</tr>	
+	<tr>
+		<td width="187">DLink DIR-615</td>
+		<td><i>untested</i></td>
+	</tr>	
+
+	<tr>
+		<td width="187">many others<font size="2">*</font></td>
+		<td><i>untested </i></td>
+	</tr>
+</table>
+<p><b><i>* Even if the kit doesn't automatically support the firmware or device you want, 
+you can manually use the tools inside to manipulate many firmware images, or 
+request support be added.</i></b></p>
+<p>&nbsp;</p>
+<p><b><font size="5">VI. <a name="Instructions">Instructions</a><br />
+</font></b><br />
+I've scripts that simply and abstract the firmware modification process. Basically, it's a 
+one-step process to extract the firmware, and a one-step process to rebuild the 
+firmware. There are also scripts to install or remove individual packages or 
+entire directories of packages.</p>
+<p>The procedure of calls is:</p>
+<ol>
+	<li>extract_firmware.sh ....</li>
+	<li>(optional) ipkg_install[_all]).sh ...</li>
+	<li>(optional) ipkg_remove[_all].sh&nbsp;&nbsp; ...</li>
+	<li>build_firmware.sh</li>
+</ol>
+<p>&nbsp;</p>
+<p><u><b><font size="4">A.
+<a name="Extracting_the_firmware_(extract_firmware.sh)">Extracting the firmware 
+(extract_firmware.sh, extract-ng.sh)</a></font></b></u></p>
+<blockquote>
+	<p>Simply run extract_firmware.sh with the following parameters. <i><b>You must 
+run this tool from inside the directory it exists in.</b></i></p>
+	<table border="0" width="100%" bgcolor="#F6F4EC" id="table1">
+		<tr>
+			<td><br />$ ./extract_firmware.sh firmware.bin working_directory/<br />&nbsp;</td>
+		</tr>
+	</table>
+	<p><br /><b>- firmware.bin</b> is the firmware image you want to extract, i.e. 
+DD-WRT.v23_MICRO_GENERIC.BIN. <br /><b>- working_directory</b> is the working directory you want to use. This is 
+where the intermediate files and the extracted file system will be stored. Note 
+that files in the working directory may be deleted!<br /><br />It doesn't matter which firmware image you supply, i.e. for a WRT54G or an ASUS 
+WL-500G. These images are usually all the same and differ only in the header 
+format. The rebuilding process will create images for the various models.<br />
+	<br />An extraction log is created as <i>extract.log</i>.</p>
+
+	<p>If extract_firmware.sh fails, the newer extract-ng.sh can be used. Although newer and 
+	   less thoroughly tested than extract_firmware.sh, it is more flexible and can often
+	   extract file systems that extract_firmware.sh cannot:
+	</p>
+
+	<table border="0" width="100%" bgcolor="#F6F4EC" id="table3">
+		<tr>
+			<td><br />$ ./extract-ng.sh firmware.bin working_directory/<br />&nbsp;</td>
+		</tr>
+	</table>
+	
+</blockquote>
+<p>&nbsp;</p>
+<p><b><font size="4"><u>B.
+<a name="Modifying_the_firmware_(manual_and/or_ipkg_install.sh)">Making changes 
+to the firmware's file system</a></u></font></b></p>
+<blockquote>
+	<p>Modifying the firmware is simple. The file system is stored in the working 
+directory you supplied to extract_firmware.sh. Here are the subfolders of this 
+directory:<br /><br />&nbsp;&nbsp;&nbsp; <b>rootfs/ <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	</b>This is where the file system is. 
+Make modifications here.<br />&nbsp;&nbsp;&nbsp; <b>image_parts/ <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+	</b>This is where intermediate files are stored. If you need to replace the 
+	kernel (not at all recommended), you can do so by replacing the appropriate 
+	file here (usually segment2).<br />
+	<b>&nbsp;&nbsp;&nbsp; installed_packages/<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </b>If you use the ipkg_install.sh 
+	tool, this is where packages you've installed after firmware extraction will 
+	reside.<br /><br />One can manually change the files in rootfs and/or use the 
+	automated package scripts.</p>
+	<p>&nbsp;</p>
+	<p><b><a name="Installing_packages">Installing packages</a> (.IPK)</b></p>
+	<blockquote>
+		<p>In compliment to manually making changes, one can use pre-built IPKG 
+		format package files with the ipkg_install/remove scripts. Although not 
+		all will work and a repository for packages verified to work has not yet 
+		been produced, many packages work just fine.</p>
+		<p>Packages are pre-built collections of files pertaining to a set of software. 
+OpenWrt and DD-WRT both use packages, and most are cross-compatible. These 
+packages are stored in a tar/gzip archive of a pre-defined structure that 
+includes some control files. You can extract and copy the files manually, or use 
+the ipkg_install.sh script included with this kit. For a list of some of the 
+available packages (not all may work), see
+		<a href="http://downloads.openwrt.org/whiterussian/packages/">
+		http://downloads.openwrt.org/whiterussian/packages/</a> and
+		<a href="http://ftp.selfnet.de/pub/openwrt/backports/rc5/">http://ftp.selfnet.de/pub/openwrt/backports/rc5/</a> .
+		<i>We are currently in the process of compiling a set of packages known 
+		to be good for DD-WRT ... to help in this matter please visit
+		<a href="http://www.dd-wrt.com/phpBB2/viewtopic.php?t=2844">here</a>.
+		</i></p>
+		<p><i>For information on how to create IPKs, see the
+		<a href="creating_ipk_packages.htm">IPK Creation Kit</a>.</i></p>
+		<p>Example use:</p>
+		<table border="0" width="100%" bgcolor="#F6F4EC" id="table6">
+			<tr>
+				<td><br />$ ./ipkg_install.sh some_package-1.2.5.ipk working_directory/<br />&nbsp;</td>
+			</tr>
+		</table>
+		<p><b>some_package-1.2.5.ipkg </b>would be the filename of the package.<br />
+		<b>working_directory</b> is the same working directory you supplied to the 
+extract_firmware.sh script.</p>
+		<p><b>Notes:</b></p>
+		<p>A script, ipkg_install_all.sh is also available to install an entire 
+		folder of packages.</p>
+		<p>The collection of installed packages will be stored in <b><i>
+		working_directory/installed_packages </i></b>.</p>
+	</blockquote>
+	<p>&nbsp;</p>
+	<p><b><a name="Removing_packages">Removing packages</a> (.IPK)</b></p>
+	<blockquote>
+		<p>To remove packages there is the ipkg_remove.sh script. </p>
+		<p>Example use:</p>
+		<table border="0" width="100%" bgcolor="#F6F4EC" id="table7">
+			<tr>
+				<td><br />$ ./ipkg_remove.sh some_package-1.2.5.ipk working_directory/<br />&nbsp;</td>
+			</tr>
+		</table>
+		<p><b>some_package-1.2.5.ipkg </b>would be the filename of the package.<br />
+		<b>working_directory</b> is the same working directory you supplied to the 
+extract_firmware.sh script.</p>
+		<p><b>Notes:</b></p>
+		<p>A script, ipkg_remove_all.sh is also available to install an entire 
+		folder of packages.</p>
+		<p>The collection of installed packages stored <b><i>
+		working_directory/installed_packages </i></b>will be updated to reflect 
+		the change if successful.</p>
+	</blockquote>
+	<p>&nbsp;</p>
+</blockquote>
+<p><b><font size="4"><u>C.
+<a name="Re-building_the_firmware_(build_firmware.sh)">Re-building the firmware 
+(build_firmware.sh, build-ng.sh)</a></u></font></b></p>
+<blockquote>
+	<p>Rebuilding the firmware is as easy as extracting it. Use the 
+build_firmware.sh script to automate the process.&nbsp; <i><b>You must run this 
+tool from inside the directory it exists in.</b></i></p>
+	<p>Example use:</p>
+	<table border="0" width="100%" bgcolor="#F6F4EC" id="table2">
+		<tr>
+			<td><br />$ ./build_firmware.sh output_directory/ working_directory/<br />&nbsp;</td>
+		</tr>
+	</table>
+	<p><b>- output_directory</b> is the path to which the created firmware images 
+should be stored. If images already exist here, they will be over-written. 
+Firmware images for various models will be emitted (these images are all the 
+same but have different header patterns so they are accepted by the target 
+models).<br /><b>- working_directory</b> is the working directory supplied to 
+extract_firmware.sh.</p>
+	<p>A building log is created as <i>build.log</i>.</p>
+
+	<p>
+		If extract-ng.sh was used to extract the firmware image, build-ng.sh must be used
+		to rebuild it:
+	</p>
+	<table border="0" width="100%" bgcolor="#F6F4EC" id="table4">
+		<tr>
+			<td><br />$ ./build-ng.sh working_directory/<br />&nbsp;</td>
+		</tr>
+	</table>
+</blockquote>
+<p>&nbsp;</p>
+<p><font size="5"><b>VIII. <a name="Caveats">Caveats</a></b></font></p>
+<p>There are a few things to watch out for when modifying firmware images. If 
+you make reasonable changes these problems will probably never affect you. Be 
+warned, this section may be technical in parts.</p>
+<p><b>A. <a name="Binary_compatibility_issues">Binary compatibility issues</a></b></p>
+<ul>
+	<li>If installing a <b>binary</b> package:&nbsp;
+	<ul>
+		<li>It is possible the uclibc or glibc library was pruned (unused 
+		objects removed). In the unlikely event the binary package requires some of these 
+		previously unused (and now missing) functions, you may need to install 
+		to the firmware file system a new uclibc or glibc library. If you are 
+		installing another pruned uclibc or glibc library, then it is remotely 
+		possible some pre-existing package requires objects not found in this 
+		new library. In such a very rare case you can re-link the library or 
+		find a full copy of the library to install.</li>
+		<li>Different firmwares may use different kernel versions, or have 
+		different kernel modules installed. If you get too wild with your 
+		mix-and-matching (i.e. use older versions with newer, or mixtures of 
+		different firmwares all-together), problems can result. To install a new 
+		kernel (not at all recommended), replace the segment2 (or other) file found found in 
+		the intermediate directory with an appropriate one (can be from another 
+		firmware as long as lzma compression is used).</li>
+		<li>Make sure any dependencies are also installed to the file system, 
+		along with initialization scripts.</li>
+	</ul></li>
+	<li>If making web UI changes:<ul>
+		<li><b>WARNING:</b> DD-WRT builds dated later than 08/04/2006 
+	have some protections against modifying the web UI.</li>
+	</ul>
+	<p>&nbsp;</p></li>
+</ul>
+<p><b>B. <a name="Maximum_firmware_size">Maximum firmware size</a></b></p>
+<p>Currently, the maximum firmware image size supported by this kit is 5,898,240 
+(0x5A0000) bytes, but can be adjusted through the &quot;-m [size]&quot; parameter of the 
+asustrx tool.</p>
+<p><br />
+<b>C. <a name="Solutions_to_case_sensitivity">Solutions to file system 
+incompatibilities</a></b></p>
+<p><b>! This section is very much a work in progress !</b></p>
+<p>The squashfs file system is case sensitive (i.e. teSt.bin ! = test.bin) and 
+adheres to EXT2 naming rules. To support proper extraction of the file system, 
+the working directory should be on a case sensitive file system and support 
+symbolic links. The scripts 
+will warn you if you attempt to use as working directory on a case INsensitive 
+file system. You'll see a number of errors if you extract to a file system that 
+doesn't support symbolic links.</p>
+<p><b>Note:</b> <i>Case insensitivity doesn't always cause problems,</i> especially if the file 
+system preserves case ok. It depends on the firmware and version. Most of the 
+time for DD-WRT as long as a case preserving file system is used as a working 
+directory, all should work fine.</p>
+<p>These solutions apply to those using CYGWIN, or some other environment 
+that may not have a case sensitive file system by default. Linux users typically 
+do not have this problem since EXT2 and EXT3 file systems are case sensitive.
+</p>
+<p><br />
+<b>WARNING: THESE ARE IN EARLY STAGES OF TESTING AND MAY NOT WORK.</b></p>
+<table border="1" width="100%" id="table4" cellpadding="5">
+	<tr>
+		<td width="127" height="33">&nbsp;</td>
+		<td width="162" height="33"><b>Applies to</b></td>
+		<td height="33"><b>Description</b></td>
+	</tr>
+	<tr>
+		<td width="127" valign="top"><b>SOLUTION 1</b></td>
+		<td width="162" height="30" valign="top">CYGWIN, OTHER</td>
+		<td height="30" valign="top"><b>It's reported this does not work under 
+		CYGWIN</b> due to the CYGWIN utilities all being case INsensitive 
+		(thanks pagedude).<br />
+		<br />
+		Use a network share to a case sensitive file system. This is, by far, 
+		the easiest solution. Simply use an appropriate network share for the 
+		working directory.<br />
+&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="127" height="30" valign="top"><b>SOLUTION 2</b></td>
+		<td width="162" valign="top">CYGWIN</td>
+		<td valign="top"><br />
+		For NT partitions it's reported you can enable case sensitivity through 
+		the following registry key, but <b>I do not know if this works or not</b>.<p>&nbsp;\HKLM\SYSTEM\CurrentControlSet\Control\Session 
+		Manager\kernel\obcaseinsensitive [REG_DWORD] = 0<br />
+&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="127" height="31" valign="top"><b>SOLUTION 3</b></td>
+		<td width="162" height="31" valign="top">OS X (not usually needed, at 
+		least for DD-WRT)</td>
+		<td height="31" valign="top"><br />
+		One can either
+		<a href="http://www.macosxhints.com/article.php?story=200502011939237">
+		Turn on HSFX</a> for the boot disk, or (more easily) create a temporary 
+		HSFX case sensitive file system to use as a working directory.<p>Example 
+		of how to create a temporary HSFX case sensitive file system:<br />
+		<br />
+		<i>to create:<br />
+		</i>$ hdiutil create -size 20m -fs HFSX -volname db90h -nouuid 
+		test-image <br />
+		<i>to mount:<br />
+		</i>$ hdiutil attach test-image.dmg <br />
+		<i>to un-mount:</i><br />
+		$ hdiutil detach /Volumes/db90h </p>
+		<p>(thanks solarflare for this information)<br />
+&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="127" valign="top"><b>SOLUTION 4</b></td>
+		<td width="162" valign="top">CYGWIN<br />
+&nbsp;</td>
+		<td valign="top"><br />
+		Mount an ext2 files system. Eko, of DD-WRT forums, contributes this tip. 
+		Make a partition on a hard drive or USB thumb drive, then install &quot;<a href="http://www.fs-driver.org/">Ext2 
+		Installable File System For Windows</a>&quot;. 10MB should generally be 
+		plenty of working directory space, but 20MB is suggested for more 
+		optimal file system performance.<br />
+&nbsp;</td>
+	</tr>
+</table>
+<p>&nbsp; <b>&nbsp;&nbsp; </b></p>
+<p><font size="5"><b>IV</b></font><b><font size="5">. <a name="Acknowledgments">
+Acknowledgments</a> and more </font></b></p>
+<p>The authors and maintainers of this kit are Jeremy Collake (db90h) and Craig Heffner.&nbsp; 
+Special thanks to Solarflare, TexHex &lt;<a href="mailto:floh@fbesser.de">floh@fbesser.de</a>&gt;, 
+and others.</p>
+<p>If YOU would like to contribute to this kit, send me an email at
+<a href="mailto:jeremy.collake@gmail.com">jeremy.collake@gmail.com</a> or visit 
+the current project hosting at
+<a href="http://code.google.com/p/firmware-mod-kit/">
+http://code.google.com/p/firmware-mod-kit/</a> . Developers are welcome.</p>
+<p>&nbsp;</p>
+<p><b><font size="5">X. <a name="Links">Links</a></font></b></p>
+<ul>
+	<li><i>&nbsp;<a href="creating_ipk_packages.htm">IPK Creation Kit</a> (alpha 
+	testing)</i></li>
+</ul>
+<p>&nbsp;</p>
+<p><b><font size="5">X. <a name="Revision_history">Revision history</a></font></b></p>
+
+<p>0.73</p>
+<ul>
+	<li>New pre-req check and more modern build system (by Craig)</li>
+</ul>
+<p>0.72</p>
+<ul>
+	<li>Fix for recent updates to linux build tools that mandated different command line ordering (by Craig)</li>
+</ul>
+
+<p>0.64-0.71</p>
+<ul>
+	<li>See Google Code</li>
+	<li>NG edition created by Craig Heffner (total new generation of kit)</li>
+</ul>
+<p>0.63</p>
+<ul>
+	<li>Added support for a new raw linux type of firmware (completely untested on the rebuild side flash, so beware)</li>
+	<li>Added new splitter3.cc to split up this linux raw firmware type into its segments</li>
+	<li>Other misc tweaks</li>
+</ul>
+
+<p>0.60</p>
+<ul>
+	<li>Fixed issue with non-standard du switches, i.e. under OS X.</li>
+	<li>Fixed untrx inability to recognize squashfs signatures on big endian systems (patch from Jaifu Gao)</li>
+</ul>
+<p>0.58</p>
+<ul>
+	<li>Removed multi-threaded brute testing of LZMA compression params from the 'damn small' variant DD-WRT v24 uses. This may fix some 
+		reported problems of failed thread creation.</li>
+</ul>
+
+<p>0.56</p>
+<ul>
+	<li>Add support DD-WRT v24 firmware images</li>
+	<li>New unsquashfs variant written for DD-WRT v24</li>
+	<li>Cleanup script output indentation, it was quite sloppy</li>
+	<li>Apply some fixes and other tweaks</li>
+</ul>
+
+<p>0.54</p>
+<ul>
+	<li>Add support for Trendnet TEW-632BRP images</li>
+	<li>Add support for OpenWrt White Russian images</li>
+	<li>Don't force root user, just warn</li>
+	<li>Other maintenance and tweaks</li>
+</ul>
+
+<p>0.51</p>
+<ul>
+	<li>Increased maximum supported size of TRX images (now can handle > 4MB images).</li>
+</ul>
+
+<p>0.50</p>
+<ul>
+	<li>Removed unnecessary -lz parameter (zlib) from gcc.</li>
+</ul>
+<p>0.49</p>
+<ul>
+	<li>unsquashfs: created first ever (afaik) blend of unsquashfs for squashfs 
+	2.x images.</li>
+	<li>mksquashfs: added 2-1.r2. Script support remains todo.</li>
+	<li>other misc. changes.</li>
+</ul>
+<p>0.48</p>
+<ul>
+	<li>scripts: now use cramfsck -x to extract cramfs images instead of 
+	uncramfs. uncramfs proved to fail to extract some images.</li>
+	<li>dirs: renamed cramfs-1.1 to cramfs-2.x to reflect the accurate version 
+	number.</li>
+</ul>
+<p>0.471</p>
+<ul>
+	<li>motorola_bin: added source code.</li>
+</ul>
+<p>0.47</p>
+<ul>
+	<li>wrt_vx_imgtool: added this utility, which can build, extract, view, and 
+	fix firmware images for WRT54G(s) v5/v6 series running VxWorks.</li>
+	<li>motorola_bin: added this binary only (linux) utility. Build script 
+	doesn't invoke it yet, but it's easy to use for those who need it.</li>
+	<li>untrx: minor memory leak fixed.</li>
+	<li>docs: added some device compatibility notes and other edits.</li>
+</ul>
+<p>0.46:</p>
+<ul>
+	<li>scripts: added support for cramfs (testing)</li>
+	<li>scripts: added support for WL-520/530/550G images (only 530g tested).</li>
+	<li>sources: added cramfs 1.1 tools (mkcramfs, cramfsck)</li>
+	<li>images: a symlink is now used between the TRX and generic image. 
+	Previously, the intermediate TRX image was just renamed to the generic 
+	image.</li>
+	<li>scripts: no longer show untrx output</li>
+	<li>docs: minor additions</li>
+</ul>
+<p>0.45:</p>
+<ul>
+	<li>untrx: added support for attempted detection of file system and version 
+	and emission of appropriately named segment.</li>
+	<li>untrx: can now handle trx's that have less than 3 segments.</li>
+	<li>untrx: complete overhauled (needed it). many changes.</li>
+	<li>sources: moved squashfs 3.0 stuff to a dedicated directory.</li>
+	<li>packages: added dd-wrt package for Samba. thanks TexHex &lt;<a href="mailto:floh@fbesser.de">floh@fbesser.de</a>&gt;.</li>
+	<li>asustrx: updated to add -b switch for padding segments (used by 
+	ASUS).</li>
+	<li>asustrx: other misc. enhancements.</li>
+	<li>scripts: added check_for_upgrade.sh which automatically checks for a 
+	newer version of the kit. It's launched when you use extract or build 
+	firmware.</li>
+	<li>scripts: many other fixes and enhancements.</li>
+</ul>
+<p>0.43:</p>
+<ul>
+	<li>scripts: ipkg_remove.sh - rewritten core templated file removal. It 
+	actually works now.</li>
+	<li>scripts: moved build stuff to shared.inc, as appropriate.</li>
+	<li>packages: added dd-wrt package KAID, mainly for removal of this 
+	gargantuan (nearly 1MB uncompressed) package. Note: you can easily create 
+	your own packages for easier removal of things you don't want by using the 
+	IPK template.</li>
+</ul>
+<p>0.42:</p>
+<ul>
+	<li>ipk_template: added new ipk_template directory and make_ipk.sh script to 
+	create IPKG format packages (.IPK).</li>
+	<li>packages: added my newly created ssmtp package with nvram-&gt;conf file 
+	startup script. Installs completely into the DD-WRT file system.</li>
+	<li>packages: added ddwrt_packages subdirectory which will include pre-built 
+	packages custom tailored or known to work</li>
+	<li>scripts: ipkg_install.sh numerous improvements and fixes.</li>
+	<li>scripts: ipkg_remove.sh numerous improvements and fixes.</li>
+	<li>scripts: ipkg_install.sh has new untested/alpha stage capabilities to 
+	handle IPKs with remote sources.</li>
+	<li>docs: several updates</li>
+</ul>
+<p>0.40 beta&nbsp; (md5: 786472cfa03fb1cd70e1b025d091168b)</p>
+<ul>
+	<li>scripts: ipkg_remove.sh - new script for basic IPK package removal</li>
+	<li>scripts: ipkg_install.sh possible OS X fixes</li>
+	<li>scripts: ipkg_install.sh changed technique of recording installed 
+	packages</li>
+	<li>scripts: ipkg_install.sh outputs control file so user can see 
+	dependencies and more</li>
+	<li>scripts: several improvements</li>
+	<li>docs: hopefully more readable format in places</li>
+	<li>docs: many mods and extensions</li>
+</ul>
+<p>0.33 beta</p>
+<ul>
+	<li>structure: moved tool source codes to src subfolder</li>
+	<li>scripts: added ipkg_install_all.sh to install an entire folder of 
+	packages.</li>
+	<li>scripts: consolidated shared code into an 'include' script</li>
+	<li>scripts: added forgotten parameter count check to ipkg_install.sh</li>
+	<li>scripts other minor changes</li>
+</ul>
+<p>0.31 beta</p>
+<ul>
+	<li>new tests indicate OS X with native HFS+ file system results in firmware 
+	images that work just fine! This build should be fully compatible with OS X 
+	without even necessitating HSFX use for most firmwares.</li>
+	<li>mksquashfs: fix for big endian machines (specifically ppc / OS X) 
+	resulting from change to support dd-wrt 08/10/06+ builds.</li>
+</ul>
+<p>0.30 beta</p>
+<ul>
+	<li>scripts: created symlinks that omit the .sh extension</li>
+	<li>scripts: expanded build success check</li>
+	<li>scripts: fixed failure to exit if tools build failed</li>
+	<li>scripts: other minor cosmetic improvements</li>
+	<li>untrx: fixed a file handle leak in v0.28 beta</li>
+	<li>docs: added example procedure to install SSMTP into DD-WRT image</li>
+	<li>docs: added table of contents</li>
+	<li>docs: misc. additions and revisions</li>
+</ul>
+<p>0.29 beta</p>
+<ul>
+	<li>scripts: added ipkg_install.sh to install .IPK format packages.</li>
+</ul>
+<p>0.28 beta</p>
+<ul>
+	<li>the v0.26 fix for changed signature of&nbsp; 08/10/06 builds was 
+	incomplete (test was flawed), resulting in builds that wouldn't run. fixed 
+	properly now.</li>
+	<li>mksquashfs: added -magic [file] parameter to embed whichever is used in 
+	the original firmware</li>
+	<li>untrx: added extraction of squashfs signature/magic for passing to 
+	mksquashfs</li>
+	<li>docs: added more stuff</li>
+</ul>
+<p>0.27 beta</p>
+<ul>
+	<li>scripts: changed warning about file system.</li>
+</ul>
+<p>0.26 beta</p>
+<ul>
+	<li>Fixed compatibility with DD-WRT builds 08/10/06 and higher. Brainslayer 
+	played a joke on me. </li>
+</ul>
+<p>0.25 beta</p>
+<ul>
+	<li>OS X now works. When using case insensitive file system though built 
+	firmwares might have errata.</li>
+	<li>trx: removed this tool due to odd command line parsing bug on (big 
+	endian?) OS X systems. asustrx now used in its place.</li>
+	<li>scripts: file system case insensitive now warning, can be continued in 
+	default settings.</li>
+	<li>untrx: fixed some endian problems. </li>
+	<li>untrx: fixed a problem with U2ND headers (previous version only worked 
+	on trx/generic firmwares).</li>
+	<li>docs: minor additions.</li>
+</ul>
+<p>0.23 beta</p>
+<ul>
+	<li>package: removed linux executables, download now half size. Surely 
+	everyone can install basic build tools..</li>
+	<li>scripts: added working directory file system test for case insensitivity 
+	and write access</li>
+	<li>scripts: added option to continue on after warning when OS X or CYGWIN 
+	present</li>
+	<li>scripts: removed pre-fixed script name, much cleaner looking output now</li>
+	<li>scripts: added variable to choose whether or not to abort if file system 
+	found incompatible</li>
+	<li>scripts: added cleanup.sh script to clean tools and logs.</li>
+	<li>untrx: renamed extfirmware to untrx, much more intuitive name</li>
+</ul>
+<p>0.22 beta</p>
+<ul>
+	<li>scripts: added support for OS X</li>
+	<li>scripts: added support for CYGWIN</li>
+	<li>scripts: minor cosmetic work</li>
+	<li>extfirmware: added endian neutrality</li>
+	<li>trx: fixed OS X support</li>
+	<li>asustrx: fixed OS X support</li>
+</ul>
+<p>0.20 beta</p>
+<ul>
+	<li>scripts: added check for Linux and OS X and appropriate compatibility 
+	messages</li>
+	<li>extfirmware: added GNU license header</li>
+	<li>extfirmware: removed some unnecessary header includes</li>
+	<li>extfirmware: switched to u_int32_t for wider compatibility</li>
+	<li>extfirmware: other minor improvements</li>
+	<li>trx: increased maximum firmware size to 0x5A0000 (OpenWrt) from 0x3A0000 
+	(DD-WRT).</li>
+	<li>trx: switched to u_int32_t for wider compatibility</li>
+	<li>makefile: uses gcc instead of cc now</li>
+	<li>docs: several updates</li>
+</ul>
+<p>v0.15 beta</p>
+<ul>
+	<li>Reworked scripts so they have cleaner, clearer output and use a log file 
+	(build.log and extract.log)</li>
+	<li>Added more sanity checks in the scripts</li>
+	<li>Documentation additions</li>
+	<li>Misc. polishing</li>
+</ul>
+<p>v0.13 alpha: Documentation updates, re-included pre-built executables<br />
+v0.10 alpha: First decent public release.</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p><font size="2">This document (c)2006-2011 Jeremy Collake and Craig Heffner. <br />
+All Rights reserved. This document may be freely republished in its unaltered 
+and whole form only. Alterations or partial publishing requires approval of 
+creator(s).</font></p>
+  
+<p><i><font size="2">&nbsp;This kit is free software; you can redistribute it 
+and/or modify<br />
+&nbsp;it under the terms of the GNU General Public License as published by<br />
+&nbsp;the Free Software Foundation; either version 2 of the License, or<br />
+&nbsp;(at your option) any later version.<br />
+<br />
+&nbsp;This program is distributed in the hope that it will be useful,<br />
+&nbsp;but WITHOUT ANY WARRANTY; without even the implied warranty of<br />
+&nbsp;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU<br />
+&nbsp;General Public License for more details.<br />
+<br />
+&nbsp;You should have received a copy of the GNU General Public License<br />
+&nbsp;along with this program; if not, write to the Free Software<br />
+&nbsp;Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA</font></i></p>
+  
+</body>
+
+</html>

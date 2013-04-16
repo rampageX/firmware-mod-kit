@@ -1,0 +1,42 @@
+cramfsswap (1.4.1) unstable; urgency=low
+
+  * Changed build rules: Do not strip in makefile when building for debian,
+    instead will be stripped by dh_strip invocation in debian/rules thus
+    honoring nostrip option correctly (closes: Bug#436671).
+
+ -- Michael Holzt <debian-cramfsswap@michael.holzt.de>  Sun, 14 Oct 2007 23:38:41 +0200
+
+cramfsswap (1.4) unstable; urgency=low
+
+  * cramfsswap can now handle cramfs filesystems with more than 4095 files
+    thanks to a patch by Nobuhiro Iwamatsu (closes: Bug#440060).
+
+ -- Michael Holzt <debian-cramfsswap@michael.holzt.de>  Sun, 14 Oct 2007 22:03:07 +0200
+
+cramfsswap (1.3.1) unstable; urgency=low
+
+  * Corrected beginning of source (GPL-Notice, last modified)
+
+ -- Michael Holzt <debian-cramfsswap@michael.holzt.de>  Wed,  8 Nov 2006 16:36:19 +0100
+
+cramfsswap (1.3) unstable; urgency=low
+
+  * Corrected swapping on big endian architecture (closes: Bug#345723).
+  * Skipped version 1.2 due to incorrectly handled NMU. :-(
+  * Clarified license information. Only GPL2 does apply, no GPL3!
+
+ -- Michael Holzt <debian-cramfsswap@michael.holzt.de>  Wed,  8 Nov 2006 14:10:27 +0100
+
+cramfsswap (1.2) unstable; urgency=low
+
+  * NMU
+  * Patch from Andreas Jochens to fix FTBFS on unstable due to missing u32
+    declaration. Closes: #392166
+
+ -- Joey Hess <joeyh@debian.org>  Tue, 17 Oct 2006 15:50:08 -0400
+
+cramfsswap (1.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Michael Holzt <kju@debian.org>  Tue,  4 Jan 2005 12:26:00 +0100
