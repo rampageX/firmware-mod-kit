@@ -2,9 +2,7 @@
 
 = Introduction =
 
-The Firmware Mod Kit allows for easy deconstruction and reconstruction of firmware images for various embedded devices. While it primarily targets Linux based routers, it should be compatible with most firmware that makes use of common firmware formats and file systems such as TRX/uImage and SquashFS/CramFS. 
-
-
+The Firmware Mod Kit allows for easy deconstruction and reconstruction of firmware images for various embedded devices. While it primarily targets Linux based routers, it should be compatible with most firmware that makes use of common firmware formats and file systems such as TRX/uImage and SquashFS/CramFS/JFFS2. 
 
 = Prerequisites = 
 
@@ -12,13 +10,13 @@ In order to use the Firmware Mod Kit, you must have a subversion client, standar
 
 For Ubuntu:
 {{{
-$ sudo apt-get install subversion build-essential zlib1g-dev liblzma-dev python-magic
+$ sudo apt-get install git build-essential zlib1g-dev liblzma-dev python-magic
 }}}
 
 OR for RedHat:
 {{{
 yum groupinstall "Development Tools"
-yum install svn
+yum install git
 yum install zlib1g-dev
 yum install xz-devel
 yum install python-magic
@@ -28,6 +26,18 @@ For other distros, you should install the equivalent packages using your distro'
 
 The Firmware Mod Kit is only supported on the Linux platform.
 
+= Download and Install the Firmware Mod Kit =
+
+This project uses 'git'. We recommend you use that tool to get the source code. That way an update is a simple command away.
+
+Clone (copy) Git repository with:
+{{
+git clone https://jeremy.collake@code.google.com/p/firmware-mod-kit/ 
+}}
+Update Git repository with:
+{{
+git pull
+}}
 
 = Tools / Utilities =
 
@@ -124,9 +134,9 @@ This example demonstrates how to extract a firmware image, replace its existing 
 Below is an example of the commands to run in order to extract a DD-WRT firmware image, modify the Web index page, and build a new firmware image:
 
 {{{
-  $ ./extract-firmware.sh firmware.bin
-  $ ./ddwrt-gui-extract.sh
+  $ ./extract-firmware.sh firmware.bin working_dir
+  $ ./ddwrt-gui-extract.sh ddwrtgui working_dir/rootfs
   $ echo "HELLO WORLD" > www/index.asp
-  $ ./ddwrt-gui-rebuild.sh
-  $ ./build-firmware.sh
+  $ ./ddwrt-gui-rebuild.sh ddwrtgui working_dir/rootfs
+  $ ./build-firmware.sh firmware.bin working_dir
 }}}
