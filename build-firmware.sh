@@ -162,21 +162,4 @@ else
 	echo -n "Firmware header not supported; firmware checksums may be incorrect. "
 fi
 
-# if a Buffalo image, then run encrypter - base on image name
-if [ "$(echo $FWOUT | grep -i 'buffalo')" != "" ]
-then	
-	# product name, version, key, encryption type can be specified here
-	$KEY="" # specify full param, e.g. -k mykey
-	$MAGIC=""
-	$PRODUCT=""
-	$LONGSTATE=""
-	./src/firmware-tools/buffalo-enc -i $FWOUT -o $FWOUT.buffalo.enc $KEY $MAGIC $PRODUCT $LONGSTATE
-	#if [ $? -eq 0 ]
-	#then
-	#	echo "Encrypted Buffalo image created."
-	#else
-	#	echo "ERROR creating an encrypted Buffalo image"
-	#fi
-fi
-
 echo "New firmware image has been saved to: $FWOUT"
