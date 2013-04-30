@@ -58,7 +58,7 @@ then
 	fi
 fi
 
-echo "Building new $FS_TYPE file system..."
+echo "Building new $FS_TYPE file system... (this may take several minutes in some cases!)"
 
 # Clean up any previously created files
 rm -rf "$FWOUT" "$FSOUT"
