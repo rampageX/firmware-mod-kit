@@ -7,9 +7,9 @@ mkdir update_check
 cd update_check
 SYSNAME=`uname`
 if [ `expr "$SYSNAME" : "Darwin"` = 6 ]; then
-	curl -O -s --connect-timeout 4 --retry 1 http://firmware-mod-kit.googlecode.com/svn/trunk/firmware_mod_kit_version.txt
+	curl -O -s --connect-timeout 4 --retry 1 https://firmware-mod-kit.googlecode.com/git/firmware_mod_kit_version.txt
 else
-	wget --quiet --timeout=4 --tries=1 http://firmware-mod-kit.googlecode.com/svn/trunk/firmware_mod_kit_version.txt
+	wget --quiet --timeout=4 --tries=1 https://firmware-mod-kit.googlecode.com/git/firmware_mod_kit_version.txt
 fi
 cd ..
 if [ ! -f "update_check/firmware_mod_kit_version.txt" ]; then
