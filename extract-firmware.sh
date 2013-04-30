@@ -25,7 +25,7 @@ cd $(dirname $(readlink -f $0))
 # Source in/Import shared settings. ${DIR} MUST be defined prior to this!
 . ./shared-ng.inc
 
-printf "Firmware Mod Kit (build-ng) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
+printf "Firmware Mod Kit (extract) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
 
 # Check usage
 if [ "${IMG}" = "" ] || [ "${IMG}" = "-h" ]

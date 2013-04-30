@@ -35,7 +35,7 @@ eval $(cat shared-ng.inc)
 eval $(cat $CONFLOG)
 FSOUT="$DIR/new-filesystem.$FS_TYPE"
 
-printf "Firmware Mod Kit (build-ng) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
+printf "Firmware Mod Kit (build) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
 
 if [ ! -d "$DIR" ]
 then
