@@ -3,9 +3,9 @@ Build_Tools ()
 	echo "Preparing tools ..."
 	cd src 
 	if [ ! -f "./Makefile" ]; then	
-		./configure 2>&1 > ./debug.log 
+		./configure 2>&1 >> /dev/null
 	fi
-	make 2>&1 >> ./debug.log
+	make -s
 	if [ $? -eq 0 ]; then
 		cd - 2>&1 >> /dev/null
 	else
