@@ -58,7 +58,7 @@ then
 	fi
 fi
 
-echo "Building new $FS_TYPE file system... (this may take several minutes in some cases!)"
+echo "Building new $FS_TYPE file system... (this may take several minutes!)"
 
 # Clean up any previously created files
 rm -rf "$FWOUT" "$FSOUT"
@@ -92,7 +92,7 @@ case $FS_TYPE in
 		then
 			BS="-b $FS_BLOCKSIZE"
 			HR_BLOCKSIZE="$(($FS_BLOCKSIZE/1024))"
-			echo "Squashfs block size is $HR_BLOCKSIZE Kb"
+			echo "Squahfs block size is $HR_BLOCKSIZE Kb"
 		fi
 
 		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
