@@ -46,19 +46,15 @@ if [ -e "${DIR}" ]
 	exit 1
 fi
 
-# Check if FMK has been built, and if not, build it
-if [ ! -e "./src/crcalc/crcalc" ]
- then
-	echo "Firmware-Mod-Kit has not been built yet. Building..."
-	cd src && ./configure && make
-
-	if [ ${?} -eq 0 ]
-	 then
-		cd -
-	else
-		echo "Build failed! Quitting..."
-		exit 1
-	fi
+# Always try to rebuild, let make decide if necessary
+echo "Preparing tools ..."
+cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
+if [ $? -eq 0 ]
+then
+	cd -
+else
+	echo "Extract failed! Quitting..."
+	exit 1
 fi
 
 # Get the size, in bytes, of the target firmware image
@@ -121,7 +117,7 @@ for LINE in IFS='
 			FS_COMPRESSION="gzip"
 		fi
 
-		# Check for a block size (used only by mksquashfs)
+		# Check for a block size (used only by squashfs)
 		if [ "$(echo ${LINE} | grep -i 'blocksize')" != "" ]
 		then
 			set -f
@@ -146,8 +142,7 @@ HEADER_IMAGE_SIZE=$((${FS_OFFSET}-${HEADER_IMAGE_OFFSET}))
 echo "Extracting ${HEADER_IMAGE_SIZE} bytes of ${HEADER_TYPE} header image at offset ${HEADER_IMAGE_OFFSET}"
 dd if="${IMG}" bs=${HEADER_IMAGE_SIZE} skip=${HEADER_IMAGE_OFFSET} count=1 of="${HEADER_IMAGE}" 2>/dev/null
 
-if [ "${FS_OFFSET}" != "" ]
- then
+if [ "${FS_OFFSET}" != "" ]; then
 	echo "Extracting ${FS_TYPE} file system at offset ${FS_OFFSET}"
 	dd if="${IMG}" bs=${FS_OFFSET} skip=1 of="${FSIMG}" 2>/dev/null
 else
@@ -174,8 +169,7 @@ for LINE in $(hexdump -C ${IMG} | tail -11 | head -10 | sed -n '1!G;h;$p' | sed 
 done
 
 # If a footer was found, dump it out
-if [ "${FOOTER_SIZE}" != "0" ]
- then
+if [ "${FOOTER_SIZE}" != "0" ]; then
 	FOOTER_OFFSET=$((${FW_SIZE}-${FOOTER_SIZE}))
 	echo "Extracting ${FOOTER_SIZE} byte footer from offset ${FOOTER_OFFSET}"
 	dd if="${IMG}" bs=1 skip=${FOOTER_OFFSET} count=${FOOTER_SIZE} of="${FOOTER_IMAGE}" 2>/dev/null
@@ -215,8 +209,7 @@ case ${FS_TYPE} in
 esac
 
 # Check if file system extraction was successful
-if [ ${?} -eq 0 ]
- then
+if [ ${?} -eq 0 ]; then
 	echo "Firmware extraction successful!"
 	echo "Firmware parts can be found in '${DIR}/*'"
 else
