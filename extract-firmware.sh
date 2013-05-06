@@ -53,7 +53,7 @@ if [ $? -eq 0 ]
 then
 	cd -
 else
-	echo "Extract failed! Quitting..."
+	echo "Tools build failed! Check pre-requisites. Quitting..."
 	exit 1
 fi
 
