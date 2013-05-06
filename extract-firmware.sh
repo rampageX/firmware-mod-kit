@@ -28,20 +28,17 @@ cd $(dirname $(readlink -f $0))
 printf "Firmware Mod Kit (extract) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
 
 # Check usage
-if [ "${IMG}" = "" ] || [ "${IMG}" = "-h" ]
- then
+if [ "${IMG}" = "" ] || [ "${IMG}" = "-h" ]; then
 	printf "Usage: ${0} <firmware image>\n\n"
 	exit 1
 fi
 
-if [ ! -f "${IMG}" ];
-then
+if [ ! -f "${IMG}" ]; then
 	echo "File does not exist!"
 	exit 1
 fi
 
-if [ -e "${DIR}" ]
- then
+if [ -e "${DIR}" ]; then
 	echo "Directory ${DIR} already exists! Quitting..."
 	exit 1
 fi
@@ -49,8 +46,7 @@ fi
 # Always try to rebuild, let make decide if necessary
 echo "Preparing tools ..."
 cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
 	cd -
 else
 	echo "Tools build failed! Check pre-requisites. Quitting..."
@@ -87,8 +83,7 @@ for LINE in IFS='
 	DESCRIPTION=$(echo ${LINE} | awk '{print tolower($3)}')
 
 	# Offset 0 is firmware header
-	if [ "${OFFSET}" = "0" ]
-	 then
+	if [ "${OFFSET}" = "0" ]; then
 		HEADER_OFFSET=${OFFSET}
 		HEADER_TYPE=${DESCRIPTION}
 		HEADER_SIZE=$(echo ${LINE} | sed -e 's/.*header size: //' | cut -d' ' -f1)
@@ -101,8 +96,7 @@ for LINE in IFS='
 		FS_TYPE=${DESCRIPTION}
 
 		# Need to know endianess for re-assembly
-		if [ "$(echo ${LINE} | grep -i 'big endian')" != "" ]
-		 then
+		if [ "$(echo ${LINE} | grep -i 'big endian')" != "" ]; then
 			ENDIANESS="-be"
 		else
 			ENDIANESS="-le"
@@ -110,16 +104,14 @@ for LINE in IFS='
 
 		# Check for LZMA compression in the file system. If not present, assume gzip.
 		# This is only used for squashfs 4.0 images.
-		if [ "$(echo ${LINE} | grep -i 'lzma')" != "" ]
-		 then
+		if [ "$(echo ${LINE} | grep -i 'lzma')" != "" ];  then
 			FS_COMPRESSION="lzma"
 		else
 			FS_COMPRESSION="gzip"
 		fi
 
 		# Check for a block size (used only by squashfs)
-		if [ "$(echo ${LINE} | grep -i 'blocksize')" != "" ]
-		then
+		if [ "$(echo ${LINE} | grep -i 'blocksize')" != "" ]; then
 			set -f
 			IFS=,
 			for fsparam in ${LINE}
@@ -160,8 +152,7 @@ FOOTER_OFFSET=0
 # that start with '*' with the word 'FILLER'.
 for LINE in $(hexdump -C ${IMG} | tail -11 | head -10 | sed -n '1!G;h;$p' | sed -e 's/^*/FILLER/')
  do
-	if [ "${LINE}" = "FILLER" ]
-	 then
+	if [ "${LINE}" = "FILLER" ]; then
 		break
 	else
 		FOOTER_SIZE=$((${FOOTER_SIZE}+16))
