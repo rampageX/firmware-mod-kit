@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}	
 	fclose(fIn);	
-	fprintf(stderr, " read %u bytes\n", nFilesize);
+	fprintf(stderr, " read %ld bytes\n", nFilesize);
 	
 	/* Extract the segments */
 	unsigned int nKernelLength=0;
@@ -295,7 +295,7 @@ int main(int argc, char **argv)
 				}
 				break;			
 		}		
-		fprintf(stderr,"  Writing %s\n    size %d from offset %d ...\n", 
+		fprintf(stderr,"  Writing %s\n    size %u from offset %ld ...\n", 
 			pszTemp, 
 			nLength,
 			pData-pDataOrg);		

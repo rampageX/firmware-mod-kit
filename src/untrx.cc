@@ -170,7 +170,7 @@ int main(int argc, char **argv)
 		exit(1);
 	}	
 	fclose(fIn);	
-	fprintf(stderr, " read %u bytes\n", nFilesize);
+	fprintf(stderr, " read %lu bytes\n", nFilesize);
 	
 	// uf U2ND header present, skip past it (pData is preserved above)
 	unsigned long nDataSkip=0;
@@ -260,7 +260,7 @@ int main(int argc, char **argv)
 				sprintf(pszTemp,"%s/segment%d",pszOutFolder,nI+1);
 				break;			
 		}		
-		fprintf(stderr,"  Writing %s\n    size %d from offset %d ...\n", 
+		fprintf(stderr,"  Writing %s\n    size %ld from offset %d ...\n", 
 			pszTemp, 
 			nEndOffset-READ32_LE(trx->offsets[nI]),
 			READ32_LE(trx->offsets[nI]));		
