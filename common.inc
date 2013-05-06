@@ -1,7 +1,11 @@
 Build_Tools ()
 {
 	echo "Preparing tools ..."
-	cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
+	cd src 
+	if [ ! -f "./Makefile" ]; then	
+		./configure 2>&1 > ./debug.log 
+	fi
+	make 2>&1 >> ./debug.log
 	if [ $? -eq 0 ]; then
 		cd - 2>&1 >> /dev/null
 	else
