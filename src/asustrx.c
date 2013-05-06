@@ -138,7 +138,7 @@ int main(int argc, char **argv)
 	uint32_t cur_len;	
 	int boolSegmentSizesGiven=0; /* jc */
 	int nSegementCount=0;
-	unsigned long maxlen = TRX_MAX_LEN;
+	uint32_t maxlen = TRX_MAX_LEN;
 	struct trx_header *p;
 	struct trx_header trxtemp;
 	memset(&trxtemp,0,sizeof(struct trx_header));
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
 
 		n = fread(buf + cur_len, 1, maxlen - cur_len, in);
 		if (!feof(in)) {
-			fprintf(stderr, "fread failure or file \"%s\" too large cur:%d max: %d\n",
+			fprintf(stderr, "fread failure or file \"%s\" too large cur:%u max: %u\n",
 					argv[optind], cur_len, maxlen);
 			fclose(in);
 			return EXIT_FAILURE;
