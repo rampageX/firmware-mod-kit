@@ -1,5 +1,5 @@
 PROG = uncramfs-lzma
-CC = gcc -O3 -Wall
+CC = gcc -O3 -w
 LIB = -lm
 RM = rm -f
 CFLAGS = -c
