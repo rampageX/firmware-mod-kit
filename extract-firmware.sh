@@ -1,4 +1,5 @@
 #!/bin/bash
+. "./common.inc"
 
 IMG="${1}"
 DIR="${2}"
@@ -41,15 +42,7 @@ if [ -e "${DIR}" ]; then
 	exit 1
 fi
 
-# Always try to rebuild, let make decide if necessary
-echo "Preparing tools ..."
-cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
-if [ $? -eq 0 ]; then
-	cd -
-else
-	echo "Tools build failed! Check pre-requisites. Quitting..."
-	exit 1
-fi
+Build_Tools
 
 # Get the size, in bytes, of the target firmware image
 FW_SIZE=$(ls -l "${IMG}" | cut -d' ' -f5)
