@@ -43,19 +43,15 @@ then
 	exit 1
 fi
 
-# Check if FMK has been built, and if not, build it
-if [ ! -e "./src/crcalc/crcalc" ]
+# Always try to rebuild, let make decide if necessary
+echo "Preparing tools ..."
+cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
+if [ $? -eq 0 ]
 then
-	echo "Firmware-Mod-Kit has not been built yet. Building..."
-	cd src && ./configure && make
-
-	if [ $? -eq 0 ]
-	then
-		cd -
-	else
-		echo "Build failed! Quitting..."
-		exit 1
-	fi
+	cd -
+else
+	echo "Build failed! Quitting..."
+	exit 1
 fi
 
 echo "Building new $FS_TYPE file system... (this may take several minutes!)"
@@ -129,8 +125,8 @@ if [ "$FILLER_SIZE" -lt 0 ]
 then
 	echo "ERROR: New firmware image will be larger than original image!"
 	echo "       Building firmware images larger than the original can brick your device!"
-	echo "       Try re-running with the -min option, or remove any unnecessary files from the file system."
-	echo "       Refusing to create new firmware image."
+	echo "       Try re-running with the -min option, or remove any unnecessary files."
+	echo "       REFUSING to create new firmware image."
 	echo ""
 	echo "       Original file size: $FW_SIZE"
 	echo "       Current file size:  $CUR_SIZE (plus footer of $FOOTER_SIZE bytes)"
