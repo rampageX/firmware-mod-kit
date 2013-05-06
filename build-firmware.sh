@@ -132,7 +132,7 @@ then
 	echo "       Current file size:  $CUR_SIZE (plus footer of $FOOTER_SIZE bytes)"
 	echo ""
 	echo "       Quitting..."
-	rm -f "$FWOUT" "$FSOUT"
+#	rm -f "$FWOUT" "$FSOUT"
 	exit 1
 else
 	if [ "$NEXT_PARAM" != "-nopad" ]; then
