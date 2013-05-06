@@ -91,6 +91,7 @@ case $FS_TYPE in
                 if [ "$FS_BLOCKSIZE" != "" ]
 		then
 			BS="-b $FS_BLOCKSIZE"
+			echo "Blocksize $BS"
 		fi
 
 		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
@@ -131,10 +132,7 @@ then
 	echo "       Refusing to create new firmware image."
 	echo ""
 	echo "       Original file size: $FW_SIZE"
-	if [ "$FOOTER_SIZE" -gt "0" ]; then
-		FOOTER_SIZE_MSG = "+ $FOOTER_SIZE (footer)"
-	fi
-	echo "       Current file size:  $CUR_SIZE $FOOTER_SIZE_MSG"
+	echo "       Current file size:  $CUR_SIZE (plus footer of $FOOTER_SIZE bytes)"
 	echo ""
 	echo "       Quitting..."
 	rm -f "$FWOUT" "$FSOUT"
