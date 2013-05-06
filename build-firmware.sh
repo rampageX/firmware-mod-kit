@@ -91,7 +91,8 @@ case $FS_TYPE in
                 if [ "$FS_BLOCKSIZE" != "" ]
 		then
 			BS="-b $FS_BLOCKSIZE"
-			echo "Blocksize $BS"
+			HR_BLOCKSIZE="$(($FS_BLOCKSIZE/1024))"
+			echo "Squashfs block size is $HR_BLOCKSIZE Kb"
 		fi
 
 		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
