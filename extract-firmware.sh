@@ -3,14 +3,12 @@
 IMG="${1}"
 DIR="${2}"
 
-if [ "${DIR}" = "" ]
- then
+if [ "${DIR}" = "" ]; then
 	DIR="fmk"
 fi
 
 # Need to extract file systems as ROOT
-if [ "$(id -ru)" != "0" ]
- then
+if [ "$(id -ru)" != "0" ]; then
 	SUDO="sudo"
 else
 	SUDO=""

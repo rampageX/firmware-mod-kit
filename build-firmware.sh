@@ -3,14 +3,12 @@
 DIR="$1"
 NEXT_PARAM=""
 
-if [ "$1" == "-h" ]
-then
+if [ "$1" == "-h" ]; then
 	echo "Usage: $0 [FMK directory] [-nopad | -min]"
 	exit 1
 fi
 
-if [ "$DIR" == "" ] || [ "$DIR" == "-nopad" ] || [ "$DIR" == "-min" ]
-then
+if [ "$DIR" == "" ] || [ "$DIR" == "-nopad" ] || [ "$DIR" == "-min" ]; then
 	DIR="fmk"
 	NEXT_PARAM="$1"
 else
@@ -18,8 +16,7 @@ else
 fi
 
 # Need to extract file systems as ROOT
-if [ "$UID" != "0" ]
-then
+if [ "$UID" != "0" ]; then
         SUDO="sudo"
 else
         SUDO=""
@@ -37,8 +34,7 @@ FSOUT="$DIR/new-filesystem.$FS_TYPE"
 
 printf "Firmware Mod Kit (build) ${VERSION}, (c)2011-2013 Craig Heffner, Jeremy Collake\n\n"
 
-if [ ! -d "$DIR" ]
-then
+if [ ! -d "$DIR" ]; then
 	echo -e "Usage: $0 [build directory] [-nopad]\n"
 	exit 1
 fi
@@ -46,8 +42,7 @@ fi
 # Always try to rebuild, let make decide if necessary
 echo "Preparing tools ..."
 cd src && ./configure 2>&1 > ./debug.log && make 2>&1 >> ./debug.log
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
 	cd -
 else
 	echo "Tools build failed! Check pre-requisites. Quitting..."
@@ -63,29 +58,25 @@ rm -rf "$FWOUT" "$FSOUT"
 case $FS_TYPE in
 	"squashfs")
 		# Check for squashfs 4.0 realtek, which requires the -comp option to build lzma images.
-		if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] && [ "$FS_COMPRESSION" == "lzma" ]
-		then
+		if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] && [ "$FS_COMPRESSION" == "lzma" ]; then
 			COMP="-comp lzma"
 		else
 			COMP=""
 		fi
 
 		# Mksquashfs 4.0 tools don't support the -le option; little endian is built by default
-		if [ "$(echo $MKFS | grep 'squashfs-4.')" != "" ] && [ "$ENDIANESS" == "-le" ]
-		then
+		if [ "$(echo $MKFS | grep 'squashfs-4.')" != "" ] && [ "$ENDIANESS" == "-le" ];	then
 			ENDIANESS=""
 		fi
 		
 		# Increasing the block size minimizes the resulting image size (larger dictionary). Max block size of 1MB.
-		if [ "$NEXT_PARAM" == "-min" ]
-		then
+		if [ "$NEXT_PARAM" == "-min" ];	then
 			echo "Blocksize override (-min). Original used $((FS_BLOCKSIZE/1024))KB blocks. New firmware uses 1MB blocks."
 			FS_BLOCKSIZE="$((1024*1024))"
 		fi
 
 		# if blocksize var exists, then add '-b' parameter
-                if [ "$FS_BLOCKSIZE" != "" ]
-		then
+                if [ "$FS_BLOCKSIZE" != "" ]; then
 			BS="-b $FS_BLOCKSIZE"
 			HR_BLOCKSIZE="$(($FS_BLOCKSIZE/1024))"
 			echo "Squahfs block size is $HR_BLOCKSIZE Kb"
@@ -95,8 +86,7 @@ case $FS_TYPE in
 		;;
 	"cramfs")
 		$SUDO $MKFS "$ROOTFS" "$FSOUT"
-		if [ "$ENDIANESS" == "-be" ]
-		then
+		if [ "$ENDIANESS" == "-be" ]; then
 			mv "$FSOUT" "$FSOUT.le"
 			./src/cramfsswap/cramfsswap "$FSOUT.le" "$FSOUT"
 			rm -f "$FSOUT.le"
@@ -107,8 +97,7 @@ case $FS_TYPE in
 		;;
 esac
 
-if [ ! -e $FSOUT ]
-then
+if [ ! -e $FSOUT ]; then
 	echo "Failed to create new file system! Quitting..."
 	exit 1
 fi
@@ -121,8 +110,7 @@ $SUDO cat $FSOUT >> $FWOUT
 CUR_SIZE=$(ls -l $FWOUT | awk '{print $5}')
 ((FILLER_SIZE=$FW_SIZE-$CUR_SIZE-$FOOTER_SIZE))
 
-if [ "$FILLER_SIZE" -lt 0 ]
-then
+if [ "$FILLER_SIZE" -lt 0 ]; then
 	echo "ERROR: New firmware image will be larger than original image!"
 	echo "       Building firmware images larger than the original can brick your device!"
 	echo "       Try re-running with the -min option, or remove any unnecessary files."
@@ -144,8 +132,7 @@ else
 fi
 
 # Append the footer to the new firmware image, if there is any footer
-if [ "$FOOTER_SIZE" -gt "0" ]
-then
+if [ "$FOOTER_SIZE" -gt "0" ]; then
 	cat $FOOTER_IMAGE >> "$FWOUT"
 fi
 
@@ -153,8 +140,7 @@ fi
 # trx, dlob, uimage
 ./src/crcalc/crcalc "$FWOUT" "$BINLOG"
 
-if [ $? -eq 0 ]
-then
+if [ $? -eq 0 ]; then
 	echo -n "Finished! "
 else
 	echo -n "Firmware header not supported; firmware checksums may be incorrect. "
