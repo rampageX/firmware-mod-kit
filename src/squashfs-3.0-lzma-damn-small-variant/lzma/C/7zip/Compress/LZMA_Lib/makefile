@@ -1,5 +1,5 @@
 PROG = liblzma.a
-CXX = g++ -O3  -funroll-loops -mtune=opteron -march=opteron -mfpmath=sse -m3dnow -msse2 -mmmx -msse -msse3 -O3 -Wall -finline-functions
+CXX = g++ -O3  -funroll-loops -O3 -Wall -finline-functions
 AR = ar
 RM = rm -f
 CFLAGS = -c  -I ../../../

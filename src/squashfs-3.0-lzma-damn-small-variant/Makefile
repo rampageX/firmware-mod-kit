@@ -1,7 +1,7 @@
 INCLUDEDIR = .
 LZMAPATH = ./lzma/C/7zip/Compress/LZMA_Lib
 
-CFLAGS := -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -funroll-loops -mtune=opteron -march=opteron -mfpmath=sse -m3dnow -msse2 -O3 -D_LZMA_PARAMS -w
+CFLAGS := -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -funroll-loops -O3 -D_LZMA_PARAMS -w
 
 all: mksquashfs-lzma unsquashfs-lzma
 
