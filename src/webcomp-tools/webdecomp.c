@@ -180,6 +180,10 @@ void detect_key(char *httpd, char *www)
 			total_entries++;
 		}
 	}
+	else
+	{
+		fprintf(stderr, "WARNING: Failed to read required files '%s' and '%s'. Cannot determine key.\n", httpd, www);
+	}
 
 	/* Reset the next_entry counters for subsequent entry processing */
 	next_entry(NULL, 0);
@@ -194,6 +198,7 @@ void detect_key(char *httpd, char *www)
 	}
 	else
 	{
+		fprintf(stderr, "WARNING: Failed to determine key based on %d entries with a total size of %d / %d\n", total_entries, total_size, wsize);
 		globals.key = 0;
 	}
 
@@ -213,7 +218,7 @@ int extract(char *httpd, char *www, char *outdir)
 	hdata = (unsigned char *) file_read(httpd, &hsize);
 	wdata = (unsigned char *) file_read(www, &wsize);
 	
-	if(hdata != NULL && wdata != NULL) // && detect_settings(hdata, hsize))
+	if(hdata != NULL && wdata != NULL)
 	{
 		/* Create the output directory, if it doesn't already exist */
 		mkdir_p(outdir);
@@ -298,7 +303,7 @@ int restore(char *httpd, char *www, char *indir)
 	/* Open the www file for writing */
 	fp = fopen(www, "wb");
 
-	if(hdata != NULL && fp != NULL) // && detect_settings(hdata, hsize))
+	if(hdata != NULL && fp != NULL)
 	{
 		/* Change directories to the target directory */
         	if(chdir(indir) == -1)
@@ -363,8 +368,11 @@ int restore(char *httpd, char *www, char *indir)
 				free(info);
 			}
 
-			/* The www blob file always appears to be null byte terminated */
-			fwrite("\x00", 1, 1, fp);
+			/* The www blob file always appears to be null byte terminated if its size is not even */
+			if((total % 2) != 0)
+			{
+				fwrite("\x00", 1, 1, fp);
+			}
 
 			/* Change back to our original directory, so that relative paths for httpd will still work */
 			if(chdir((char *) &origdir) != -1)
