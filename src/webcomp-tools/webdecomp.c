@@ -152,6 +152,9 @@ void detect_key(char *httpd, char *www)
 
 	if(hdata && wdata)
 	{
+		/* Reset the next_entry counters for entry processing */
+		next_entry(NULL, 0);
+
 		while((info = next_entry(hdata, hsize)) != NULL)
 		{
 			total_size += info->size;
@@ -166,7 +169,7 @@ void detect_key(char *httpd, char *www)
 	if(wdata) free(wdata);
 
 	/* This should always be evenly divisble. */
-	if(((total_size - wsize) % total_entries) == 0)
+	if(total_entries && ((total_size - wsize) % total_entries) == 0)
 	{
 		globals.key = ((total_size - wsize) / total_entries);
 	}
@@ -318,6 +321,9 @@ int restore(char *httpd, char *www, char *indir, char *key)
 	/* Get the current working directory */
 	getcwd((char *) &origdir, sizeof(origdir));
 
+	/* Detect the key */
+	detect_key(httpd, www);
+	
 	/* Open the www file for writing */
 	fp = fopen(www, "wb");
 
