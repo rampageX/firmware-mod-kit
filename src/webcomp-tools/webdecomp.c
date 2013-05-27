@@ -16,7 +16,7 @@
 
 int main(int argc, char *argv[])
 {
-	char *httpd = NULL, *www = NULL, *dir = NULL, *key = NULL;
+	char *httpd = NULL, *www = NULL, *dir = NULL;
 	int retval = EXIT_FAILURE, action = NONE, long_opt_index = 0, n = 0;
 	char c = 0;
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 				dir = strdup(optarg);
 				break;
 			case 'k':
-				key = strdup(optarg);
+				globals.key = atoi(optarg);
 				break;
 			case 'e':
 				action = EXTRACT;
@@ -81,15 +81,29 @@ int main(int argc, char *argv[])
 		dir = strdup(DEFAULT_OUTDIR);
 	}
 
-	/* Extract! */
-	if(action == EXTRACT)
+	/* Detect the websRomIndex settings. This must be done before detecting the key. */
+	if(detect_settings(httpd))
 	{
-		n = extract(httpd, www, dir, key);
+		/* If no explicit key was specified, try to detect it */
+		if(!globals.key)
+		{
+			detect_key(httpd, www);
+		}
+
+		/* Extract! */
+		if(action == EXTRACT)
+		{
+			n = extract(httpd, www, dir);
+		}
+		/* Restore! */
+		else if(action == RESTORE)
+		{
+			n = restore(httpd, www, dir);
+		}
 	}
-	/* Restore! */
-	else if(action == RESTORE)
+	else
 	{
-		n = restore(httpd, www, dir, key);
+		fprintf(stderr, "Failed to detect httpd settings!\n");
 	}
 
 	if(n > 0)
@@ -110,11 +124,15 @@ end:
 }
 
 /* Initializes everything for extract() and restore() */
-int detect_settings(unsigned char *httpd, size_t httpd_size)
+int detect_settings(char *httpd_file)
 {
 	int retval = 0;
+	size_t httpd_size = 0;
+	unsigned char *httpd = NULL;
 
-	if(parse_elf_header(httpd, httpd_size))
+	httpd = (unsigned char *) file_read(httpd_file, &httpd_size);
+
+	if(httpd && parse_elf_header(httpd, httpd_size))
 	{
 		if(find_websRomPageIndex((char *) httpd, httpd_size))
 		{
@@ -136,6 +154,7 @@ int detect_settings(unsigned char *httpd, size_t httpd_size)
 		fprintf(stderr, "Failed to parse ELF header!\n");
 	}
 
+	if(httpd) free(httpd);
 	return retval;
 }
 
@@ -182,10 +201,9 @@ void detect_key(char *httpd, char *www)
 }
 
 /* Extract embedded file contents from binary file(s) */
-int extract(char *httpd, char *www, char *outdir, char *key)
+int extract(char *httpd, char *www, char *outdir)
 {
 	int n = 0;
-	FILE *fp = NULL;
 	size_t hsize = 0, wsize = 0;
 	struct entry_info *info = NULL;
 	unsigned char *hdata = NULL, *wdata = NULL;
@@ -195,11 +213,8 @@ int extract(char *httpd, char *www, char *outdir, char *key)
 	hdata = (unsigned char *) file_read(httpd, &hsize);
 	wdata = (unsigned char *) file_read(www, &wsize);
 	
-	if(hdata != NULL && wdata != NULL && detect_settings(hdata, hsize))
+	if(hdata != NULL && wdata != NULL) // && detect_settings(hdata, hsize))
 	{
-		/* Detect the key */
-		detect_key(httpd, www);
-
 		/* Create the output directory, if it doesn't already exist */
 		mkdir_p(outdir);
 
@@ -252,26 +267,6 @@ int extract(char *httpd, char *www, char *outdir, char *key)
 				free(info);
 			}
 		}
-		/* we have globals.key populated now, save it to disk for later restore */
-		if(key)
-		{
-			fp = fopen(key, "wb");
-			if(!fp || ferror(fp))
-			{
-				fprintf(stderr, "\nERROR opening keyfile, aborting\n");
-				n=-1;
-			}			
-			else
-			{
-				if(fwrite(&globals.key, 1, sizeof(globals.key), fp) != sizeof(globals.key))
-				{
-					fprintf(stderr, "\nERROR writing keyfile, aborting\n");
-					n=-1;		
-				}
-				fclose(fp);
-			}
-			fp = NULL;
-		}
 	}
 	else
 	{
@@ -284,36 +279,15 @@ int extract(char *httpd, char *www, char *outdir, char *key)
 }
 
 /* Restore embedded file contents to binary file(s) */
-int restore(char *httpd, char *www, char *indir, char *key)
+int restore(char *httpd, char *www, char *indir)
 {
-	int n = 0, total = 0;
 	FILE *fp = NULL;
+	int n = 0, total = 0;
 	size_t hsize = 0, fsize = 0;
 	struct entry_info *info = NULL;
 	unsigned char *hdata = NULL, *fdata = NULL;
 	char origdir[FILENAME_MAX] = { 0 };
 	char *path = NULL;	
-
-	if(key)
-	{
-		fp = fopen(key, "rb");
-		if(!fp || ferror(fp))
-		{
-			fprintf(stderr, "ERROR opening keyfile %s, aborting", key);
-			return -1;
-		}
-		else
-		{
-			if(fread(&globals.key, 1, sizeof(globals.key), fp) != sizeof(globals.key))
-			{
-				fclose(fp);
-				fprintf(stderr, "ERROR reading keyfile %s, aborting", key);
-				return -1;
-			}
-			fclose(fp);
-		}
-		fp = NULL;
-	}
 
 	/* Read in the httpd file */
 	hdata = (unsigned char *) file_read(httpd, &hsize);
@@ -321,13 +295,10 @@ int restore(char *httpd, char *www, char *indir, char *key)
 	/* Get the current working directory */
 	getcwd((char *) &origdir, sizeof(origdir));
 
-	/* Detect the key */
-	detect_key(httpd, www);
-	
 	/* Open the www file for writing */
 	fp = fopen(www, "wb");
 
-	if(hdata != NULL && fp != NULL && detect_settings(hdata, hsize))
+	if(hdata != NULL && fp != NULL) // && detect_settings(hdata, hsize))
 	{
 		/* Change directories to the target directory */
         	if(chdir(indir) == -1)

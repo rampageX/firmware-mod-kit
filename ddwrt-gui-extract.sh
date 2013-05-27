@@ -21,7 +21,7 @@ fi
 eval $(cat shared-ng.inc)
 HTTPD="$DIR/usr/sbin/httpd"
 WWW="$DIR/etc/www"
-KEYFILE="$DIR/webcomp.key"
+#KEYFILE="$DIR/webcomp.key"
 
 echo -e "Firmware Mod Kit (ddwrt-gui-extract) $VERSION, (c)2013 Craig Heffner, Jeremy Collake\nhttp://www.bitsum.com\n"
 
@@ -39,7 +39,8 @@ fi
 
 # Extract!
 # key file is written to rootfs, and since may have root ownership, sudo
-TMPFILE=`mktemp /tmp/$0.XXXXXX`
-./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$OUT" --key="$TMPFILE" --extract
-$SUDO cp "$TMPFILE" "$KEYFILE"
+#TMPFILE=`mktemp /tmp/$0.XXXXXX`
+#./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$OUT" --key="$TMPFILE" --extract
+./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$OUT" --extract
+#$SUDO cp "$TMPFILE" "$KEYFILE"
 
