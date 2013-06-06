@@ -323,9 +323,6 @@ int restore(char *httpd, char *www, char *indir, char *key)
 
 	if(hdata != NULL && fp != NULL && detect_settings(hdata, hsize))
 	{
-		/* Detect the key */
-		detect_key(httpd, www);
-
 		/* Change directories to the target directory */
         	if(chdir(indir) == -1)
         	{
