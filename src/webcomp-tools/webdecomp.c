@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 
 	if(n > 0)
 	{
-		printf("\nProcessed %d Web files.\n\n", n);
+		printf("\nProcessed %d Web files using key 0x%X\n\n", n, globals.key);
 		retval = EXIT_SUCCESS;
 	}
 	else
