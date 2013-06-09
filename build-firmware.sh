@@ -134,19 +134,18 @@ CHECKSUM_ERROR=0
 
 case $HEADER_TYPE in
 	"tp-link")
-		firmware="fmk/new-firmware.bin"
-		src/tpl-tool/src/tpl-tool -x "$firmware"
+		src/tpl-tool/src/tpl-tool -x "$FWOUT"
 		if [ $? -ne 0 ]; then
 			CHECKSUM_ERROR=1
 		else		
-			src/tpl-tool/src/tpl-tool -b "$firmware"
-			mv "$firmware-new" "$firmware"
-			src/tpl-tool/src/tpl-tool -s "$firmware"
+			src/tpl-tool/src/tpl-tool -b "$FWOUT"
+			mv "$FWOUT-new" "$FWOUT"
+			src/tpl-tool/src/tpl-tool -s "$FWOUT"
 		fi
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		fi
-		rm -f "$firmware-header" "$firmware-kernel" "$firmware-rootfs" "$firmware-squashfs"
+		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs" "$FWOUT-squashfs"
 		;;
 	*)
 		# Calculate new checksum values for the firmware header
