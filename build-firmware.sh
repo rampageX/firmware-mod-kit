@@ -130,11 +130,32 @@ if [ "$FOOTER_SIZE" -gt "0" ]; then
 	cat $FOOTER_IMAGE >> "$FWOUT"
 fi
 
-# Calculate new checksum values for the firmware header
-# trx, dlob, uimage
-./src/crcalc/crcalc "$FWOUT" "$BINLOG"
+CHECKSUM_ERROR=0
 
-if [ $? -eq 0 ]; then
+case $HEADER_TYPE in
+	"tp-link")
+		firmware="fmk/new-firmware.bin"
+		mv "$firmware" /tmp/new-firmware.old
+		src/tpl-tool/src/tpl-tool -x /tmp/new-firmware.old 
+		src/tpl-tool/src/tpl-tool -b /tmp/new-firmware.old 
+		mv "/tmp/new-firmware.old-new" "$firmware"
+		src/tpl-tool/src/tpl-tool -s "$firmware"
+		if [ $? -ne 0 ]; then		
+			CHECKSUM_ERROR=1
+		fi
+		rm -f "/tmp/new-firmware.old" "$firmware-header" "$firmware-kernel" "$firmware-rootfs" "/tmp/new-firmware.old" "$firmware-squashfs"
+		;;
+	*)
+		# Calculate new checksum values for the firmware header
+		# trx, dlob, uimage
+		./src/crcalc/crcalc "$FWOUT" "$BINLOG"
+		if [ $? -ne 0 ]; then		
+			CHECKSUM_ERROR=1
+		fi
+	;;
+esac
+
+if [ $CHECKSUM_ERROR -eq 0 ]; then
 	echo -n "Finished! "
 else
 	echo -n "Firmware header not supported; firmware checksums may be incorrect. "
