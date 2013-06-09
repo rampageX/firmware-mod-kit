@@ -179,4 +179,6 @@ else
 	printf "\nFirmware header not supported; firmware checksums may be incorrect. "
 fi
 
+rm -f "fmk/new-filesystem.squashfs"
+
 printf "\nNew firmware image has been saved to: $FWOUT\n"
