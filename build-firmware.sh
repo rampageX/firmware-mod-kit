@@ -152,6 +152,8 @@ case $HEADER_TYPE in
 			src/tpl-tool/src/tpl-tool -s "$FWOUT"
 			if [ $? -ne 0 ]; then		
 				CHECKSUM_ERROR=1
+			else
+				CHECKSUM_ERROR=0
 			fi
 		fi
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
