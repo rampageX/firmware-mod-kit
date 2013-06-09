@@ -162,15 +162,12 @@ case $HEADER_TYPE in
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
 	"buffalo")
-		TMPFILE=`mktemp /tmp/$0.XXXXXX`
-		mv "$FWOUT" "$TMPFILE"
-		src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
+		src/firmware-tools/buffalo-enc -i "$FWOUT" -o "$FWOUT.enc"
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		else
-			printf "\nBuffalo encryption WAS applied to this image. Be sure your device expects it."
+			printf "\nBuffalo encrypted image was saved as $FWOUT.enc (for vendor firmwares)"
 		fi
-		rm -f "$TMPFILE"
 		;;
 	*)
 	;;
