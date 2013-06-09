@@ -155,6 +155,7 @@ case $HEADER_TYPE in
 			CHECKSUM_ERROR=1
 		fi
 		rm -f "$TMPFILE"
+		;;
 	*)
 		# Calculate new checksum values for the firmware header
 		# trx, dlob, uimage
