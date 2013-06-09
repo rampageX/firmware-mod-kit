@@ -145,7 +145,7 @@ case $HEADER_TYPE in
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		fi
-		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs" "$FWOUT-squashfs"
+		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
 	*)
 		# Calculate new checksum values for the firmware header
