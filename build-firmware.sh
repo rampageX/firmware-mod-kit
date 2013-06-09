@@ -157,22 +157,15 @@ case $HEADER_TYPE in
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
 	"buffalo")
-		# Calculate new checksum values for the firmware header
-		# trx, dlob, uimage
-		./src/crcalc/crcalc "$FWOUT" "$BINLOG"
+		TMPFILE=`mktemp /tmp/$0.XXXXXX`
+		mv "$FWOUT" "$TMPFILE"
+		src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		else
-			TMPFILE=`mktemp /tmp/$0.XXXXXX`
-			mv "$FWOUT" "$TMPFILE"
-			src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
-			if [ $? -ne 0 ]; then		
-				CHECKSUM_ERROR=1
-			else
-				printf "\nBuffalo encryption WAS applied to this image. Be sure your device expects it."
-			fi
-			rm -f "$TMPFILE"
+			printf "\nBuffalo encryption WAS applied to this image. Be sure your device expects it."
 		fi
+		rm -f "$TMPFILE"
 		;;
 	*)
 	;;
