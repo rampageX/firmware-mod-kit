@@ -141,12 +141,20 @@ case $HEADER_TYPE in
 			src/tpl-tool/src/tpl-tool -b "$FWOUT"
 			mv "$FWOUT-new" "$FWOUT"
 			src/tpl-tool/src/tpl-tool -s "$FWOUT"
-		fi
-		if [ $? -ne 0 ]; then		
-			CHECKSUM_ERROR=1
+			if [ $? -ne 0 ]; then		
+				CHECKSUM_ERROR=1
+			fi
 		fi
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
+	"buffalo")
+		TMPFILE=`mktemp /tmp/$0.XXXXXX`
+		mv "$FWOUT" "$TMPFILE"
+		src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
+		if [ $? -ne 0 ]; then		
+			CHECKSUM_ERROR=1
+		fi
+		rm -f "$TMPFILE"
 	*)
 		# Calculate new checksum values for the firmware header
 		# trx, dlob, uimage
