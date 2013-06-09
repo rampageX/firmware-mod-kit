@@ -143,7 +143,7 @@ case $HEADER_TYPE in
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		fi
-		rm -f "/tmp/new-firmware.old" "$firmware-header" "$firmware-kernel" "$firmware-rootfs" "/tmp/new-firmware.old" "$firmware-squashfs"
+		rm -f "/tmp/new-firmware.old" "$firmware-header" "$firmware-kernel" "$firmware-rootfs" "$firmware-squashfs"
 		;;
 	*)
 		# Calculate new checksum values for the firmware header
