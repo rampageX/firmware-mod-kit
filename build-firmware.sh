@@ -132,6 +132,15 @@ fi
 
 CHECKSUM_ERROR=0
 
+# Calculate new checksum values for the firmware header
+# trx, dlob, uimage
+# Buffalo and some other post-processors obfuscate these images
+# so we must akways try prior to vendor processing below
+./src/crcalc/crcalc "$FWOUT" "$BINLOG"
+if [ $? -ne 0 ]; then		
+	CHECKSUM_ERROR=1
+fi
+
 case $HEADER_TYPE in
 	"tp-link")
 		src/tpl-tool/src/tpl-tool -x "$FWOUT"
@@ -148,23 +157,24 @@ case $HEADER_TYPE in
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
 	"buffalo")
-		TMPFILE=`mktemp /tmp/$0.XXXXXX`
-		mv "$FWOUT" "$TMPFILE"
-		src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
-		if [ $? -ne 0 ]; then		
-			CHECKSUM_ERROR=1
-		else
-			printf "\nBuffalo encryption WAS applied to this image. Be sure your device expects it."
-		fi
-		rm -f "$TMPFILE"
-		;;
-	*)
 		# Calculate new checksum values for the firmware header
 		# trx, dlob, uimage
 		./src/crcalc/crcalc "$FWOUT" "$BINLOG"
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
+		else
+			TMPFILE=`mktemp /tmp/$0.XXXXXX`
+			mv "$FWOUT" "$TMPFILE"
+			src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
+			if [ $? -ne 0 ]; then		
+				CHECKSUM_ERROR=1
+			else
+				printf "\nBuffalo encryption WAS applied to this image. Be sure your device expects it."
+			fi
+			rm -f "$TMPFILE"
 		fi
+		;;
+	*)
 	;;
 esac
 
