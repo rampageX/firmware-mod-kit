@@ -39,11 +39,5 @@ then
 fi
 
 # Restore!
-#TMPFILE=`mktemp /tmp/$0.XXXXXX`
-# we actually pass a temporary copy of the keyfile to the webdecomp tool so that 
-# the actual keyfile won't be included in the compiled web file system
-#$SUDO mv "$KEYFILE" "$TMPFILE"
-#$SUDO ./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$WEBDIR" --key="$TMPFILE" --restore
 $SUDO ./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$WEBDIR" --restore
-#$SUDO mv "$TMPFILE" "$KEYFILE"
 

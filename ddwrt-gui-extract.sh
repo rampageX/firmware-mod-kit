@@ -38,9 +38,5 @@ then
 fi
 
 # Extract!
-# key file is written to rootfs, and since may have root ownership, sudo
-#TMPFILE=`mktemp /tmp/$0.XXXXXX`
-#./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$OUT" --key="$TMPFILE" --extract
 ./src/webcomp-tools/webdecomp --httpd="$HTTPD" --www="$WWW" --dir="$OUT" --extract
-#$SUDO cp "$TMPFILE" "$KEYFILE"
 
