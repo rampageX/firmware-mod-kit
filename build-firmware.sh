@@ -141,6 +141,9 @@ if [ $? -ne 0 ]; then
 	CHECKSUM_ERROR=1
 fi
 
+# Vendor specific post-processing
+# For some images, will apply checksum (TP-Link)
+# Others, will encrypt image (Buffalo)
 case $HEADER_TYPE in
 	"tp-link")
 		src/tpl-tool/src/tpl-tool -x "$FWOUT"
