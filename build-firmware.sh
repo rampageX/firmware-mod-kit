@@ -156,9 +156,9 @@ case $HEADER_TYPE in
 esac
 
 if [ $CHECKSUM_ERROR -eq 0 ]; then
-	echo -n "Finished! "
+	printf "\nFinished! "
 else
-	echo -n "Firmware header not supported; firmware checksums may be incorrect. "
+	printf "\nFirmware header not supported; firmware checksums may be incorrect. "
 fi
 
-echo "New firmware image has been saved to: $FWOUT"
+printf "\nNew firmware image has been saved to: $FWOUT\n"
