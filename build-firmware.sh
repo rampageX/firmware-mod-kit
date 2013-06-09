@@ -153,6 +153,8 @@ case $HEADER_TYPE in
 		src/firmware-tools/buffalo-enc -i "$TMPFILE" -o "$FWOUT"
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
+		else
+			printf "\nBuffalo encryption WAS applied to this image. Be sure your router expects it."
 		fi
 		rm -f "$TMPFILE"
 		;;
