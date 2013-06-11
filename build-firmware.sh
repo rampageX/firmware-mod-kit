@@ -1,5 +1,6 @@
 #!/bin/bash
-. "./common.inc"
+BINDIR=`dirname $0`
+. "$BINDIR/common.inc"
 
 DIR="$1"
 NEXT_PARAM=""

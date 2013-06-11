@@ -3,7 +3,8 @@
 #
 # Craig Heffner
 # 27 August 2011
-. "./common.inc"
+BINDIR=`dirname $0`
+. "$BINDIR/common.inc"
 IMG="$1"
 DIR="$2"
 
