@@ -9,6 +9,9 @@ IMG="$1"
 DIR="$2"
 
 ROOT="./src"
+# should order in ascending version, 
+# since newer versions may be able to extact older
+# and we want *first* supporting version
 SUBDIRS="squashfs-2.1-r2 \
 squashfs-3.0 \
 squashfs-3.0-lzma-damn-small-variant \
