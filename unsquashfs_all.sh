@@ -98,8 +98,7 @@ do
 	unsquashfs="$ROOT/$SUBDIR/unsquashfs"
 	mksquashfs="$ROOT/$SUBDIR/mksquashfs"
 
-	if [ "$MKFS" == "" ] && [ -e $unsquashfs-lzma ]
-	then
+	if [ -e $unsquashfs-lzma ]; then
 		echo -ne "\nTrying $unsquashfs-lzma... "
 
 		$unsquashfs-lzma $DEST $IMG 2>/dev/null &
@@ -127,8 +126,8 @@ do
 				rm -rf "$DIR"
 			fi
                 fi
-	elif [ -e $unsquashfs ]
-	then
+	fi
+	if [ "$MKFS" == "" ] && [ -e $unsquashfs ]; then
 		echo -ne "\nTrying $unsquashfs... "
 
 		$unsquashfs $DEST $IMG 2>/dev/null &
