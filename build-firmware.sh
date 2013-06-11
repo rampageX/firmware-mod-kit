@@ -52,10 +52,12 @@ rm -rf "$FWOUT" "$FSOUT"
 case $FS_TYPE in
 	"squashfs")
 		# Check for squashfs 4.0 realtek, which requires the -comp option to build lzma images.
-		if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] && [ "$FS_COMPRESSION" == "lzma" ]; then
-			COMP="-comp lzma"
-		else
-			COMP=""
+		if [ "$FS_COMPRESSION" == "lzma" ]; then
+			if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] || [ "$(echo $MKFS | grep 'squashfs-4.2')" != "" ]; then
+				COMP="-comp lzma"
+			else
+				COMP=""
+			fi
 		fi
 
 		# Mksquashfs 4.0 tools don't support the -le option; little endian is built by default

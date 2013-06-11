@@ -93,12 +93,11 @@ for LINE in IFS='
 			ENDIANESS="-le"
 		fi
 
-		# Check for LZMA compression in the file system. If not present, assume gzip.
-		# This is only used for squashfs 4.0 images.
-		if [ "$(echo ${LINE} | grep -i 'lzma')" != "" ];  then
-			FS_COMPRESSION="lzma"
-		else
+		# Check for compression type of the file system. Default to LZMA
+		if [ "$(echo ${LINE} | grep -i 'gzip')" != "" ];  then
 			FS_COMPRESSION="gzip"
+		else
+			FS_COMPRESSION="lzma"
 		fi
 
 		# Check for a block size (used only by squashfs)
