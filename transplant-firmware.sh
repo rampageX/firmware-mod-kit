@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # moves the 'guts' of one firmware's contents to another, but maintain the
 #  firmware format, so that a firmware can be transplanted into a different
@@ -13,7 +13,7 @@ else
         SUDO=""
 fi
 
-if [ "$1" == "-h" ] || [ ! -e "$SRC/image_parts" ] || [ ! -e "$DEST/image_parts" ]; then
+if [ "$1" == "-h" ] || [ ! -d "$SRC/image_parts" ] || [ ! -d "$DEST/image_parts" ]; then
 	echo "Usage: $0 [SRC] [DEST]"
 	echo "Example: $0 vendorfmk fmk"
 	exit 1
