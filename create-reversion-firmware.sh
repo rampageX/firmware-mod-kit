@@ -5,12 +5,6 @@
 SRC="$1"
 DEST="$2"
 
-if [ "$UID" != "0" ]; then
-        SUDO="sudo"
-else
-        SUDO=""
-fi
-
 if [ "$1" == "-h" ] || [ ! -e "$SRC" ] || [ ! -e "$DEST" ]; then
 	echo "Usage: $0 [VENDORIMG] [SYSUPGRADE]"
 	echo "Example: $0 tl-wdr4300-vendor.bin gargoyle-wdr4300-sysupgrade.bin"
