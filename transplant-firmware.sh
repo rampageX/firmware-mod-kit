@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # moves the 'guts' of one firmware's contents to another, but maintain the
 #  firmware format, so that a firmware can be transplanted into a different
