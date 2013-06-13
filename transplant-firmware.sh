@@ -1,8 +1,10 @@
 #!/bin/bash
 #
-# moves the 'guts' of one firmware's contents to another, but maintain the
-#  firmware format, so that a firmware can be transplanted into a different
-#  format.
+# migrates extracted firmware contents from working directory A to B
+# does not migrate firmware format information, allowing an image to 
+# be rebuilt into a different format. Particularly useful for reversion.
+#
+# jc
 #
 SRC="$1"
 DEST="$2"
