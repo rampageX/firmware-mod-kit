@@ -15,7 +15,7 @@ VERSION="${SHARED_VERSION}"
 # This scripts builds the firmware image from [WORKING_DIRECTORY],
 # with the following subdirectories:
 #
-#    image_parts/   <- firmware seperated
+#    image_parts/   <- firmware separated
 #    rootfs/ 	    <- filesystem
 #
 # Example:

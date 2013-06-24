@@ -15,7 +15,7 @@ VERSION="${SHARED_VERSION}"
 # This scripts extacts the firmware image to [WORKING_DIRECTORY],
 # with the following subdirectories:
 #
-#    image_parts/   <- firmware seperated
+#    image_parts/   <- firmware separated
 #    rootfs/ 	    <- extracted filesystem
 #
 # Example:
