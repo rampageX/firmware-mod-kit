@@ -17,6 +17,7 @@ all: asustrx addpattern untrx motorola-bin splitter3 bffutils
 	make -C ./webcomp-tools/
 	make -C ./tpl-tool/src/
 	make -C ./firmware-tools/
+	make -C ./yaffs2utils/
 
 addpattern: addpattern.o
 	$(CC) addpattern.o -o $@
@@ -57,6 +58,7 @@ clean:
 	make -C ./webcomp-tools clean
 	make -C ./firmware-tools/ clean
 	make -C ./bff/ clean
+	make -C ./yaffs2utils/ clean
 
 cleanall: clean
 	rm -rf Makefile config.* *.cache
