@@ -22,7 +22,8 @@ fi
 $SUDO rm -rf "$DEST/rootfs.bak"
 $SUDO rm -rf "$DEST/image_parts.bak"
 mv -f "$DEST/rootfs" "$DEST/rootfs.bak"
-mv -f "$DEST/image_parts" "$DEST/image_parts.bak"
+mkdir "$DEST/image_parts.bak"
+cp -rf "$DEST/image_parts/*" "$DEST/image_parts.bak/"
 $SUDO cp -rf "$SRC/rootfs" "$DEST/"
 $SUDO cp -rf "$SRC/image_parts" "$DEST/"
 
