@@ -183,6 +183,11 @@ case ${FS_TYPE} in
 		echo "Extracting CramFS file system..."
 		${SUDO} ./uncramfs_all.sh "${FSIMG}" "${ROOTFS}" ${ENDIANESS} 2>/dev/null | grep MKFS >> "${CONFLOG}"
 		;;
+	"yaffs")
+		echo "Extracting YAFFS file system..."
+		${SUDO} ./src/yaffs2utils/unyaffs2 "${FSIMG}" "${ROOTFS}" 2>/dev/null 
+		echo "MKFS='./src/yaffs2utils/mkyaffs2'" >> "${CONFLOG}"
+		;;
 	*)
 		echo "Unsupported file system '${FS_TYPE}'! Quitting..."
 		rm -rf "${DIR}"

@@ -76,7 +76,7 @@ case $FS_TYPE in
                 if [ "$FS_BLOCKSIZE" != "" ]; then
 			BS="-b $FS_BLOCKSIZE"
 			HR_BLOCKSIZE="$(($FS_BLOCKSIZE/1024))"
-			echo "Squahfs block size is $HR_BLOCKSIZE Kb"
+			echo "Squashfs block size is $HR_BLOCKSIZE Kb"
 		fi
 
 		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
@@ -88,6 +88,11 @@ case $FS_TYPE in
 			./src/cramfsswap/cramfsswap "$FSOUT.le" "$FSOUT"
 			rm -f "$FSOUT.le"
 		fi
+		;;
+	"yaffs")
+		$SUDO $MKFS "$ROOTFS" "$FSOUT"
+		echo "WARNING: YAFFS2 completely untested !! Hit any key to confirm ..."
+		pause
 		;;
 	*)
 		echo "Unsupported file system '$FS_TYPE'!"
