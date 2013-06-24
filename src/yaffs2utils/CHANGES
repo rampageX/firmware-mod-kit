@@ -1,0 +1,459 @@
+2012-07-06	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.9
+-------------
+
+	* global
+	- Fix override issue in endian transformation.
+	- Fix GCC-4.4 warning "pointer break strict-aliasing rules".
+	- Fix typo in "CHANGES".
+	- Add new 64/128 bytes oob schemes for the new option 
+	  '--yaffs-ecclayout' of mkyaffs2/unyaffs2.
+	- Change file organization.
+
+	* mkyaffs2
+	- Add a new option "--yaffs-ecclayout" to create an image compatibility
+	  with the image made by the official mkyaffs2image tool.
+	- Add a new option "--all-root" to create an image that all files are
+	  owned by root.
+	- Modify help message.
+	- Code level optimization.
+
+	* unyaffs2
+	- Close #29: Ignore OOB area (won't fix).
+	- Add a new opetion "--yaffs-ecclayout" to extract an image made by the
+	  native official mkyaffs2image tool.
+	- Modify help message.
+	- Code level optimization.
+
+	* unspare2
+	- Modify help message.
+	- Code level optimization.
+
+	* others
+	- Close #31: Doesn't compile properly on Mac OSX (won't fix).
+	- Update README.
+	- Change developing environment to Debian 6 (code squeeze).
+	- Merge the latest YAFFS2 to 20120619 from the official repository.
+
+
+2012-04-20	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.8
+-------------
+
+	* mkyaffs2
+	- Fix typos issue.
+	- Add page size supports up to (16384) bytes.
+	  - Since the latest Linux kernel (3.3) does not provide the default
+	    oob scheme for page size > 4096 bytes, I wrote the "(8192), (16384)"
+	    supports, instead of "8192, 16384", in the help message.
+
+	* unyaffs2
+	- Fix typos issue.
+	- Add page size supports up to (16384) bytes.
+	  - Since the latest Linux kernel (3.3) does not provide the default
+	    oob scheme for page size > 4096 bytes, I wrote the "(8192), (16384)"
+	    supports, instead of "8192, 16384", in the help message.
+
+	* others
+	- Update README for supportos of page and spare size.
+
+
+2012-04-19	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.7
+-------------
+
+	* mkyaffs2
+	- Add a new option '-s' to specify the spare size.
+	- Add page size support of 4096, (8192) bytes.
+
+	* unyaffs2
+	- Add a new option '-s' to specify the spare size.
+	- Add page size support of 4096, (8192) bytes.
+
+	* others
+	- Fix #31: Doesn't compile properly on Mac OSX.
+
+
+2012-04-11	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.6
+-------------
+
+	* unyaffs2
+	- Fix #30: unyaffs2: the chmod() should NOT apply on a symbol link.
+	- Fix error displayed when image is NOT a regular file.
+
+	* others
+	- Merge the latest YAFFS2 to 20120326 from the official repository.
+
+
+2012-03-22	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.5
+-------------
+
+	* others
+	- Fix #26: Ordering of arguments prevents compile on certain systems.
+	- Fix #27: make error:"mkyaffs2.c:19:21: -
+		   error: configs.h:  No such file or directory.
+	- Merge the latest YAFFS2 to 20120227 from the official release.
+
+
+2012-01-19	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.4
+-------------
+
+	* unyaffs2
+	- Fix #23: lchown after chmod destroies setuid/setgid.
+
+	* others
+	- Fix #22: Support unyaffs of yaffs2 img made from mkyaffs2image.
+	  - Add a "Compatibility" section in the README.
+	- Fix the "PATH_MAX" lack for OSX.
+	  - Include "syslimits.h" for OSX.
+
+
+2011-10-31	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.3
+-------------
+
+	* mkyaffs2
+	- Fix typo.
+
+	* unyaffs2
+	- Fix typo.
+	- Fix help messages.
+
+	* others
+	- Fix #21: makefile improvements, prints improvements, additional check.
+	- Close #17: Can't compile on current Ubuntu (fixed in 0.2.2).
+	- Close #20: Various defects (fixed in 0.2.2).
+
+
+2011-09-13	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.2
+-------------
+
+	* mkyaffs2
+	- Fix #17: Can't compile on current Ubuntu
+	  - Replace "struct nand_ecclayout" with "nand_ecclayout_t".
+	- Fix #20: Various defects.
+
+	* unyaffs2 
+	- Fix #17: Can't compile on current Ubuntu
+	  - Replace "struct nand_ecclayout" with "nand_ecclayout_t".
+	- Fix #19: Parsing OOB file fails when it is read-only.
+	- Fix #20: Various defects.
+
+	* unspare2
+	- Fix #18: unspare2's -e parameter does not work.
+
+	* others
+	- Fix typo in "CHANGES".
+	- Fix un-matched version string in "yaffs2utils.h".
+	- Merge the latest YAFFS2 to 20110815 from the official release.
+	- Remove the unused file "yaffs2utils_mtd.h"
+
+
+2011-07-21	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.1
+-------------
+
+	* mkyaffs2
+	- Fix #14: oobfree.
+	  - The "mkyaffs2" will skip checking whether the spare size is enough.
+
+	* unspare2
+	- Enable unspare2 in Makefilie.
+	- Replace "struct nand_ecclayout" with "nand_ecclayout_t".
+	- Fix typo issues.
+
+	* others
+	- Use "mtd/mtd-user.h" instead of "yaffs2utils_mtd.h".
+
+
+2011-07-07	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.2.0
+-------------
+
+	* mkyaffs2
+	- Fix #4: Progress Bar Requirement.
+	  - The 2-pass operation is applied to implment this feature. It will
+	    scan the directory structure to build a filesystem tree first; then
+	    making an image based on this tree.
+	- Fix #7: Support far various OOB layout is lacking.
+	  - An option "-o (oobimg)" is added to support the various OOB layout.
+	    The OOB layout can be available by the tool "unspare2", and it will
+	    be loaded into the specfied "nand_ecclayout" structure simply
+	    without any verification.
+	- Skip root object in yaffs2 image.
+	  - From this version, the root object will NOT be written into the
+	    yaffs2 image.
+	- Add an option "-v (verbose)" to verbose details of making an image.
+	  - By default, a progress bar will be displayed for the current status.
+	    If the option "-v" is specified, a list of objects will be shown
+	    instead of a progress bar.
+	- Fix coding style typos.
+
+	* unyaffs2
+	- Fix #4: Progress Bar Requirement.
+	  - As mkyaffs2, the 2-pass operation is appled. It will scan the full
+	    image to build a filesystem tree based on their object id; and
+	    extracting the image contents based on the tree. Finally, the files
+	    attributes will also be restored.
+	- Fix #7: Support far various OOB layout is lacking.
+	  - An option "-o (oobimg)" is added to support the various OOB layout.
+	    The OOB layout can be available by the tool "unspare2", and it will
+	    be loaded into the specfied "nand_ecclayout" structure simply
+	    without any verification.
+	- Fix #8: Extract Only a Selection of Files.
+	  - An option "-f (file)" is added to support extracting only the
+	    selection of files. 
+	- Skip root object in yaffs2 image.
+	  - A root object (if it is existed) in the image will be skipped, 
+	    and the pseudo root object will be used while extracting the image.
+	- Add an option "-v (verbose)" to verbose details of making an image.
+	  - By default, a progress bar will be displayed for the current status.
+	    If the option "-v" is specified, a list of objects will be shown
+	    instead of a progress bar.
+	- Restore the attribute of files.
+	- Fix coding style typos.
+
+	* unspare2 (NEW)
+	- A tool to dump the OOB layout from the NAND device.
+
+	* others
+	- Update "README".
+	- Use NAND ECC layout information from Linux kernel as default.
+	- Merge the latest YAFFS2 to 20110628 from the official release.
+
+
+2010-04-08	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.13
+--------------
+
+	* unyaffs2
+	- Fix #11: unyaffs2 crashes on MIPS.
+
+
+2010-03-08	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.12
+--------------
+
+	* others
+	- Merge the latest YAFFS2 to 20110308 from the official release.
+	- Remove yaffs_tagsvalidity related codes.
+	- Modify all hex values to lower case.
+
+
+2010-02-01	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.11
+--------------
+
+	* others
+	- Merge the latest YAFFS2 to 20110201 from the official release.
+	- Update copyright information.
+	- Remove root Makefile and update Makefile in /src
+
+
+2010-01-26	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.10
+--------------
+
+	* mkyaffs2
+	- Fix #9: Unknown options cause the program to output garbage.
+
+	* unyaffs2
+	- Fix #9: Unknown options cause the program to output garbage.
+
+
+2010-12-27	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.9
+-------------
+
+	* mkyaffs2
+	- Fix #5: It cannot be compiled with the latest yaffs2.
+	- Fix #6: mkyaffs2 always crashes.
+
+	* unyaffs2
+	- Fix #5: It cannot be compuled with the latest yaffs2.
+
+	* others
+	- Branch files required by yaffs2utils from the official YAFFS2 source.
+	- Update README.
+	- Update Makefile.
+
+	* NOTE: 
+	- This version branches the necessary files from the YAFFS2 official
+	  because of the issue about the inconstant naming rules in the YAFFS2
+	  package. This apporach will be used untils the official YAFFS2 has a
+	  stable release, or it is integrated into the Linux kernel.
+
+
+2010-09-20	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.8
+-------------
+
+	* mkyaffs2
+	- Fix unclosed dir stream while parsing the directory.
+
+	* others
+	- Fix typos in "CHANGELOG".
+
+
+2010-08-15	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.7
+-------------
+
+	* mkyaffs2
+	- Add warning message when it is executed by non-root users.
+
+	* unyaffs2
+	- Add warning message when it is executed by non-root users.
+
+	* others
+	- Fix #3: yaffs2utils-latest.tar.gz doesn't build.
+
+
+2010-07-21	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.6
+-------------
+
+	* mkyaffs2
+	- Fix #1: Error during Makefile.
+	- Fix #2: Problems with zero Bytes files.
+
+	* unyaffs2
+	- Fix #1: Error during Makefile.
+	- Fix #2: Problems with zero Bytes files.
+	- Fix possible issue while extracting a file by using mmap().
+
+	* others
+	- Fix un-matched version string.
+	- Fix Makefile typos.
+
+
+2010-06-07	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.5
+-------------
+
+	* mkyaffs2
+	- Fix typos.
+	- Modify codes to parse a directory.
+
+	* unyaffs2
+	- Fix typos.
+	- Fix possible file descriptor leakage while extracting a file.
+	- Use mmap() to extract a file while the mmap() supports is enabled.
+	- Modify codes to extract a file.
+
+	* CHANGELOG
+	- Fix typo in "Version 0.1.0" log.
+
+
+2010-05-25	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.3
+-------------
+
+	* others
+	- Fix un-matched version string in "yaffs2utils.h".
+	- Fix the typo about version macro definition in "yaffs2utils.h".
+	- Fix typos about macro definition in headers.
+
+
+2010-05-21	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.2
+-------------
+
+	* mkyaffs2
+	- Fix typos in help message.
+
+	* unyaffs2
+	- Fix typos in help message.
+	- Fix other typos.
+
+	* others
+	- Fix typos in "CHANGES".
+	- Fix typos in header files.
+
+
+2010-05-19	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.1
+-------------
+
+	* Makefile
+	- Fix Makefile.
+
+
+2010-05-18	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.1.0
+----------------
+
+	* mkyaffs2
+	- Fix only "little to big" endian transform about the endian transform
+	  for the mkyaffs2 to make a yaffs1 image. Now the mkyaffs2 can convert
+	  endian correctly to the endian differed from the local machine.
+	- Fix possible issues in tags2spare (writting tags to spare buffer).
+	- Fix possible memory leakage when error occurred in mkyaffs2.
+	- Fix possibe issue when using realloc().
+	- Fix typo issues.
+	- Use a global working buffer to parse the directroy in the mkyaffs2
+	  instead of the local buffer allocatation during writting chunks.
+	- Enhance the mkyaffs2 to write the whole "chunk + spare" at one time
+	  instead of "storing the chunk first then writing the spare" during
+	  making the images.
+
+	* unyaffs2
+	- Fix possible memory leakage when error occurred in the unyaffs2.
+	- Fix possible issue in spare2tags (extracing spare buffer to tags).
+	- Fix possibe issue when using realloc().
+	- Fix typo issues.
+	- Add the supports about the endian transform for the unyaffs2 to
+	  extract both the yaffs2/yaffs1 images made from the mkyaffs2. Now the
+	  unyaffs2 can extract a image, which is made by the mkyaffs2 with the
+	  option "-e" (different endian from the local machine).
+
+	* others
+	- Move endian depended codes out to "yaffs2utils_endian.c".
+	- Fix unsuitable implementation about endian transform for yaffs1 tags.
+	- Update "README".
+	- Add the file "CHANGELOG" to record the change logs.
+	- Remove macro "KERNELDIR" in the Makefile.
+
+
+2010-04-28	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.0.1
+-------------
+
+	* mkyaffs2
+	- Fix possible uninitialized yaffs tags.
+
+
+2010-04-22	Luen-Yung Lin <penguin.lin@gmail.com>
+
+Version 0.0.1
+-------------
+
+	* Initial import.

@@ -1,0 +1,176 @@
+yaffs2utils
+===========
+
+Overview
+--------
+The yaffs2utils is the collection of utilities to make/extract a YAFFS2/YAFFS1
+image for Linux.
+
+Currently, it inclueds the following tools:
+(1) mkyaffs2: making a yaffs2 (yaffs1) image.
+(2) unyaffs2: extract a yaffs2 (yaffs1) image made by mkyaffs2.
+(3) unspare2: extract the spare(oob) layout from the NAND device.
+
+This project is developed under the Debian Linux 6 (code Squeeze). It can make a
+yaffs2 image to be ran under my embedded system (Linux 2.6.20), and extract a
+yaffs2 image made by itself. 
+
+Because of the OOB scheme of a image made from the official yaffs2.net utilities
+(mkyaffs2image) is defferend from the Linux MTD by default, a image made from
+its "mkyaffs2image" tool cannot be ran normally under my native Linux system.
+I re-wrote it almost and create the "mkyaffs2" tool to make a yaffs2 image for
+Linux 2.6.20. A tool named "unyaffs2" is also provided to extract the image made
+from its "mkyaffs2". The license for this package is stated as GPLv2 only.
+
+Making a yaffs1 image to be ran properly is NOT verified, since I don't have an
+embedded system device with the old NAND flash (512k page). I will be glad if
+someone can help me to verify the integrity to make and extract a yaffs1 image.
+
+* Project Page
+
+	http://code.google.com/p/yaffs2utils/
+
+
+HOWTO
+-----
+Building the source by "make", then enjoying them.
+
+
+Usage
+-----
+* mkyaffs2
+
+	./mkyaffs2 [-h|--help] [-e|--endian] [-p|--pagesize pagesize]
+	           [-s|--sparesize sparesize] [-o|--oobimg oobimg]
+	           [--all-root] [--yaffs-ecclayout] dirname imgfile
+
+* unyaffs2
+
+	./unyaffs2 [-h|--help] [-e|--endian] [-p|--pagesize pagesize]
+	           [-s|--sparesize sparesize] [-o|--oobimg oobimg]
+	           [-f|--fileset file] [--yaffs-ecclayout] imgfile dirname
+
+* unspare2
+
+	./unspare2 [-h] [-e] devfile imgfile
+
+mkyaffs2
+--------
+The tool "mkyaffs2" can create a YAFFS2 image 'imgfile' by files retrieved from
+the directory 'dirname'. After a image is made, the tool "nandwrite" from the
+mtd-utils can be used to write the raw data into the flash (with oob option),
+such as:
+
+	nandwrite -a -o /dev/mtd${MTDNUM} ${YAFFS2IMAGE}
+
+Options '-p' and '-s' can specify the page and spare size of the images. The
+information of the page and spare size should be obtained from your NAND
+flash datasheet, or they would also be available by the "mtd_debug" tool in the
+mtd-utils, such as:
+
+	mtd_debug info /dev/mtd$(MTDNUM)
+
+When the endian of a target system is different from your building machine, the
+option '-e' has to be specified to convert the endian for your target system. 
+
+The option '--all-root' could provide the capacity to make all files in the
+target system are owned by root (UID = 0, GID = 0).
+
+By default, the oob scheme used by native Linux is different from the one used
+by the official "mkyaffs2image" tool. In Linux MTD subsystem, it use the first
+two byte in the oob free area to mark the bad block, but the official tool
+"mkyaffs2image" use all of the free area to record YAFFS2 private data (it has
+its own bad block marker mechanism). If a image is requested to be created
+compatibly with the one made from the official "mkyaffs2image" tool, the option
+'--yaffs-ecclayout' has to be specified. It will create a image that use the
+full free space in the oob area without shifting the first two byte for the bad
+block marker by Linux MTD subsystem default.
+
+unyaffs2
+--------
+The tool "unyaffs2" can extract the content of the image 'imgfile', which was
+made by the 'mkyaffs2', into the directory "dirname".
+
+As "mkyaffs2", it also provide the option '-p' and '-s' to specify the page and
+spare size, and the option '-e' to provide the endian convert. When the image is
+created by the tool using the YAFFS original oob scheme (such as the official
+tool "mkyaffs2image", or the "mkyaffs2" with the option '--yaffs-ecclayout'),
+the option '--yaffs-ecclayout' is also required.
+
+When the option '-f' is applied, the "unyaffs2" can extract only the selection
+of files from the YAFFS image, instead of the whole image content.
+
+At this moment, the tool "unyaffs2" can only extract a image which is made from
+the "mkyaffs2" exactly. Extractimg a image dumpped directly from the NAND device
+is still unsupported (TODO list).
+
+unspare2
+--------
+When the oob layout is different from the Linux defailt, the "unspare2" has the
+capacity to dump the the oob scheme from the NAND device on the target into a 
+file "imgfile", and the oob image file can be used by mkyaffs2/unyaffs2 with the
+option "-o" to create/extract the suitable image. The endian convert option '-e'
+is also provided while the endian of targets are different from the local
+building system. 
+
+
+ANDROID
+=======
+
+Recently, I found that the most Android images are made from the official YAFFS2
+tool - "mkyaffs2image". As the discussion in the previous section "yaffs2utils",
+an image created by the official YAFFS2 tools (mkyaffs2image) can not be run on
+the native Linux (with the MTD subsystem), because its oob layout is different
+from the default one in the Linux MTD subsystem.
+
+As the discussion in the previous "Usage" section, for an image is requested to
+be created/extracted with the compatibilities of the one made by the official
+YFFS2 tool (mkyaffs2image), the option '--yaffs-ecclayout' of "mkyaffs2/unyaffs2"
+has to be specified. With the option '--yaffs-ecclayout', the "mkyaffs2/unyaffs2"
+will create/extract a image by using the YAFFS2 original oob scheme, instead of
+using the Linux MTD oob layout by default.
+
+
+COMPATIBILITY
+=============
+
+If a image is request to be created/extracted compatibly with the unknown oob
+scheme which is different from the Linux, the tool "unspare" can be cross
+compiled and used to extract the oob layout from the NAND flash on the target.
+Finally, by the option '-o' to specify the oob image while using the 
+"mkyaffs2/unyaffs2" can create/extract the YAFFS image with the various oob
+layout for the different NAND devices.
+
+
+LICENSE
+=======
+
+The package "yaffs2utils is published as GNU GPL version 2. Detalis about the
+GNU GPL version 2 is shown in the file "COPYING".
+
+
+TODO
+====
+
+1. Verify the implementation for yaffs1 images.
+2. Extract the runtime image dumpped directly from the NAND flash.
+
+
+NOTE
+====
+
+Files under "yaffs2" is branched from the official YAFFS2, because of the
+compiling issues of the inconstant naming rules in the official YAFFS2 source.
+These files are required by the current yaffs2utils. I will continue updating
+these files untils the oficial source is integrated into the Linux kernel or it
+has a stable release.
+
+
+SPECIAL THANKS
+==============
+1. Stijn Devriendt <HIGHGuY@gmail.com>
+
+
+=============
+Luen-Yung Lin
+<penguin.lin@gmail.com>
