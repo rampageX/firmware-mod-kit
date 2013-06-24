@@ -19,9 +19,8 @@ else
         SUDO=""
 fi
 
-$SUDO rm -rf "$DEST/rootfs.bak"
-$SUDO rm -rf "$DEST/image_parts.bak"
-mv -f "$DEST/rootfs" "$DEST/rootfs.bak"
+mkdir "$DEST/rootfs.bak"
+cp -rf "$DEST/rootfs/*" "$DEST/rootfs.bak/"
 mkdir "$DEST/image_parts.bak"
 cp -rf "$DEST/image_parts/*" "$DEST/image_parts.bak/"
 $SUDO cp -rf "$SRC/rootfs" "$DEST/"
