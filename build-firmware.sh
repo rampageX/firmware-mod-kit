@@ -156,8 +156,9 @@ case $HEADER_TYPE in
 	"tp-link")
 		printf "\nCorrecting TP-Link firmware image ... "
 		src/tpl-tool/src/tpl-tool -x "$FWOUT"
-		if [ $? -ne 0 ]; then
+		if [ $? -ne 0 ]; then				
 			CHECKSUM_ERROR=1
+			printf "ERROR"
 		else		
 			src/tpl-tool/src/tpl-tool -b "$FWOUT"
 			mv "$FWOUT-new" "$FWOUT"
