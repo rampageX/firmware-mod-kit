@@ -175,8 +175,9 @@ case $HEADER_TYPE in
 	"buffalo")
 		printf "\nEncrypting Buffalo firmware image ... "
 		src/firmware-tools/buffalo-enc -i "$FWOUT" -o "$FWOUT.enc"
-		if [ $? -ne 0 ]; then		
+		if [ $? -ne 0 ]; then					
 			CHECKSUM_ERROR=1
+			printf "ERROR"
 		else
 			printf "saved as $FWOUT.enc"
 		fi
