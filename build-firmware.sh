@@ -154,6 +154,7 @@ fi
 # Others, will encrypt image (Buffalo)
 case $HEADER_TYPE in
 	"tp-link")
+		printf "\nCorrecting TP-Link firmware image ... "
 		src/tpl-tool/src/tpl-tool -x "$FWOUT"
 		if [ $? -ne 0 ]; then
 			CHECKSUM_ERROR=1
@@ -163,18 +164,21 @@ case $HEADER_TYPE in
 			src/tpl-tool/src/tpl-tool -s "$FWOUT"
 			if [ $? -ne 0 ]; then		
 				CHECKSUM_ERROR=1
+				printf "ERROR"				
 			else
+				printf "Done"
 				CHECKSUM_ERROR=0
 			fi
 		fi
 		rm -f "$FWOUT-header" "$FWOUT-kernel" "$FWOUT-rootfs"
 		;;
 	"buffalo")
+		printf "\nEncrypting Buffalo firmware image ... "
 		src/firmware-tools/buffalo-enc -i "$FWOUT" -o "$FWOUT.enc"
 		if [ $? -ne 0 ]; then		
 			CHECKSUM_ERROR=1
 		else
-			printf "\nBuffalo encrypted image was saved as $FWOUT.enc (for vendor firmwares)"
+			printf "saved as $FWOUT.enc"
 		fi
 		;;
 	*)
