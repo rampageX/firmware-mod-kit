@@ -3,7 +3,7 @@ CXX := g++
 INCLUDEDIR = .
 CFLAGS := -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -O2
 
-all: asustrx addpattern untrx motorola-bin splitter3 bffutils
+all: asustrx addpattern untrx motorola-bin splitter3 bffutils unjffs2
 	make -C ./uncramfs/
 	make -C ./uncramfs-lzma/
 	make -C ./cramfs-2.x/
@@ -18,6 +18,7 @@ all: asustrx addpattern untrx motorola-bin splitter3 bffutils
 	make -C ./tpl-tool/src/
 	make -C ./firmware-tools/
 	make -C ./yaffs2utils/
+	make -C ./jffs2
 
 addpattern: addpattern.o
 	$(CC) addpattern.o -o $@
@@ -37,6 +38,9 @@ motorola-bin: motorola-bin.o
 bffutils:
 	make -C ./bff/
 
+unjffs2:
+	sudo make -C ./jffs2
+
 clean:
 	rm -f *.o
 	rm -f motorola-bin
@@ -45,6 +49,7 @@ clean:
 	rm -f addpattern
 	rm -f splitter3
 	rm -f binwalk
+	make -C ./jffs2 clean
 	make -C ./squashfs-2.1-r2/ clean
 	make -C ./squashfs-3.0 clean
 	make -C ./squashfs-3.0-lzma-damn-small-variant clean
@@ -59,6 +64,9 @@ clean:
 	make -C ./firmware-tools/ clean
 	make -C ./bff/ clean
 	make -C ./yaffs2utils/ clean
+	make -C ./jffs2 clean
 
 cleanall: clean
 	rm -rf Makefile config.* *.cache
+
+distclean: cleanall
