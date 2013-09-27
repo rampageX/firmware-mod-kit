@@ -190,11 +190,11 @@ case ${FS_TYPE} in
 		;;
 	"jffs2")
 		echo "Extracting JFFS2 file system..."
-		${SUDO} ./src/jffs2/unjffs2 "${FSIMG}" 2>/dev/null
+		${SUDO} ./src/jffs2/unjffs2 "${FSIMG}" 1>&2 2>/dev/null
 		# unjffs2 extracts to hard-coded directory of 'rootfs'
 		if [ -e "rootfs" ]
 		then
-			${SUDO} mv rootfs "${FSIMG}"
+			${SUDO} mv rootfs "${ROOTFS}"
 		fi
 		echo "MKFS='./src/jffs2/mkjffs2'" >> "${CONFLOG}"
 		;;
