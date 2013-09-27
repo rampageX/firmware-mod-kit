@@ -1,6 +1,6 @@
 CC=gcc
 
-all:
+sunjffs2:
 	$(CC) -Wall sunjffs2.c -o sunjffs2
 	chown root sunjffs2
 	chmod u+s sunjffs2
