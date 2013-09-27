@@ -1,0 +1,19 @@
+#!/bin/bash
+# Script to mount a file system image and copy its contents to a specified output directory.
+
+IMAGE="$1"
+OUTDIR="$2"
+MOUNT_POINT="$OUTDIR-mount"
+SCRIPT_DIR=$(dirname $(readlink -f $0))
+
+if [ "$OUTDIR" == "" ]
+then
+	echo "Usage: $0 <image> <output directory>"
+	exit 1
+fi
+
+mkdir "$MOUNT_POINT"
+$SCRIPT_DIR/mountsu "$IMAGE" "$MOUNT_POINT"
+cp -R "$MOUNT_POINT" "$OUTDIR"
+$SCRIPT_DIR/umountsu "$MOUNT_POINT"
+rm -rf "$MOUNT_POINT"
