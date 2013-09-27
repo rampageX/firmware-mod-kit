@@ -188,6 +188,16 @@ case ${FS_TYPE} in
 		${SUDO} ./src/yaffs2utils/unyaffs2 "${FSIMG}" "${ROOTFS}" 2>/dev/null 
 		echo "MKFS='./src/yaffs2utils/mkyaffs2'" >> "${CONFLOG}"
 		;;
+	"jffs2")
+		echo "Extracting JFFS2 file system..."
+		${SUDO} ./src/jffs2/unjffs2 "${FSIMG}" 2>/dev/null
+		# unjffs2 extracts to hard-coded directory of 'rootfs'
+		if [ -e "rootfs" ]
+		then
+			${SUDO} mv rootfs "${FSIMG}"
+		fi
+		echo "MKFS='./src/jffs2/mkjffs2'" >> "${CONFLOG}"
+		;;
 	*)
 		echo "Unsupported file system '${FS_TYPE}'! Quitting..."
 		rm -rf "${DIR}"
