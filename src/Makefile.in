@@ -19,6 +19,7 @@ all: asustrx addpattern untrx motorola-bin splitter3 bffutils unjffs2
 	make -C ./firmware-tools/
 	make -C ./yaffs2utils/
 	make -C ./jffs2
+	make -C ./mountcp
 
 addpattern: addpattern.o
 	$(CC) addpattern.o -o $@
@@ -65,6 +66,7 @@ clean:
 	make -C ./bff/ clean
 	make -C ./yaffs2utils/ clean
 	make -C ./jffs2 clean
+	make -C ./mountcp clean
 
 cleanall: clean
 	rm -rf Makefile config.* *.cache
