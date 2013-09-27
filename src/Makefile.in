@@ -40,7 +40,7 @@ bffutils:
 	make -C ./bff/
 
 unjffs2:
-	sudo make -C ./jffs2
+	make -C ./jffs2
 
 clean:
 	rm -f *.o
