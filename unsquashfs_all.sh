@@ -33,7 +33,7 @@ others/squashfs-4.2 \
 others/squashfs-4.0-lzma \
 others/squashfs-4.0-realtek \
 others/squashfs-hg55x-bin"
-TIMEOUT="15"
+TIMEOUT="60"
 MKFS=""
 DEST=""
 
