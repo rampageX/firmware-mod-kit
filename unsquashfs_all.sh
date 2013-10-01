@@ -79,14 +79,14 @@ then
 	done
 fi
 
-IMG=$(readlink -f $IMG)
-DIR=$(readlink -f $DIR)
+IMG=$(readlink -f "$IMG")
+DIR=$(readlink -f "$DIR")
 
 # Make sure we're operating out of the FMK directory
-cd $(dirname $(readlink -f $0))
+cd $(dirname $(readlink -f "$0"))
 
 DEST="-dest $DIR"
-MAJOR=$(./src/binwalk-1.0/src/bin/binwalk-script -m ./src/binwalk-*/src/magic.binwalk -l 1 "$IMG" | head -4 | tail -1 | sed -e 's/.*version //' | cut -d'.' -f1)
+MAJOR=$(./src/binwalk-1.0/src/bin/binwalk-script -m ./src/binwalk-*/src/binwalk/magic/binwalk -l 1024 "$IMG" | head -4 | tail -1 | sed -e 's/.*version //' | cut -d'.' -f1)
 
 echo -e "Attempting to extract SquashFS $MAJOR.X file system...\n"
 
