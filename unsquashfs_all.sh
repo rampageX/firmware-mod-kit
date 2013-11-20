@@ -16,6 +16,7 @@ SUBDIRS="squashfs-2.1-r2 \
 squashfs-3.0 \
 squashfs-3.0-lzma-damn-small-variant \
 others/squashfs-2.0-nb4 \
+others/squashfs-2.2-r2-7z \
 others/squashfs-3.0-e2100 \
 others/squashfs-3.2-r2 \
 others/squashfs-3.2-r2-lzma \
