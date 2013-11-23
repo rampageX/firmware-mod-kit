@@ -24,7 +24,7 @@ then
 	ROOTFS_CREATED=1
 fi
 
-cd $ROOTFS && cpio -i --no-absolute-filenames < $FSIMG
+cd $ROOTFS && cpio -d -i --no-absolute-filenames < $FSIMG
 
 if [ "$(ls $ROOTFS)" == "" ] && [ "$ROOTFS_CREATED" == "1" ]
 then
