@@ -277,8 +277,7 @@ void do_file(const u8* base, u32 offset, u32 size,
    } else {
       if(uncompress_data(base, base+offset, size, file_data) == -1)
       {
-         printf("failed to decompress data! quitting...\n");
-         exit(EXIT_FAILURE);
+         printf("failed to decompress data\n");
       }
    }
    
