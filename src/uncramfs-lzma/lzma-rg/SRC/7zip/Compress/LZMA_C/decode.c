@@ -102,7 +102,7 @@ int lzma_decode(void *dst, int dstlen, void *src, int srclen)
     if (prop0 >= 9 * 5 * 5)
     {
 	LZMA_ERR("Properties Error\n");
-	return -1;
+	return -2;
     }
     for (pb = 0; prop0 >= 9 * 5; pb++, prop0 -= 9 * 5);
     for (lp = 0; prop0 >= 9; lp++, prop0 -= 9);
@@ -118,7 +118,7 @@ int lzma_decode(void *dst, int dstlen, void *src, int srclen)
 	{
 	    lzma_internal_size = 0;
 	    LZMA_ERR("Error allocating internal data\n");
-	    return -1;
+	    return -2;
 	}
 	lzma_internal_size = calc_internal_size;
     }
@@ -129,7 +129,7 @@ int lzma_decode(void *dst, int dstlen, void *src, int srclen)
     if (res)
     {
 	LZMA_ERR("Decoder internal error (%d)\n", res);
-	return -1;
+	return -2;
     }
 
     return dstlen;

@@ -110,7 +110,7 @@ int uncompress_data(const u8* base, const u8* data, u32 size, u8* dstdata)
       uLongf tran=(len < blksize) ? len : blksize;
       nbuff=base+*(buffs+block);
       printf("dstlen %d compresslen %d\n",tran,nbuff-buff);
-      if (lzma_decode(dstdata, tran, buff, nbuff-buff) != Z_OK) {
+      if (lzma_decode(dstdata, tran, buff, nbuff-buff) == -2) {
 	 fprintf(stderr,"Uncompression failed");
 	 return -1;
       }
