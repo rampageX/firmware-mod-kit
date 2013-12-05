@@ -89,7 +89,7 @@ u32 compressed_size(const u8* base, const u8* data, u32 size)
      return buffend-data;
 }
 
-void uncompress_data(const u8* base, const u8* data, u32 size, u8* dstdata)
+int uncompress_data(const u8* base, const u8* data, u32 size, u8* dstdata)
 {
   printf("entering uncompress_data\n");
    const u32* buffs=(const u32*)(data);
@@ -100,7 +100,7 @@ void uncompress_data(const u8* base, const u8* data, u32 size, u8* dstdata)
    uLongf len=size;
    
    if (size == 0) {
-     return;
+     return 0;
    }
    
    for (;
@@ -110,11 +110,16 @@ void uncompress_data(const u8* base, const u8* data, u32 size, u8* dstdata)
       uLongf tran=(len < blksize) ? len : blksize;
       nbuff=base+*(buffs+block);
       printf("dstlen %d compresslen %d\n",tran,nbuff-buff);
-      if (lzma_decode(dstdata, tran, buff, nbuff-buff) == Z_OK) {
+      if (lzma_decode(dstdata, tran, buff, nbuff-buff) != Z_OK) {
 	 fprintf(stderr,"Uncompression failed");
-	 return;
+	 return -1;
+      }
+      else
+      {
+         return 0;
       }
    }
+   return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -270,7 +275,11 @@ void do_file(const u8* base, u32 offset, u32 size,
    if (mode & S_ISVTX) {
       memcpy(file_data, srcdata, size);
    } else {
-      uncompress_data(base, base+offset, size, file_data);
+      if(uncompress_data(base, base+offset, size, file_data) == -1)
+      {
+         printf("failed to decompress data! quitting...\n");
+         exit(EXIT_FAILURE);
+      }
    }
    
    munmap(file_data, size);
