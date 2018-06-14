@@ -97,6 +97,8 @@ for LINE in IFS='
 		# Check for compression type of the file system. Default to LZMA
 		if [ "$(echo ${LINE} | grep -i 'gzip')" != "" ];  then
 			FS_COMPRESSION="gzip"
+		elif [ "$(echo ${LINE} | grep -i 'xz')" != "" ];  then
+		    FS_COMPRESSION="xz"
 		else
 			FS_COMPRESSION="lzma"
 		fi
