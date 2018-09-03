@@ -59,6 +59,12 @@ case $FS_TYPE in
 			else
 				COMP=""
 			fi
+		elif [ "$FS_COMPRESSION" == "xz" ]; then
+			if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] || [ "$(echo $MKFS | grep 'squashfs-4.2')" != "" ]; then
+				COMP="-comp xz"
+			else
+				COMP=""
+			fi
 		fi
 
 		# Mksquashfs 4.0 tools don't support the -le option; little endian is built by default
