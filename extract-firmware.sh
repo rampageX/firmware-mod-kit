@@ -179,7 +179,22 @@ echo "ENDIANESS='${ENDIANESS}'" >> ${CONFLOG}
 case ${FS_TYPE} in
 	"squashfs")
 		echo "Extracting squashfs files..."
-		${SUDO} ./unsquashfs_all.sh "${FSIMG}" "${ROOTFS}" 2>/dev/null | grep MKFS >> "${CONFLOG}"
+		FS_MKFS=$(${SUDO} ./unsquashfs_all.sh "${FSIMG}" "${ROOTFS}" 2>/dev/null | grep MKFS)
+		echo ${FS_MKFS} >> "${CONFLOG}"
+		MKFS=$(echo ${FS_MKFS} | awk  -F"[=]" '{print $2}' | sed 's/\"//g')
+		if [ "${MKFS}" != "" ]; then
+		    MKFS_DIR=$(dirname ${MKFS})
+		    UNSQUASHFS="${MKFS_DIR}/unsquashfs"
+		    if [ "${UNSQUASHFS}" != "" ]; then
+		        Xattrs=$(${UNSQUASHFS} -s ${FSIMG} | grep -i Xattrs)
+		        if [ "${Xattrs}" != "" ]; then
+		            #Xattrs are not stored
+		            if [ "$(echo ${Xattrs} | grep -i not)" != "" ]; then
+		                echo "COMPRESSION_XZ_XATTRS='-no-xattrs'" >> ${CONFLOG}
+		            fi
+		        fi		
+		    fi	
+		fi
 		;;
 	"cramfs")
 		echo "Extracting CramFS file system..."

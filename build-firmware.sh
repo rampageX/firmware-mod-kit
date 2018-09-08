@@ -49,6 +49,8 @@ echo "Building new $FS_TYPE file system... (this may take several minutes!)"
 # Clean up any previously created files
 rm -rf "$FWOUT" "$FSOUT"
 
+MKFS_ARGS=""
+
 # Build the appropriate file system
 case $FS_TYPE in
 	"squashfs")
@@ -64,6 +66,10 @@ case $FS_TYPE in
 				COMP="-comp xz"
 			else
 				COMP=""
+			fi
+
+			if [ "$COMPRESSION_XZ_XATTRS" != "" ];	then
+				MKFS_ARGS="$MKFS_ARGS $COMPRESSION_XZ_XATTRS"
 			fi
 		fi
 
@@ -85,7 +91,7 @@ case $FS_TYPE in
 			echo "Squashfs block size is $HR_BLOCKSIZE Kb"
 		fi
 
-		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
+		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP $MKFS_ARGS -all-root
 		;;
 	"cramfs")
 		$SUDO $MKFS "$ROOTFS" "$FSOUT"
