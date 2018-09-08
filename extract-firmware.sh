@@ -186,11 +186,18 @@ case ${FS_TYPE} in
 		    MKFS_DIR=$(dirname ${MKFS})
 		    UNSQUASHFS="${MKFS_DIR}/unsquashfs"
 		    if [ "${UNSQUASHFS}" != "" ]; then
+		        #Xattrs are not stored
 		        Xattrs=$(${UNSQUASHFS} -s ${FSIMG} | grep -i Xattrs)
 		        if [ "${Xattrs}" != "" ]; then
-		            #Xattrs are not stored
 		            if [ "$(echo ${Xattrs} | grep -i not)" != "" ]; then
-		                echo "COMPRESSION_XZ_XATTRS='-no-xattrs'" >> ${CONFLOG}
+		                echo "COMP_XZ_XATTRS='-no-xattrs'" >> ${CONFLOG}
+		            fi
+		        fi
+		        #Number of ids 5
+		        NumOfIds=$(${UNSQUASHFS} -s ${FSIMG} | grep -i "Number of ids")
+		        if [ "${NumOfIds}" != "" ]; then
+		            if [ "$(echo ${NumOfIds} | grep -P '\d+' -o)" = "1" ]; then
+		                echo "COMP_XZ_ALL_ROOT='-all-root'" >> ${CONFLOG}
 		            fi
 		        fi		
 		    fi	
