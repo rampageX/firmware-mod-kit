@@ -76,6 +76,7 @@ case $FS_TYPE in
 				MKFS_ARGS="$MKFS_ARGS $COMP_XZ_XATTRS"
 			fi
 
+			MKFS_ARGS="$MKFS_ARGS $FS_ARGS"
 		fi
 
 		# Mksquashfs 4.0 tools don't support the -le option; little endian is built by default

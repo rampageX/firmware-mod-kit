@@ -179,6 +179,7 @@ echo "ENDIANESS='${ENDIANESS}'" >> ${CONFLOG}
 case ${FS_TYPE} in
 	"squashfs")
 		echo "Extracting squashfs files..."
+		FS_ARGS=""
 		FS_MKFS=$(${SUDO} ./unsquashfs_all.sh "${FSIMG}" "${ROOTFS}" 2>/dev/null | grep MKFS)
 		echo ${FS_MKFS} >> "${CONFLOG}"
 		MKFS=$(echo ${FS_MKFS} | awk  -F"[=]" '{print $2}' | sed 's/\"//g')
@@ -201,6 +202,17 @@ case ${FS_TYPE} in
 		            fi
 		        fi		
 		    fi	
+		fi
+		if [ "${FS_COMPRESSION}" = "xz" ]; then
+		    if [ "$(echo $MKFS | grep 'squashfs-4.2')" != "" ]; then
+		        typeset -u XZ_MAGIC
+		        #FD377A585A xz block magic 7zXZ, '-noappend' offset is 96 without '-noappend' offeset is 106
+		        XZ_MAGIC=$(dd if="${FSIMG}" bs=1 count=5 skip=96 2>/dev/zero | xxd -p)
+		        if [ "${XZ_MAGIC}" = "FD377A585A" ]; then
+		            FS_ARGS="${FS_ARGS} -noappend"
+		            echo "FS_ARGS='${FS_ARGS}'" >> ${CONFLOG}		        		        
+		        fi		        
+		    fi
 		fi
 		;;
 	"cramfs")
