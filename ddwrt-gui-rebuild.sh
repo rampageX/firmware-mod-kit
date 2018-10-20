@@ -19,6 +19,12 @@ then
 	SUDO="sudo"
 fi
 
+DIR=$(readlink -f $DIR)
+OUT=$(readlink -f $OUT)
+
+# Make sure we're operating out of the FMK directory
+cd $(dirname $(readlink -f $0))
+
 eval $(cat shared-ng.inc)
 HTTPD="$DIR/usr/sbin/httpd"
 WWW="$DIR/etc/www"
