@@ -4,7 +4,7 @@ TMPNAME=`mktemp`
 SYSNAME=`uname`
 mkdir tmp
 cd tmp
-wget --quiet --timeout=4 --tries=1 https://firmware-mod-kit.googlecode.com/git/firmware_mod_kit_version.txt
+wget --quiet --timeout=4 --tries=1 https://raw.githubusercontent.com/rampageX/firmware-mod-kit/master/firmware_mod_kit_version.txt
 mv firmware_mod_kit_version.txt "$TMPNAME"
 cd .. && rm -rf tmp
 if [ ! -f "$TMPNAME" ]; then
