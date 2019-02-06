@@ -7,7 +7,7 @@
 #include "FileName.h"
 #include "Defs.h"
 
-#include <sys/types.h> /* for DIR */
+#include <sys/sysmacros.h> /* for DIR */
 #include <dirent.h>
 
 namespace NWindows {

@@ -21,7 +21,7 @@
 /* Get size_t, FILE, ssize_t.  And getdelim, if available.  */
 # include <stddef.h>
 # include <stdio.h>
-# include <sys/types.h>
+# include <sys/sysmacros.h>
 
 #if !HAVE_DECL_GETDELIM
 ssize_t getdelim (char **lineptr, size_t *n, int delimiter, FILE *stream);

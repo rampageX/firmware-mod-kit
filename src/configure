@@ -561,7 +561,7 @@ PACKAGE_URL=''
 ac_includes_default="\
 #include <stdio.h>
 #ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
+# include <sys/types.h sys/sysmacros.h>
 #endif
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
@@ -2863,7 +2863,7 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <stdarg.h>
 #include <stdio.h>
-#include <sys/types.h>
+#include <sys/types.h sys/sysmacros.h>
 #include <sys/stat.h>
 /* Most of the following tests are stolen from RCS 5.7's src/conf.sh.  */
 struct buf { int x; };
@@ -3595,7 +3595,7 @@ $as_echo "#define STDC_HEADERS 1" >>confdefs.h
 fi
 
 # On IRIX 5.3, sys/types and inttypes.h are conflicting.
-for ac_header in sys/types.h sys/stat.h stdlib.h string.h memory.h strings.h \
+for ac_header in sys/types.h sys/sysmacros.h sys/stat.h stdlib.h string.h memory.h strings.h \
 		  inttypes.h stdint.h unistd.h
 do :
   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`

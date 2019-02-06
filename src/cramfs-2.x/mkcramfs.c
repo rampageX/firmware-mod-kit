@@ -22,7 +22,7 @@
  * If you change the disk format of cramfs, please update fs/cramfs/README.
  */
 
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include <unistd.h>
