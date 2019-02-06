@@ -29,7 +29,7 @@
 #include <libgen.h>
 #include <limits.h>
 #include <sys/stat.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/param.h>
 #ifdef _HAVE_OSX_SYSLIMITS
 #include <sys/syslimits.h>

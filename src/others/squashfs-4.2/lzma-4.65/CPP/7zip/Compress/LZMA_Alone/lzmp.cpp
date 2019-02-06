@@ -40,7 +40,7 @@ typedef vector<string> stringVector;
 #include <getopt.h>
 #include <signal.h>
 
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/stat.h>
 #include <utime.h>
 #include <sys/time.h> // futimes()

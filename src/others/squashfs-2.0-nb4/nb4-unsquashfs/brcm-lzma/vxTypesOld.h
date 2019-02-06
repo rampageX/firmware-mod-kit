@@ -72,7 +72,7 @@ This header file contains a mixture of stuff.
 extern "C" {
 #endif
 
-#include "sys/types.h"
+#include "sys/sysmacros.h"
 
 /* vxWorks types */
 

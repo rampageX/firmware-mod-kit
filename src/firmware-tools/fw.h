@@ -19,7 +19,7 @@
 #ifndef FW_INCLUDED
 #define FW_INCLUDED
 
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 
 #define MAGIC_HEADER	"OPEN"
 #define MAGIC_PART	"PART"

@@ -36,7 +36,7 @@
 #define INCLUDE_FS_TESTS	/* include cramfs checking and extraction */
 
 #define _GNU_SOURCE
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <sys/stat.h>

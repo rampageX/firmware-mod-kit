@@ -29,11 +29,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 
 #include <endian.h>
 #include <byteswap.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 
 #include "untrx.h"
 

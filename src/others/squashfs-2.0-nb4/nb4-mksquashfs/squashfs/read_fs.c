@@ -26,7 +26,7 @@ extern int add_file(int, int, unsigned int *, int, unsigned int, int, int);
 #define TRUE 1
 #define FALSE 0
 #include <stdio.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
