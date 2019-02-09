@@ -49,6 +49,8 @@ echo "Building new $FS_TYPE file system... (this may take several minutes!)"
 # Clean up any previously created files
 rm -rf "$FWOUT" "$FSOUT"
 
+MKFS_ARGS="-all-root"
+
 # Build the appropriate file system
 case $FS_TYPE in
 	"squashfs")
@@ -61,6 +63,22 @@ case $FS_TYPE in
 			else
 				COMP=""
 			fi
+		elif [ "$FS_COMPRESSION" == "xz" ]; then
+			if [ "$(echo $MKFS | grep 'squashfs-4.0-realtek')" != "" ] || [ "$(echo $MKFS | grep 'squashfs-4.2')" != "" ]; then
+				COMP="-comp xz"
+			else
+				COMP=""
+			fi
+
+			if [ "$COMP_XZ_ALL_ROOT" = "" ]; then
+				MKFS_ARGS=""
+			fi
+
+			if [ "$COMP_XZ_XATTRS" != "" ]; then
+				MKFS_ARGS="$MKFS_ARGS $COMP_XZ_XATTRS"
+			fi
+
+			MKFS_ARGS="$MKFS_ARGS $FS_ARGS"
 		fi
 
 		# Mksquashfs 4.0 tools don't support the -le option; little endian is built by default
@@ -81,7 +99,7 @@ case $FS_TYPE in
 			echo "Squashfs block size is $HR_BLOCKSIZE Kb"
 		fi
 
-		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP -all-root
+		$SUDO $MKFS "$ROOTFS" "$FSOUT" $ENDIANESS $BS $COMP $MKFS_ARGS
 		;;
 	"cramfs")
 		$SUDO $MKFS "$ROOTFS" "$FSOUT"
