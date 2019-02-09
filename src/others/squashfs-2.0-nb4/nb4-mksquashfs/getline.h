@@ -21,7 +21,7 @@
 /* Get size_t, FILE, ssize_t.  And getline, if available.  */
 # include <stddef.h>
 # include <stdio.h>
-# include <sys/types.h>
+# include <sys/sysmacros.h>
 
 #if !HAVE_DECL_GETLINE
 ssize_t getline (char **lineptr, size_t *n, FILE *stream);

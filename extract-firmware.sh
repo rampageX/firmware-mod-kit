@@ -99,7 +99,7 @@ for LINE in IFS='
 			FS_COMPRESSION="gzip"
 		elif [ "$(echo ${LINE} | grep -i 'xz')" != "" ];  then
 			FS_COMPRESSION="xz"
-		else 		
+		else
 			FS_COMPRESSION="lzma"
 		fi
 

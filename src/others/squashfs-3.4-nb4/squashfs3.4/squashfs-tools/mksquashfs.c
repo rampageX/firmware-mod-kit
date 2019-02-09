@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
@@ -41,7 +41,7 @@
 #include <signal.h>
 #include <setjmp.h>
 #include <sys/ioctl.h>
-#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/mman.h>
 #include <pthread.h>
 #include <math.h>
