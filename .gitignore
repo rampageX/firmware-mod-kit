@@ -6,6 +6,7 @@
 *.pyc
 
 # Generated files
+cleanup.log
 src/Makefile
 src/config.log
 src/config.status
@@ -97,3 +98,9 @@ src/wrt_vx_imgtool/wrt_vx_imgtool
 src/yaffs2utils/mkyaffs2
 src/yaffs2utils/unspare2
 src/yaffs2utils/unyaffs2
+
+# work directory
+/fmk/
+
+# standard IDE
+/.idea/
