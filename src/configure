@@ -561,7 +561,10 @@ PACKAGE_URL=''
 ac_includes_default="\
 #include <stdio.h>
 #ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h sys/sysmacros.h>
+# include <sys/types.h>
+#endif
+#ifdef HAVE_SYS_SYSMACROS_H
+#include <sys/sysmacros.h>
 #endif
 #ifdef HAVE_SYS_STAT_H
 # include <sys/stat.h>
@@ -2863,7 +2866,8 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 #include <stdarg.h>
 #include <stdio.h>
-#include <sys/types.h sys/sysmacros.h>
+#include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <sys/stat.h>
 /* Most of the following tests are stolen from RCS 5.7's src/conf.sh.  */
 struct buf { int x; };
