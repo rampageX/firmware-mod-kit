@@ -16,8 +16,8 @@ else
 	SUDO=""
 fi
 
-IMG=$(readlink -f $IMG)
-DIR=$(readlink -f $DIR)
+IMG=$(readlink -f "$IMG")
+DIR=$(readlink -f "$DIR")
 
 # Make sure we're operating out of the FMK directory
 cd $(dirname $(readlink -f $0))
