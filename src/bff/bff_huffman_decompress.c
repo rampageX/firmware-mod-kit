@@ -55,6 +55,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #define	PACK_HEADER_LENGTH	1
 #define	HTREE_MAXLEVEL		24
 
