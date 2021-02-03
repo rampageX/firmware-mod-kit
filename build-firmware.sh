@@ -110,9 +110,19 @@ case $FS_TYPE in
 		fi
 		;;
 	"yaffs")
-		$SUDO $MKFS "$ROOTFS" "$FSOUT"
 		echo "WARNING: YAFFS2 completely untested !! Hit any key to confirm ..."
+		$SUDO $MKFS "$ROOTFS" "$FSOUT"
 		pause
+		;;
+	"jffs2")
+		if [ "$ENDIANESS" == "-le" ]; then
+			echo "Building JFFS2 file system (little endian) ..."
+			$SUDO $MKFS -r "$ROOTFS" -o "$FSOUT" --little-endian
+
+		elif [ "$ENDIANESS" == "-be" ]; then
+			echo "Building JFFS2 file system (big endian) ..."
+			$SUDO $MKFS -r "$ROOTFS" -o "$FSOUT" --big-endian
+		fi
 		;;
 	*)
 		echo "Unsupported file system '$FS_TYPE'!"
@@ -155,6 +165,7 @@ fi
 
 # Append the footer to the new firmware image, if there is any footer
 if [ "$FOOTER_SIZE" -gt "0" ]; then
+	echo "Appending ${FOOTER_SIZE} byte footer at offset ${FOOTER_OFFSET}"
 	cat $FOOTER_IMAGE >> "$FWOUT"
 fi
 

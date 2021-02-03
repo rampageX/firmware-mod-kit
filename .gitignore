@@ -104,3 +104,7 @@ src/yaffs2utils/unyaffs2
 
 # standard IDE
 /.idea/
+
+# my files
+FW_EA7500v2_2.0.8.194281_prod.img
+hexdump.txt
