@@ -139,27 +139,50 @@ fi
 FOOTER_SIZE=0
 FOOTER_OFFSET=0
 
+# Get Hex + ASCII output of image file, filter for header between preceding repeating lines which show up as * in terminal. Dump into footer.txt
+hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > footer.txt
+
+# Get first line after *, most likely start of header, get hex address and convert to decimal
+FOOTER_FIRST=$((16#$(head -2 footer.txt | tail -1 | awk '{print $1}')))
+echo "$FOOTER_FIRST"
+
+# Get last address, most likely end of header, get hex address and convert to decimal
+FOOTER_LAST=$((16#$(tail -1 footer.txt)))
+echo "$FOOTER_LAST"
+
+FOOTER_SIZE=$(($FOOTER_LAST - $FOOTER_FIRST))
+echo "$FOOTER_SIZE"
+
+#If a footer was found, dump it out
+if [ "${FOOTER_SIZE}" != "0" ]; then
+	FOOTER_OFFSET=$((${FW_SIZE}-${FOOTER_SIZE}))
+	echo "Extracting ${FOOTER_SIZE} byte footer from offset ${FOOTER_FIRST}"
+	dd if="${IMG}" bs=1 skip=${FOOTER_FIRST} count=${FOOTER_SIZE} of="${FOOTER_IMAGE}" 2>/dev/null
+else
+	FOOTER_OFFSET=${FW_SIZE}
+fi
+
 # Try to determine if there is a footer at the end of the firmware image.
 # Grab the last 10 lines of a hexdump of the firmware image, excluding the
 # last line in the hexdump. Reverse the line order and replace any lines
 # that start with '*' with the word 'FILLER'.
-for LINE in $(hexdump -C ${IMG} | tail -11 | head -10 | sed -n '1!G;h;$p' | sed -e 's/^*/FILLER/')
- do
-	if [ "${LINE}" = "FILLER" ]; then
-		break
-	else
-		FOOTER_SIZE=$((${FOOTER_SIZE}+16))
-	fi
-done
-
-# If a footer was found, dump it out
-if [ "${FOOTER_SIZE}" != "0" ]; then
-	FOOTER_OFFSET=$((${FW_SIZE}-${FOOTER_SIZE}))
-	echo "Extracting ${FOOTER_SIZE} byte footer from offset ${FOOTER_OFFSET}"
-	dd if="${IMG}" bs=1 skip=${FOOTER_OFFSET} count=${FOOTER_SIZE} of="${FOOTER_IMAGE}" 2>/dev/null
-else
-	FOOTER_OFFSET=${FW_SIZE}
-fi
+# for LINE in $(hexdump -C ${IMG} | tail -11 | head -10 | sed -n '1!G;h;$p' | sed -e 's/^*/FILLER/')
+#  do
+# 	if [ "${LINE}" = "FILLER" ]; then
+# 		break
+# 	else
+# 		FOOTER_SIZE=$((${FOOTER_SIZE}+16))
+# 	fi
+# done
+# 
+# # If a footer was found, dump it out
+# if [ "${FOOTER_SIZE}" != "0" ]; then
+# 	FOOTER_OFFSET=$((${FW_SIZE}-${FOOTER_SIZE}))
+# 	echo "Extracting ${FOOTER_SIZE} byte footer from offset ${FOOTER_OFFSET}"
+# 	dd if="${IMG}" bs=1 skip=${FOOTER_OFFSET} count=${FOOTER_SIZE} of="${FOOTER_IMAGE}" 2>/dev/null
+# else
+# 	FOOTER_OFFSET=${FW_SIZE}
+# fi
 
 # Log the parsed values to the CONFLOG for use when re-building the firmware
 echo "FW_SIZE='${FW_SIZE}'" > ${CONFLOG}
@@ -232,7 +255,7 @@ case ${FS_TYPE} in
 		then
 			${SUDO} mv rootfs "${ROOTFS}"
 		fi
-		echo "MKFS='./src/jffs2/mkjffs2'" >> "${CONFLOG}"
+		echo "MKFS='./src/jffs2/mkfs.jffs2'" >> "${CONFLOG}"
 		;;
 	*)
 		echo "Unsupported file system '${FS_TYPE}'! Quitting..."
