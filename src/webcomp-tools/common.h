@@ -38,7 +38,7 @@ struct entry_info
 	struct new_file_entry *new_entry;
 };
 
-struct global
+extern struct global
 {
 	int endianess;
 	int use_new_format;
