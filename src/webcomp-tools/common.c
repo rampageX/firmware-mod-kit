@@ -10,6 +10,8 @@
 #include <elf.h>
 #include "common.h"
 
+struct global globals;
+
 /* Given the physical and virtual section loading addresses, convert a virtual address to a physical file offset */
 uint32_t file_offset(uint32_t address, uint32_t virtual, uint32_t physical)
 {

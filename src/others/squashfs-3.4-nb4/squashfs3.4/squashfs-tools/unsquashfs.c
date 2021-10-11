@@ -48,7 +48,7 @@
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
-#include <sys/sysctl.h>
+
 
 #ifndef linux
 #define __BYTE_ORDER BYTE_ORDER

@@ -48,7 +48,7 @@ extern int add_file(int, int, unsigned int *, int, unsigned int, int, int);
 
 #define ERROR(s, args...)		fprintf(stderr, s, ## args)
 
-int swap;
+extern int swap;
 
 int read_block(int fd, int start, int *next, unsigned char *block, squashfs_super_block *sBlk)
 {
