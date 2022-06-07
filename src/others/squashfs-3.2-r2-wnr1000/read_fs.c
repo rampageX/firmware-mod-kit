@@ -62,7 +62,7 @@ extern int add_file(long long, long long, long long, unsigned int *, int, unsign
 						fprintf(stderr, s, ## args); \
 					} while(0)
 
-int swap;
+extern int swap;
 extern int lzma;
 
 int read_block(int fd, long long start, long long *next, unsigned char *block, squashfs_super_block *sBlk)
