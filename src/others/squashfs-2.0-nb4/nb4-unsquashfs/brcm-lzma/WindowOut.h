@@ -1,6 +1,7 @@
 #ifndef __STREAM_WINDOWOUT_H
 #define __STREAM_WINDOWOUT_H
 
+#include <stdint.h>
 #include "IInOutStreams.h"
 
 typedef struct WindowOut
@@ -26,7 +27,7 @@ extern WindowOut out_window;
 INLINE void OutWindowCopyBackBlock(UINT32 aDistance, UINT32 aLen)
   {
     BYTE   *p = out_window.Buffer + out_window.Pos;
-    UINT32  i;
+    uintptr_t  i;
     aDistance++;
     for(i = 0; i < aLen; i++)
       p[i] = p[i - aDistance];
