@@ -9,6 +9,10 @@
 cleanup.log
 src/config.log
 src/config.status
+src/autom4te.cache/
+src/config.guess
+src/config.sub
+src/configure
 
 # Compiled Binaries
 src/addpattern
