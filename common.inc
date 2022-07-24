@@ -5,7 +5,7 @@ Build_Tools ()
 	then
 		echo "Preparing tools ..."
 		cd src 
-		if [ ! -f "./Makefile" ]; then	
+		if [ ! -f "./config.status" ]; then	
 			./configure 2>&1 >> /dev/null
 		fi
 		make -s

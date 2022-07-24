@@ -7,7 +7,6 @@
 
 # Generated files
 cleanup.log
-src/Makefile
 src/config.log
 src/config.status
 

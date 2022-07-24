@@ -16,5 +16,4 @@ AC_CHECK_LIB([z],[crc32],[],[echo "error: missing zlib library" && exit],[])
 AC_CHECK_HEADERS([zlib.h],[],[echo "error: missing zlib header files" && exit])
 AC_CHECK_HEADERS([lzma.h],[],[echo "error: missing liblzma header files" && exit])
 
-AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
