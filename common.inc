@@ -6,7 +6,6 @@ Build_Tools ()
 		echo "Preparing tools ..."
 		cd src 
 		if [ ! -f "./Makefile" ]; then	
-			autoconf -Wall 2>&1 >> /dev/null
 			./configure 2>&1 >> /dev/null
 		fi
 		make -s
