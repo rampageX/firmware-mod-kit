@@ -26,14 +26,14 @@ mksquashfs:  squashfs/*.c squashfs/*.h $(LZMAOBJS)
           echo *****You may find it in your Linux distribution CDs. ; \
 	  exit ;\
         fi
-	gcc $(CFLAGS) -Isquashfs -c squashfs/*.c
-	gcc $(CFLAGS) -c getline.c
-	gcc $(CFLAGS) -c getdelim.c
-	g++  -o mksquashfs mksquashfs.o read_fs.o sort.o getline.o getdelim.o $(LZMAOBJS) -lz
+	$(CC) $(CFLAGS) -Isquashfs -c squashfs/*.c
+	$(CC) $(CFLAGS) -c getline.c
+	$(CC) $(CFLAGS) -c getdelim.c
+	$(CXX)  -o mksquashfs mksquashfs.o read_fs.o sort.o getline.o getdelim.o $(LZMAOBJS) -lz
 #	ln mksquashfs nb4-mksquashfs
 
 $(LZMAOBJS): %.o: %.cpp
-	g++ -c $(CFLAGS) $^ -o $@
+	$(CXX) -c $(CFLAGS) $^ -o $@
 
 clean:
 	rm -f mksquashfs nb4-mksquashfs
