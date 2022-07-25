@@ -11,7 +11,7 @@ Build_Tools ()
 		if [ ! -f "./config.status" ]; then
 			./configure 2>&1 >> /dev/null
 		fi
-		make -s -e
+		make -s -e -j1
 		if [ $? -eq 0 ]; then
 			cd - 2>&1 >> /dev/null
 		else
