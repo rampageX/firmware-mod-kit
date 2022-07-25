@@ -18,7 +18,7 @@ all:
 	make -C ./squashfs-4.2-official
 
 clean:
-	make -C ./squashfs-2.2-r2-7z
+	make -C ./squashfs-2.2-r2-7z clean
 	make -C ./squashfs-3.0-e2100 clean
 	make -C ./squashfs-3.2-r2 clean
 	make -C ./squashfs-3.2-r2-lzma clean
