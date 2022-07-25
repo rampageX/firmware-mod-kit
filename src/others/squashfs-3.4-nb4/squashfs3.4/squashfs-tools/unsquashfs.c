@@ -48,8 +48,6 @@
 #include <sys/ioctl.h>
 #include <sys/time.h>
 
-
-
 #ifndef linux
 #define __BYTE_ORDER BYTE_ORDER
 #define __BIG_ENDIAN BIG_ENDIAN
