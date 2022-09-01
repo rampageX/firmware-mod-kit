@@ -7,9 +7,13 @@
 
 # Generated files
 cleanup.log
-src/Makefile
 src/config.log
 src/config.status
+src/autom4te.cache/
+src/config.guess
+src/config.sub
+src/configure
+footer.txt
 
 # Compiled Binaries
 src/addpattern

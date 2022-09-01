@@ -1,9 +1,7 @@
-AC_PREREQ([2.65])
 AC_INIT([Firmware Mod Kit],[0.4.0],[http://firmware-mod-kit.googlecode.com])
 
 AC_PROG_CC
 AC_PROG_CXX
-AC_LANG(C)
 
 AC_TYPE_SIZE_T
 
@@ -16,5 +14,4 @@ AC_CHECK_LIB([z],[crc32],[],[echo "error: missing zlib library" && exit],[])
 AC_CHECK_HEADERS([zlib.h],[],[echo "error: missing zlib header files" && exit])
 AC_CHECK_HEADERS([lzma.h],[],[echo "error: missing liblzma header files" && exit])
 
-AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

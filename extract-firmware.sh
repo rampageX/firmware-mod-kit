@@ -209,7 +209,7 @@ case ${FS_TYPE} in
 		if [ "${MKFS}" != "" ]; then
 		    MKFS_DIR=$(dirname ${MKFS})
 		    UNSQUASHFS="${MKFS_DIR}/unsquashfs"
-		    if [ "${UNSQUASHFS}" != "" ]; then
+		    if [ -x "${UNSQUASHFS}" ]; then
 		        #Xattrs are not stored
 		        Xattrs=$(${UNSQUASHFS} -s ${FSIMG} | grep -i Xattrs)
 		        if [ "${Xattrs}" != "" ]; then

@@ -4,12 +4,14 @@ Build_Tools ()
 	if [ ! -e "./src/crcalc/crcalc" ]
 	then
 		echo "Preparing tools ..."
-		cd src 
-		if [ ! -f "./Makefile" ]; then	
-			autoconf -Wall 2>&1 >> /dev/null
+		cd src
+		if [ ! -f "./configure" ]; then
+			autoreconf --force --install 2>&1 >> /dev/null
+		fi
+		if [ ! -f "./config.status" ]; then
 			./configure 2>&1 >> /dev/null
 		fi
-		make -s
+		make -s -e -j1
 		if [ $? -eq 0 ]; then
 			cd - 2>&1 >> /dev/null
 		else
