@@ -19,10 +19,10 @@ EULA: By downloading or using this kit, you agree to accept liability for conseq
 
 # Firmware Mod Kit #
 
-  * [Introduction](#Introduction.md)
-  * [Prerequisites](#Prerequisites.md)
-  * [Using The Kit](#UsingTheKit.md)
-  * [Links](#Links.md)
+  * [Introduction](#introduction)
+  * [Prerequisites](#prerequisites)
+  * [Using The Kit](#using-the-kit)
+  * [Links](#other-links)
 
 ## Introduction ##
 
@@ -55,9 +55,11 @@ There is a AUR package for <https://aur.archlinux.org/packages/firmware-mod-kit/
 
 For other distros, you should install the equivalent packages using your distro's package manager.
 
-The Firmware Mod Kit is only supported on the Linux platform. With a few small modifications, it should work on other POSIX platforms.
+The Firmware Mod Kit is **only supported on the Linux platform**. With a few small modifications, it should work on other POSIX platforms.
 
 ## Using the Kit ##
+
+Git clone the Firmware Modification Kit repository.
 
 ### Kit Executables ###
 
