@@ -19,10 +19,19 @@ EULA: By downloading or using this kit, you agree to accept liability for conseq
 
 # Firmware Mod Kit #
 
-  * [Introduction](#introduction)
-  * [Prerequisites](#prerequisites)
-  * [Using The Kit](#using-the-kit)
-  * [Links](#other-links)
+* [Introduction](#introduction)
+* [Prerequisites](#prerequisites)
+* [Using The Kit](#using-the-kit)
+    * [Kit Excecutables](#kit-executables)
+    * [The Firmware Working Directory](#the-firmware-working-directory)
+    * [Extracting Firmware](#extracting-firmware)
+    * [Re-Building Firmware](#re-building-firmware)
+    * [Modifying DD-WRT Web Pages](#modifying-dd-wrt-web-pages)
+    * [Reverting to a vendor firmware](#reverting-to-a-vendor-firmware)
+    * [Examples](#examples)
+    * [Linksys Firmware](#linksys-firmware)
+    * [Tools / Utilities](#tools--utilities)
+* [Links](#other-links)
 
 ## Introduction ##
 
@@ -159,6 +168,13 @@ echo "HELLO WORLD" > www/index.asp
 ./build-firmware.sh
 ```
 
+### Linksys Firmware ###
+
+Linksys has custom footers with Checksum checks, hence this script was written to try and automate the process of calculating the checksum of the image and changing the footer accordingly. New image will be written to modified_checksum.img. Run this after modifying and build-firmware.sh.
+
+```sh
+./linksys_footer.sh modified_firmware.img
+```
 
 ### Tools / Utilities ###
 
