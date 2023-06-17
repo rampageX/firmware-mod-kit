@@ -14,4 +14,15 @@ AC_CHECK_LIB([z],[crc32],[],[echo "error: missing zlib library" && exit],[])
 AC_CHECK_HEADERS([zlib.h],[],[echo "error: missing zlib header files" && exit])
 AC_CHECK_HEADERS([lzma.h],[],[echo "error: missing liblzma header files" && exit])
 
+# Check for -Werror support
+saved_cflags="$CFLAGS"
+saved_cxxflags="$CXXFLAGS"
+
+CFLAGS="-Werror-implicit-function-declaration"
+CXXFLAGS="-Werror-implicit-function-declaration"
+AC_MSG_CHECKING([whether CC and CXX supports -Werror-implicit-function-declaration])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [AC_MSG_RESULT([yes]); saved_cflags="${saved_cflags} -Werror-implicit-function-declaration" saved_cxxflags="${saved_cxxflags} -Werror-implicit-function-declaration"], [AC_MSG_RESULT([no])])
+CFLAGS="$saved_cflags"
+CXXFLAGS="$saved_cxxflags"
+
 AC_OUTPUT
