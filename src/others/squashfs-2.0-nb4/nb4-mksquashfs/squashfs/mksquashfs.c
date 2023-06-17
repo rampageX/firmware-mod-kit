@@ -20,6 +20,9 @@
  * mksquashfs.c
  */
 
+#ifndef _GNU_SOURCE
+  #define _GNU_SOURCE
+#endif
 #define TRUE 1
 #include <pwd.h>
 #include <grp.h>
@@ -33,6 +36,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <zlib.h>
+#include <ctype.h>
 #ifdef __MACOSX__
   #define __BYTE_ORDER BYTE_ORDER
   #define __BIG_ENDIAN BIG_ENDIAN
@@ -44,6 +48,7 @@
 #include <signal.h>
 #include <setjmp.h>
 #include <sys/mman.h>
+#include <libgen.h>
 
 #include "mksquashfs.h"
 #include <squashfs_fs.h>
