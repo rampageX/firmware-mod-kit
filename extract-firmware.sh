@@ -152,7 +152,7 @@ else
 	FOOTER_OFFSET=${FW_SIZE}
 fi
 
-# This block of code was moved here to fix a bug that caused the footer to be copied into the main filesystem block (essentially duplicating that bit of data)
+# Extract filesystem, which is everything from $FS_OFFSET to $FOOTER_OFFSET.
 if [ "${FS_OFFSET}" != "" ]; then
 	echo "Extracting ${FS_TYPE} file system at offset ${FS_OFFSET}"
 	dd if="${IMG}" skip=1 bs=${FS_OFFSET} 2>/dev/null | dd count=$(($FOOTER_OFFSET - $FS_OFFSET)) of="${FSIMG}" iflag=count_bytes 2>/dev/null
@@ -161,8 +161,6 @@ else
 	rm -rf "${DIR}"
 	exit 1
 fi
-
-
 
 # Try to determine if there is a footer at the end of the firmware image.
 # Grab the last 10 lines of a hexdump of the firmware image, excluding the
