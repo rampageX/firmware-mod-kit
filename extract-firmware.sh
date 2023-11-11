@@ -127,21 +127,11 @@ HEADER_IMAGE_SIZE=$((${FS_OFFSET}-${HEADER_IMAGE_OFFSET}))
 echo "Extracting ${HEADER_IMAGE_SIZE} bytes of ${HEADER_TYPE} header image at offset ${HEADER_IMAGE_OFFSET}"
 dd if="${IMG}" bs=${HEADER_IMAGE_SIZE} skip=${HEADER_IMAGE_OFFSET} count=1 of="${HEADER_IMAGE}" 2>/dev/null
 
-if [ "${FS_OFFSET}" != "" ]; then
-	echo "Extracting ${FS_TYPE} file system at offset ${FS_OFFSET}"
-	dd if="${IMG}" bs=${FS_OFFSET} skip=1 of="${FSIMG}" 2>/dev/null
-else
-	echo "ERROR: No supported file system found! Aborting..."
-	rm -rf "${DIR}"
-	exit 1
-fi
-
 FOOTER_SIZE=0
 FOOTER_OFFSET=0
 
 # Get Hex + ASCII output of image file, filter for header between preceding repeating lines which show up as * in terminal. Dump into footer.txt
 hexdump -C "$IMG" | tail -11 | sed -n '/^*/,$p' > footer.txt
-
 # Get first line after *, most likely start of header, get hex address and convert to decimal
 FOOTER_FIRST=$((16#$(head -2 footer.txt | tail -1 | awk '{print $1}')))
 echo "$FOOTER_FIRST"
@@ -161,6 +151,18 @@ if [ "${FOOTER_SIZE}" != "0" ]; then
 else
 	FOOTER_OFFSET=${FW_SIZE}
 fi
+
+# This block of code was moved here to fix a bug that caused the footer to be copied into the main filesystem block (essentially duplicating that bit of data)
+if [ "${FS_OFFSET}" != "" ]; then
+	echo "Extracting ${FS_TYPE} file system at offset ${FS_OFFSET}"
+	dd if="${IMG}" skip=1 bs=${FS_OFFSET} 2>/dev/null | dd count=$(($FOOTER_OFFSET - $FS_OFFSET)) of="${FSIMG}" iflag=count_bytes 2>/dev/null
+else
+	echo "ERROR: No supported file system found! Aborting..."
+	rm -rf "${DIR}"
+	exit 1
+fi
+
+
 
 # Try to determine if there is a footer at the end of the firmware image.
 # Grab the last 10 lines of a hexdump of the firmware image, excluding the
